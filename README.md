@@ -10,7 +10,7 @@
 This is a REST API for a school project. It is made for "Hanz Car Rentals" our fake car rental company. This REST API is built using Node.js, Express.js and MySQL. This is a school project and is not meant to be used in a production environment.
 
 ## Usage
-To use this REST API, you need an internet connection. You can go to [this site](api.hcr.yoursister.zip) to read the detailed documentation.
+To use this REST API, you need an internet connection. You can go to [this site](https://api.hcr.yoursister.zip) to read the detailed documentation.
 
 ## Contributing
 If you want to contribute to this project, please contact me at the email address provided in the [Questions](#questions) section. 
