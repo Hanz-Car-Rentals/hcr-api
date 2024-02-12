@@ -73,6 +73,7 @@ db.query('CREATE TABLE IF NOT EXISTS reviews ( \
     user_id INT, \
     review TEXT, \
     rating INT, \
+    created_at DATE DEFAULT NOW(), \
     FOREIGN KEY (car_id) REFERENCES cars(id), \
     FOREIGN KEY (user_id) REFERENCES users(id) \
 )');
@@ -89,6 +90,8 @@ db.query('CREATE TABLE IF NOT EXISTS reviews ( \
 // db.query('ALTER TABLE cars ADD COLUMN location VARCHAR(255)');
 // db.query('ALTER TABLE cars ADD COLUMN picture_url TEXT');
 // db.query('ALTER TABLE users ADD COLUMN token TEXT UNIQUE');
+// db.query('ALTER TABLE reviews ADD COLUMN created_at DATE DEFAULT NOW()');
+
 
 // makes the connection available for other files (e.g. routes)
 module.exports = db;
