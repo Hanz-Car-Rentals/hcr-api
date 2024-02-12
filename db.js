@@ -1,5 +1,5 @@
 // require the needed modules
-var mysql = require('mysql');
+const mysql = require('mysql');
 
 // require the config file where all the needed data is stored (db credentials, etc)
 var config = require('./configs/config.json')
@@ -15,13 +15,22 @@ var db = mysql.createConnection({
 // create users table if not existing
 db.query('CREATE TABLE IF NOT EXISTS users ( \
     id INT AUTO_INCREMENT PRIMARY KEY, \
-    username VARCHAR(255), \
-    password VARCHAR(255), \
-    admin BOLEAN() NOT NULL, \
+    email TEXT UNIQUE NOT NULL, \
+    email_verified BOOLEAN DEFAULT false, \
+    email_verify_token TEXT, \
+    first_name VARCHAR(255), \
+    last_name VARCHAR(255), \
+    password BLOB NOT NULL, \
+    salt BLOB NOT NULL, \
+    password_reset_token TEXT, \
+    reset_password_token_expires_at DATETIME, \
+    admin BOOLEAN DEFAULT 0, \
     times_rented INT DEFAULT 0, \
     currently_renting TEXT, \
-    email VARCHAR(255) \
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP \
 )');
+
 
 // Create the cars DB if not existing
 db.query('CREATE TABLE IF NOT EXISTS cars ( \
@@ -30,8 +39,9 @@ db.query('CREATE TABLE IF NOT EXISTS cars ( \
     model VARCHAR(255), \
     year INT, \
     color VARCHAR(255), \
-    price DECIMAL, \
-    rented_by TEXT, \
+    price DECIMAL(10,2), \
+    licence_plate VARCHAR(255), \
+    rented_by int, \
     FOREIGN KEY (rented_by) REFERENCES users(id) \
 )');
 
@@ -58,6 +68,7 @@ db.query('CREATE TABLE IF NOT EXISTS reviews ( \
 )');
 
 // db changes
+// db.query('ALTER TABLE cars ADD COLUMN licence_plate VARCHAR(255)');
 
 // makes the connection available for other files (e.g. routes)
 module.exports = db;
