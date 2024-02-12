@@ -10,10 +10,10 @@ var { rentCar } = require('../functions/cars');
 // create the router
 var router = express.Router();
 
-var usersRouter = require('./users');
-var carsRouter = require('./cars');
-var reviewsRouter = require('./reviews');
-var rentallogRouter = require('./rentallog');
+var usersRouter = require('./API/users');
+var carsRouter = require('./API/cars');
+var reviewsRouter = require('./API/reviews');
+var rentallogRouter = require('./API/rentallog');
 
 router.use('/users', usersRouter);
 router.use('/cars', carsRouter);

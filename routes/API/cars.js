@@ -1,9 +1,9 @@
 // require the needed modules
 var express = require('express');
-var db = require('../db');
-var { send_error } = require('../functions/error');
-var { check_token } = require('../functions/middleware');
-var { rentCar } = require('../functions/cars');
+var db = require('../../db');
+var { send_error } = require('../../functions/error');
+var { check_token } = require('../../functions/middleware');
+var { rentCar } = require('../../functions/cars');
 
 // create the router
 var router = express.Router();
