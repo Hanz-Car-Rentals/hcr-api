@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Cars | API documentation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+
+        <meta name="title" content='API documentation'>
+        <meta name="description" content='This is the API documentation for a school project. Cars section'>
+    </head>
+    <body>
+        <a href="/docs/v1">Go back</a>
+        <h1>API documentation</h1>
+        <p>This is the API documentation for a school project.</p>
+
+        <!-- make a Table of contents -->
+        <h2>Table of contents</h2>
+        <ul>
+            <li><a href="#cars">All cars</a></li>
+            <li><a href="#add">Add car</a></li>
+            <li><a href="#remove">Remove a car</a></li>
+            <li><a href="#rent">Rent a car</a></li>
+        </ul>
+
+        <div id="cars"><!-- CARS -->
+            <h2>All cars</h2>
+            <p>Get all cars from the database.</p>
+            <p>method: GET</p>
+            <p>endpoint: /api/v1/cars</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("GET", "http://localhost:55600/api/v1/cars");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send();
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    [{"id":1,"make":"Toyota","model":"Corolla","year":2015,"color":"white","license_plate":"ABC123","rented":0,"renter_id":null}]
+                </code>
+            </pre>
+        </div>
+
+        <div id="add"><!-- ADD CAR -->
+            <h2>Add car</h2>
+            <p>Add a car to the database.</p>
+            <p>method: POST</p>
+            <p>endpoint: /api/v1/cars/add</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "http://localhost:55600/api/v1/cars/add");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send('{"make":"Toyota","model":"Corolla","year":2015,"color":"white","license_plate":"ABC123"}');
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    {"id":1,"make":"Toyota","model":"Corolla","year":2015,"color":"white","license_plate":"ABC123"}
+                </code>
+            </pre>
+        </div>
+
+        <div id="remove"><!-- REMOVE A CAR -->
+            <h2>Remove a car</h2>
+            <p>Remove a car from the database.</p>
+            <p>method: DELETE</p>
+            <p>endpoint: /api/v1/cars/remove</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("DELETE", "http://localhost:55600/api/v1/cars/remove");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send('{"id":1}');
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    {"message: "Car added successfully"}
+                </code>
+            </pre>
+        </div>
+
+        <div id="rent"><!-- RENT A CAR -->
+            <h2>Rent a car</h2>
+            <p>Rent a car from the database.</p>
+            <p>method: PATCH</p>
+            <p>endpoint: /api/v1/cars/rent</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("PATCH", "http://localhost:55600/api/v1/cars/rent");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send('{"id":1,"renter_id":1}');
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    {"message: "Car rented successfully"}
+                </code>
+            </pre>
+        </div>
+    </body>
+</html>

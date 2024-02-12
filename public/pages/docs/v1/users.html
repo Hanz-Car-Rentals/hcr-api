@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Users | API documentation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+
+        <meta name="title" content='API documentation'>
+        <meta name="description" content='This is the API documentation for a school project. Users section'>
+    </head>
+    <body>
+        <a href="/docs/v1">Go back</a>
+        <h1>API documentation</h1>
+        <p>This is the API documentation for a school project.</p>
+
+        <!-- make a Table of contents -->
+        <h2>Table of contents</h2>
+        <ul>
+            <li><a href="#users">All users</a></li>
+            <li><a href="#add">Add user</a></li>
+        </ul>
+
+        <div id="users"><!-- USERS -->
+            <h2>All users</h2>
+            <p>Get all users from the database.</p>
+            <p>method: GET</p>
+            <p>endpoint: /api/v1/users</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("GET", "http://localhost:55600/api/v1/users");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send();
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    [{"id":1,"email":"test@example.com","email_verified":0,"first_name":"John","last_name":"Doe","admin",0,"times_rented":8,"currently_renting":2}]
+                </code>
+            </pre>
+        </div>
+
+        <div id="add"><!-- ADD USER -->
+            <h2>Add user</h2>
+            <p>Add a user to the database.</p>
+            <p>method: POST</p>
+            <p>endpoint: /api/v1/users/add</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "http://localhost:55600/api/v1/users/add");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send('{"fname":"John","lname":"Doe","email":"test@domain.com","password":"passwordHere"}');
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    {"message":"User created successfully"}
+                </code>
+            </pre>
+        </div>
+    </body>
+</html>

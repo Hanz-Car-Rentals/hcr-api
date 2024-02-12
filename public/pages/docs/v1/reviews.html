@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Reviews | API documentation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+
+        <meta name="title" content='API documentation'>
+        <meta name="description" content='This is the API documentation for a school project. Reviews section'>
+    </head>
+    <body>
+        <a href="/docs/v1">Go back</a>
+        <h1>API documentation</h1>
+        <p>This is the API documentation for a school project.</p>
+
+        <!-- make a Table of contents -->
+        <h2>Table of contents</h2>
+        <ul>
+            <li><a href="#cars">All reviews</a></li>
+            <li><a href="#add">Add review</a></li>
+            <li><a href="#remove">Remove a review</a></li>
+        </ul>
+
+
+        <div id="cars"><!-- REVIEWS -->
+            <h2>All reviews</h2>
+            <p>Get all reviews from the database.</p>
+            <p>method: GET</p>
+            <p>endpoint: /api/v1/reviews</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("GET", "http://localhost:55600/api/v1/reviews");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send();
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    [{"id":1,"car_id":1,"user_id":1,"rating":5,"review":"Great car!","date":"2020-12-01"}]
+                </code>
+            </pre>
+        </div>
+
+        <div id="add"><!-- ADD REVIEW -->
+            <h2>Add review</h2>
+            <p>Add a review to the database.</p>
+            <p>method: POST</p>
+            <p>endpoint: /api/v1/reviews/add</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("POST", "http://localhost:55600/api/v1/reviews/add");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send('{"car_id":1,"user_id":1,"rating":5,"review":"Great car!"}');
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    {"message":"Review added."}
+                </code>
+            </pre>
+        </div>
+
+        <div id="remove"><!-- REMOVE REVIEW -->
+            <h2>Remove a review</h2>
+            <p>Remove a review from the database.</p>
+            <p>method: DELETE</p>
+            <p>endpoint: /api/v1/reviews/remove</p>
+            <p>example:</p>
+            <pre>
+                <code>
+                    function sendRequest() {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open("DELETE", "http://localhost:55600/api/v1/reviews/remove");
+                        xhr.setRequestHeader("Content-Type", "application/json");
+                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
+                            } else {
+                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
+                            }
+                            }
+                        };
+                        xhr.send('{"id":1}');
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    {"message":"Review removed."}
+                </code>
+            </pre>
+        </div>
+        
+    </body>
+</html>
