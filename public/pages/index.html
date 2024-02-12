@@ -8,14 +8,14 @@
     <body>
         <h2>API Test Form</h2>
         <form id="apiForm">
-            <label for="apiURL">API Endpoint:</label><br>
-            <input type="text" id="apiURL" name="apiURL" value="" placeholder="/api/v1/users/add"><br>
+            <label for="apiURL">API URL:</label><br>
+            <input type="text" id="apiURL" name="apiURL" value="https://api.hcr.yoursister.zip/api/v1/" placeholder="https://api.hcr.yoursister.zip/api/v1/users/add" style="width:550px"><br>
             <label for="method">method:</label><br>
-            <input type="text" id="method" name="method" value="" placeholder="post, get, patch, put, delete"><br>
+            <input type="text" id="method" name="method" value="" placeholder="post, get, patch, put, delete" style="width:550px"><br>
             <label for="apiKey">API Key:</label><br>
-            <input type="text" id="apiKey" name="apiKey" value=""><br>
+            <input type="text" id="apiKey" name="apiKey" value="" style="width:550px"><br>
             <label for="requestData">Request Data (in JSON format):</label><br>
-            <textarea id="requestData" name="requestData" rows="4" cols="50"></textarea><br>
+            <textarea id="requestData" name="requestData" rows="4" cols="50" style="width:550px; height: 500px;"></textarea><br>
             <button type="button" onclick="sendRequest()">Send Request</button>
         </form>
         <h2>response:</h2>
@@ -29,7 +29,7 @@
             var requestData = document.getElementById("requestData").value;
 
             var xhr = new XMLHttpRequest();
-            xhr.open(method.toUpperCase(), "https://api.hcr.yoursister.zip"+apiURL);
+            xhr.open(method.toUpperCase(), apiURL);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.setRequestHeader("Authorization", "Bearer "+apiKey);
             xhr.onreadystatechange = function () {

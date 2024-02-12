@@ -2,7 +2,7 @@
 var express = require('express');
 var db = require('../../db');
 var crypto = require('crypto');
-var { newUser } = require('../../functions/email');
+var { newUser, forgot_password } = require('../../functions/email');
 var { send_error } = require('../../functions/error');
 var { check_token } = require('../../functions/middleware');
 
@@ -63,7 +63,10 @@ router.post('/login', function (req, res) {
             } else {
                 let user = results[0];
                 crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
-                    if (err) { return next(err); }
+                    if (err) { 
+                        send_error(err, 'Error login');
+                        throw err;
+                    }
                     if (hashedPassword.equals(user.password)) {
                         if (user.email_verified) {
                             let token = crypto.randomBytes(16).toString('hex');
@@ -76,7 +79,7 @@ router.post('/login', function (req, res) {
                                 }
                             });
                         } else {
-                            res.send({'status':401, 'message': 'Email not verified'});
+                            res.send({'status':403, 'message': 'Email not verified'});
                         }
                     } else {
                         res.send({'status':401, 'message': 'Invalid email or password'});
@@ -89,13 +92,33 @@ router.post('/login', function (req, res) {
 
 router.get('/verify/:token', function(req, res, next){
     db.query('SELECT * FROM users WHERE email_verify_token = ?', [req.params.token], function(err, rows) {
-        if(err) throw err;
-        if(rows.length < 1) return res.redirect('/?message=Invalid token&color=danger');
+        if(err) {
+            send_error(err, 'email_verify_token find');
+            throw err;
+        };
+        if(rows.length < 1) return res.send({'status':"400", "message":"Invalid Token"});
         let dbuser = rows[0];
         db.query('UPDATE users SET email_verified = true, email_verify_token = NULL WHERE id = ?', [dbuser.id], function(err, rows) {
-            if(err) throw err;
-            return res.redirect('/?message=Email verified successfully&color=success');
+            if(err) {
+                send_error(err, 'email_verify_token update');
+                throw err;
+            };
+            return res.send({'status':200, 'message':"Email verified successfully"});
         });
+    });
+});
+
+router.post('/reset_password', async function(req, res, next) {
+    const email = req.body.email;
+    db.query('SELECT * FROM users WHERE email = ?', [email], function(err, rows) {
+        if(err) {
+            send_error(err, 'Password reset e-mail find');
+            throw err;
+        };
+        if(rows.length < 1) return res.redirect({'status':401, "message":"Invalid E-mail"});
+        let dbuser = rows[0];
+        forgot_password(email, dbuser.id, req.headers.host);
+        return res.redirect({'status':200, "message":"Password reset e-mail sent"});
     });
 });
 
