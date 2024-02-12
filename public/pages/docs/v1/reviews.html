@@ -27,13 +27,13 @@
             <p>Get all reviews from the database.</p>
             <p>method: GET</p>
             <p>endpoint: /api/v1/reviews</p>
-            <p>example:</p>
+            <p>JSON body the API expects:</p>
             <pre>
                 <code>
                     {}
                 </code>
             </pre>
-            <h3>Response:</h3>
+            <h3>Example response:</h3>
             <pre id="response">
                 <code>
                     [
@@ -63,7 +63,7 @@
             <p>Add a review to the database.</p>
             <p>method: POST</p>
             <p>endpoint: /api/v1/reviews/add</p>
-            <p>example:</p>
+            <p>JSON body the API expects:</p>
             <pre>
                 <code>
                     {
@@ -74,10 +74,13 @@
                     }
                 </code>
             </pre>
-            <h3>Response:</h3>
+            <h3>Example response:</h3>
             <pre id="response">
                 <code>
-                    {"message":"Review added."}
+                    {
+                        "status":200,
+                        "message": "Review added."
+                    }
                 </code>
             </pre>
         </div>
@@ -87,7 +90,7 @@
             <p>Remove a review from the database.</p>
             <p>method: DELETE</p>
             <p>endpoint: /api/v1/reviews/remove</p>
-            <p>example:</p>
+            <p>JSON body the API expects:</p>
             <pre>
                 <code>
                     {
@@ -95,10 +98,13 @@
                     }
                 </code>
             </pre>
-            <h3>Response:</h3>
+            <h3>Example response:</h3>
             <pre id="response">
                 <code>
-                    {"message":"Review removed."}
+                    {
+                        "status": 200,
+                        "message": "Review removed."
+                    }
                 </code>
             </pre>
         </div>
