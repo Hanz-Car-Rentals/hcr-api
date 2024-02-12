@@ -6,8 +6,10 @@
         "password": ""
     },
     "server": {
-        "port": 55600
+        "port": 3000
     },
+    "api_token": "",
+    "webhook_url": "",
     "email_server": {
         "host": "",
         "port": 465,

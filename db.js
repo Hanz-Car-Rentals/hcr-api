@@ -33,13 +33,13 @@ db.query('CREATE TABLE IF NOT EXISTS users ( \
 
 
 // Create the cars DB if not existing
-db.query('CREATE TABLE IF NOT EXISTS cars ( \
+db.query("CREATE TABLE IF NOT EXISTS cars ( \
     id INT AUTO_INCREMENT PRIMARY KEY, \
     brand VARCHAR(255), \
     model VARCHAR(255), \
     seats INT, \
     space VARCHAR(255), \
-    transmission BOLEAN NOT NULL, \
+    transmission BOOLEAN, \
     fuel VARCHAR(255) NOT NULL, \
     doors INT NOT NULL, \
     towing_weight INT NOT NULL, \
@@ -50,9 +50,9 @@ db.query('CREATE TABLE IF NOT EXISTS cars ( \
     color VARCHAR(255), \
     licence_plate VARCHAR(255), \
     price DECIMAL(10,2), \
-    rented_by int, \
+    rented_by INT, \
     FOREIGN KEY (rented_by) REFERENCES users(id) \
-)');
+)")
 
 // Create the rentallog DB if not existing
 db.query('CREATE TABLE IF NOT EXISTS rentallog ( \
