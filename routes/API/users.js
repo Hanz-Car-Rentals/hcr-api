@@ -10,7 +10,7 @@ var { check_token } = require('../../functions/middleware');
 var router = express.Router();
 
 // User routes
-router.get('/users', check_token, function(req, res, next){
+router.get('/', check_token, function(req, res, next){
   db.query('SELECT id,email,email_verified,first_name,last_name,admin,times_rented,currently_renting FROM users', function (error, results, fields) {
       if (error) {
           send_error(error, "Error fetching users");
@@ -21,7 +21,7 @@ router.get('/users', check_token, function(req, res, next){
   });
 });
 
-router.post('/users/add', check_token, function(req, res, next){
+router.post('/add', check_token, function(req, res, next){
   let first_name = req.body.fname;
   let last_name = req.body.lname;
   let email = req.body.email;
@@ -47,6 +47,18 @@ router.post('/users/add', check_token, function(req, res, next){
           res.status(400).send({'message': 'Invalid request'});
       }
   });
+});
+
+router.get('/verify/:token', function(req, res, next){
+    db.query('SELECT * FROM users WHERE email_verify_token = ?', [req.params.token], function(err, rows) {
+        if(err) throw err;
+        if(rows.length < 1) return res.redirect('/?message=Invalid token&color=danger');
+        let dbuser = rows[0];
+        db.query('UPDATE users SET email_verified = true, email_verify_token = NULL WHERE id = ?', [dbuser.id], function(err, rows) {
+            if(err) throw err;
+            return res.redirect('/?message=Email verified successfully&color=success');
+        });
+    });
 });
 
 module.exports = router;

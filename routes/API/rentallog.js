@@ -8,7 +8,7 @@ var { check_token } = require('../../functions/middleware');
 var router = express.Router();
 
 // Rental log routes
-router.get('/rentallog', check_token, function(req, res, next){
+router.get('/', check_token, function(req, res, next){
   db.query('SELECT * FROM rentallog', function (error, results, fields) {
     if (error) {
       send_error(error, "Error fetching rental log");

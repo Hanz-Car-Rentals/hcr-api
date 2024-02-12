@@ -7,7 +7,7 @@ var { check_token } = require('../../functions/middleware');
 // create the router
 var router = express.Router();
 
-router.get('/reviews', check_token, function(req, res, next){
+router.get('/', check_token, function(req, res, next){
   db.query('SELECT * FROM reviews', function (error, results, fields) {
     if (error) {
       send_error(error, "Error fetching reviews");
@@ -18,7 +18,7 @@ router.get('/reviews', check_token, function(req, res, next){
   });
 });
 
-router.post('/reviews/add', check_token, function(req,res,next){
+router.post('/add', check_token, function(req,res,next){
   let carId = req.body.car_id;
   let userId = req.body.user_id;
   let review = req.body.review;
@@ -39,7 +39,7 @@ router.post('/reviews/add', check_token, function(req,res,next){
   };
 });
 
-router.delete('/reviews/remove/:id', check_token, function(req, res, next){
+router.delete('/remove/:id', check_token, function(req, res, next){
   let id = req.params.id;
 
   if (id) {

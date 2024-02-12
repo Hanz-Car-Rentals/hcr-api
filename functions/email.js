@@ -37,7 +37,7 @@ async function newUser(email, id, host){
         };
 
         let subject = 'Account Verification';
-        let text = 'THIS DOES NOT WORK YET\n\n\nPlease click the following link to verify your account: https://' + host + '/api/v1/verify/' + token;
+        let text = 'THIS DOES NOT WORK YET\n\n\nPlease click the following link to verify your account: https://' + host + '/api/v1/users/verify/' + token;
     
         send_mail(email, text, subject);
     });
@@ -52,7 +52,7 @@ async function forgot_password(email, id, host){
         };
 
         let subject = 'Reset Password';
-        let text = 'Please click the following link to reset your password: https://' + host + '/api/v1/reset_password/' + token;
+        let text = 'Please click the following link to reset your password: https://' + host + '/api/v1/users/reset_password/' + token;
      
         send_mail(email, text, subject);
     });

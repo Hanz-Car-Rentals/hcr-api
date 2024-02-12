@@ -10,7 +10,7 @@ var router = express.Router();
 
 // Car routes
 
-router.get('/cars', check_token, function(req, res, next){
+router.get('/', check_token, function(req, res, next){
   db.query('SELECT * FROM cars', function (error, results, fields) {
     if (error) {
       send_error(error, "Error fetching cars");
@@ -21,7 +21,7 @@ router.get('/cars', check_token, function(req, res, next){
   });
 });
 
-router.post('/cars/add', check_token, function(req, res, next){
+router.post('/add', check_token, function(req, res, next){
   let brand = req.body.brand;
   let model = req.body.model;
   let year = req.body.year;
@@ -43,7 +43,7 @@ router.post('/cars/add', check_token, function(req, res, next){
   };
 });
 
-router.delete('/cars/remove', check_token, function(req, res, next){
+router.delete('/remove', check_token, function(req, res, next){
   let id = req.body.id;
 
   if (id) {
@@ -61,7 +61,7 @@ router.delete('/cars/remove', check_token, function(req, res, next){
   };
 });
 
-router.put('/cars/rent/:id', check_token, function(req, res, next){
+router.put('/rent/:id', check_token, function(req, res, next){
   let carId = req.params.id;
   let userId = req.body.user_id;
   let fromDate = req.body.from_date;

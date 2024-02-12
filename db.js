@@ -78,15 +78,15 @@ db.query('CREATE TABLE IF NOT EXISTS reviews ( \
 
 // db changes
 // db.query('ALTER TABLE cars ADD COLUMN licence_plate VARCHAR(255)');
-db.query('ALTER TABLE cars ADD COLUMN seats INT');
-db.query('ALTER TABLE cars ADD COLUMN space VARCHAR(255)');
-db.query('ALTER TABLE cars ADD COLUMN transmission BOOLEAN');
-db.query('ALTER TABLE cars ADD COLUMN fuel VARCHAR(255)');
-db.query('ALTER TABLE cars ADD COLUMN doors INT');
-db.query('ALTER TABLE cars ADD COLUMN towing_weight INT');
-db.query('ALTER TABLE cars ADD COLUMN maximum_gross_weight INT');
-db.query('ALTER TABLE cars ADD COLUMN location VARCHAR(255)');
-db.query('ALTER TABLE cars ADD COLUMN picture_url TEXT');
+// db.query('ALTER TABLE cars ADD COLUMN seats INT');
+// db.query('ALTER TABLE cars ADD COLUMN space VARCHAR(255)');
+// db.query('ALTER TABLE cars ADD COLUMN transmission BOOLEAN');
+// db.query('ALTER TABLE cars ADD COLUMN fuel VARCHAR(255)');
+// db.query('ALTER TABLE cars ADD COLUMN doors INT');
+// db.query('ALTER TABLE cars ADD COLUMN towing_weight INT');
+// db.query('ALTER TABLE cars ADD COLUMN maximum_gross_weight INT');
+// db.query('ALTER TABLE cars ADD COLUMN location VARCHAR(255)');
+// db.query('ALTER TABLE cars ADD COLUMN picture_url TEXT');
 
 // makes the connection available for other files (e.g. routes)
 module.exports = db;
