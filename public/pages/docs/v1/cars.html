@@ -20,6 +20,8 @@
             <li><a href="#add">Add car</a></li>
             <li><a href="#remove">Remove a car</a></li>
             <li><a href="#rent">Rent a car</a></li>
+            <li><a href="#car-by-id">Get a car by ID</a></li>
+            <li><a href="#update">Update a car</a></li>
         </ul>
 
         <div id="cars"><!-- CARS -->
@@ -27,32 +29,37 @@
             <p>Get all cars from the database.</p>
             <p>method: GET</p>
             <p>endpoint: /api/v1/cars</p>
-            <p>example:</p>
+            <p>JSON body the API expects:</p>
             <pre>
                 <code>
-                    function sendRequest() {
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("GET", "http://localhost:55600/api/v1/cars");
-                        xhr.setRequestHeader("Content-Type", "application/json");
-                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                                var response = JSON.parse(xhr.responseText);
-                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
-                            } else {
-                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
-                            }
-                            }
-                        };
-                        xhr.send();
-                    }
+                    {}
                 </code>
             </pre>
-            <h3>Response:</h3>
+            <h3>Example response:</h3>
             <pre id="response">
                 <code>
-                    [{"id":1,"make":"Toyota","model":"Corolla","year":2015,"color":"white","license_plate":"ABC123","rented":0,"renter_id":null}]
+                    [
+                        {
+                            "id": 1,
+                            "make": "Lada",
+                            "model": "1200",
+                            "year": 1973,
+                            "color": "Yellow",
+                            "license_plate": "ABC123", 
+                            "rented": 1,
+                            "renter_id": 2
+                        },
+                        {
+                            "id": 2,
+                            "make": "Lada",
+                            "model": "2102",
+                            "year": 1988,
+                            "color": "Green",
+                            "license_plate": "ABC124", 
+                            "rented": 0,
+                            "renter_id": null
+                        }
+                    ]
                 </code>
             </pre>
         </div>
@@ -62,32 +69,25 @@
             <p>Add a car to the database.</p>
             <p>method: POST</p>
             <p>endpoint: /api/v1/cars/add</p>
-            <p>example:</p>
+            <p>JSON body the API expects:</p>
             <pre>
                 <code>
-                    function sendRequest() {
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("POST", "http://localhost:55600/api/v1/cars/add");
-                        xhr.setRequestHeader("Content-Type", "application/json");
-                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                                var response = JSON.parse(xhr.responseText);
-                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
-                            } else {
-                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
-                            }
-                            }
-                        };
-                        xhr.send('{"make":"Toyota","model":"Corolla","year":2015,"color":"white","license_plate":"ABC123"}');
+                    {
+                        "make":"Toyota",
+                        "model": "Corolla",
+                        "year": 2015,
+                        "color": "white",
+                        "license_plate": "ABC123"
                     }
                 </code>
             </pre>
-            <h3>Response:</h3>
+            <h3>Example response:</h3>
             <pre id="response">
                 <code>
-                    {"id":1,"make":"Toyota","model":"Corolla","year":2015,"color":"white","license_plate":"ABC123"}
+                    {
+                        "status": 200,
+                        "message: "Car added successfully"    
+                    }
                 </code>
             </pre>
         </div>
@@ -97,32 +97,21 @@
             <p>Remove a car from the database.</p>
             <p>method: DELETE</p>
             <p>endpoint: /api/v1/cars/remove</p>
-            <p>example:</p>
+            <p>JSON body the API expects:</p>
             <pre>
                 <code>
-                    function sendRequest() {
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("DELETE", "http://localhost:55600/api/v1/cars/remove");
-                        xhr.setRequestHeader("Content-Type", "application/json");
-                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                                var response = JSON.parse(xhr.responseText);
-                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
-                            } else {
-                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
-                            }
-                            }
-                        };
-                        xhr.send('{"id":1}');
+                    {
+                        "id": 1
                     }
                 </code>
             </pre>
-            <h3>Response:</h3>
+            <h3>Example response:</h3>
             <pre id="response">
                 <code>
-                    {"message: "Car added successfully"}
+                    {
+                        "status": 200,
+                        "message: "Car added successfully"
+                    }
                 </code>
             </pre>
         </div>
@@ -131,33 +120,52 @@
             <h2>Rent a car</h2>
             <p>Rent a car from the database.</p>
             <p>method: PATCH</p>
-            <p>endpoint: /api/v1/cars/rent</p>
-            <p>example:</p>
+            <p>endpoint: /api/v1/cars/rent/CARID</p>
+            <p>JSON body the API expects:</p>
             <pre>
                 <code>
-                    function sendRequest() {
-                        var xhr = new XMLHttpRequest();
-                        xhr.open("PATCH", "http://localhost:55600/api/v1/cars/rent");
-                        xhr.setRequestHeader("Content-Type", "application/json");
-                        xhr.setRequestHeader("Authorization", "Bearer APIKEY_HERE");
-                        xhr.onreadystatechange = function () {
-                            if (xhr.readyState === 4) {
-                            if (xhr.status === 200) {
-                                var response = JSON.parse(xhr.responseText);
-                                document.getElementById("response").innerHTML = JSON.stringify(response, null, 2);
-                            } else {
-                                document.getElementById("response").innerHTML = "Error: " + xhr.status;
-                            }
-                            }
-                        };
-                        xhr.send('{"id":1,"renter_id":1}');
+                    {
+                        "renter_id": 1,
+                        from_date: "2015-01-01",
+                        to_date: "2015-01-02"
                     }
                 </code>
             </pre>
-            <h3>Response:</h3>
+            <h3>Example response:</h3>
             <pre id="response">
                 <code>
-                    {"message: "Car rented successfully"}
+                    {
+                        "status": 200,
+                        "message: "Car rented successfully"
+                    }
+                </code>
+            </pre>
+        </div>
+
+        <div id="car-by-id"><!-- GET A CAR BY ID -->
+            <h2>Get a car by ID</h2>
+            <p>Get a car from the database by its ID.</p>
+            <p>method: GET</p>
+            <p>endpoint: /api/v1/cars/id</p>
+            <p>JSON body the API expects:</p>
+            <pre>
+                <code>
+                    {}
+                </code>
+            </pre>
+            <h3>Example response:</h3>
+            <pre id="response">
+                <code>
+                    {
+                        "id": 1,
+                        "make": "Toyota",
+                        "model": "Corolla",
+                        "year": 2015,
+                        "color": "white",
+                        "license_plate":"ABC123",
+                        "rented": 0,
+                        "renter_id": null
+                    }
                 </code>
             </pre>
         </div>
