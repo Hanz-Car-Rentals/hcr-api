@@ -37,10 +37,19 @@ db.query('CREATE TABLE IF NOT EXISTS cars ( \
     id INT AUTO_INCREMENT PRIMARY KEY, \
     brand VARCHAR(255), \
     model VARCHAR(255), \
+    seats INT, \
+    space VARCHAR(255), \
+    transmission BOLEAN NOT NULL, \
+    fuel VARCHAR(255) NOT NULL, \
+    doors INT NOT NULL, \
+    towing_weight INT NOT NULL, \
+    maximum_gross_weight INT, \
+    location VARCHAR(255) NOT NULL, \
+    picture_url TEXT NOT NULL, \
     year INT, \
     color VARCHAR(255), \
-    price DECIMAL(10,2), \
     licence_plate VARCHAR(255), \
+    price DECIMAL(10,2), \
     rented_by int, \
     FOREIGN KEY (rented_by) REFERENCES users(id) \
 )');
@@ -69,6 +78,15 @@ db.query('CREATE TABLE IF NOT EXISTS reviews ( \
 
 // db changes
 // db.query('ALTER TABLE cars ADD COLUMN licence_plate VARCHAR(255)');
+db.query('ALTER TABLE cars ADD COLUMN seats INT');
+db.query('ALTER TABLE cars ADD COLUMN space VARCHAR(255)');
+db.query('ALTER TABLE cars ADD COLUMN transmission BOOLEAN');
+db.query('ALTER TABLE cars ADD COLUMN fuel VARCHAR(255)');
+db.query('ALTER TABLE cars ADD COLUMN doors INT');
+db.query('ALTER TABLE cars ADD COLUMN towing_weight INT');
+db.query('ALTER TABLE cars ADD COLUMN maximum_gross_weight INT');
+db.query('ALTER TABLE cars ADD COLUMN location VARCHAR(255)');
+db.query('ALTER TABLE cars ADD COLUMN picture_url TEXT');
 
 // makes the connection available for other files (e.g. routes)
 module.exports = db;
