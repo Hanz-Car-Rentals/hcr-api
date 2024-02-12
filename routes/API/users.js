@@ -21,6 +21,17 @@ router.get('/', check_token, function(req, res, next){
   });
 });
 
+router.get('/user/:id', check_token, function(req, res, next){
+    db.query('SELECT id,email,email_verified,first_name,last_name,admin,times_rented,currently_renting FROM users WHERE id = ?', [req.params.id], function (error, results, fields) {
+        if (error) {
+            send_error(error, "Error fetching user");
+            res.send({'status':500, 'message': 'Error fetching user'});
+        } else {
+            res.status(200).send(results);
+        }
+    });
+});
+
 router.post('/add', check_token, function(req, res, next){
   let first_name = req.body.fname;
   let last_name = req.body.lname;
@@ -52,6 +63,28 @@ router.post('/add', check_token, function(req, res, next){
           res.send({'status':400, 'message': 'Invalid request'});
       }
   });
+});
+
+router.post('/update/:id', check_token, function(req, res, next){
+    let id = req.params.id;
+    let first_name = req.body.fname;
+    let last_name = req.body.lname;
+    let email = req.body.email;
+    let admin = req.body.admin;
+
+    if (first_name && last_name && email && admin) {
+        db.query('UPDATE users SET first_name = ?, last_name = ?, email = ?, admin = ? WHERE id = ?', [first_name, last_name, email, admin, id], function (error, results, fields) {
+            if (error) {
+                send_error(error, "Error updating user");
+                res.send({'status':500, 'message': 'Error updating user'});
+            } else {
+                res.send({'status':200, 'message': 'User updated successfully'});
+            }
+        });
+    }
+    else {
+        res.send({'status':400, 'message': 'Invalid request'});
+    }
 });
 
 router.post('/login', function (req, res) {

@@ -80,4 +80,45 @@ router.put('/rent/:id', check_token, function(req, res, next){
   };
 });
 
+router.get('/car/:id', check_token, function(req, res, next){
+  let id = req.params.id;
+
+  if (id) {
+    db.query('SELECT * FROM cars WHERE id = ?', [id], function (error, results, fields) {
+      if (error) {
+        send_error(error, "Error fetching car");
+        res.status(500).send({'message': 'Error fetching car'});
+      } else {
+        res.status(200).send(results);
+      };
+    });
+  }
+  else {
+    res.status(400).send({'message': 'Invalid request'});
+  };
+});
+
+router.post('/update/:id', check_token, function(req, res, next){
+  let id = req.params.id;
+  let color = req.body.color;
+  let price = req.body.price;
+  let licence_plate = req.body.licence_plate;
+  let location = req.body.location;
+  let pictrue_url = req.body.pictrue_url;
+
+  if (id && licence_plate && location && pictrue_url && color && price) {
+    db.query('UPDATE cars SET color = ?, price = ?, licence_plate = ?, location = ?, picture_url = ? WHERE id = ?', [color, price, licence_plate, location, pictrue_url, id], function (error, results, fields) {
+      if (error) {
+        send_error(error, "Error updating car");
+        res.send({"status":500, 'message': 'Error updating car'});
+      } else {
+        res.send({"status":200, 'message': 'Car updated successfully'});
+      };
+    });
+  }
+  else {
+    res.send({'status':400,'message': 'Invalid request'});
+  };
+});
+
 module.exports = router;
