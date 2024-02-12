@@ -34,11 +34,16 @@ router.post('/add', check_token, function(req, res, next){
       if (first_name && last_name && email && password) {
           db.query('INSERT INTO users (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)', [first_name, last_name, email, hashedPassword, salt], function (error, results, fields) {
           if (error) {
-              send_error(error, "Error creating new user");
-              res.send({'status':500, 'message': 'Error creating user'});
+            if(error.code === 'ER_DUP_ENTRY') {
+                res.send({'status':403, 'message': 'Email already in use'});
+                return;
+            } else {
+                send_error(error, "Error creating new user");
+                res.send({'status':500, 'message': 'Error creating user'});
+            }
           } else {
               if (err) { return next(err); }
-              newUser(email, results.insertId, req.headers.host);
+              newUser(first_name, email, results.insertId, req.headers.host);
               res.send({'status':200, 'message': 'User created successfully'});
           }
           });
@@ -108,17 +113,17 @@ router.get('/verify/:token', function(req, res, next){
     });
 });
 
-router.post('/reset_password', async function(req, res, next) {
+router.post('/reset_password', check_token, async function(req, res, next) {
     const email = req.body.email;
     db.query('SELECT * FROM users WHERE email = ?', [email], function(err, rows) {
         if(err) {
             send_error(err, 'Password reset e-mail find');
             throw err;
         };
-        if(rows.length < 1) return res.redirect({'status':401, "message":"Invalid E-mail"});
+        if(rows.length < 1) return res.send({'status':401, "message":"Invalid E-mail"});
         let dbuser = rows[0];
         forgot_password(email, dbuser.id, req.headers.host);
-        return res.redirect({'status':200, "message":"Password reset e-mail sent"});
+        return res.send({'status':200, "message":"Password reset e-mail sent"});
     });
 });
 

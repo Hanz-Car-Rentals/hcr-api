@@ -19,7 +19,7 @@ async function send_mail(email, text, subject){
         from: config.email_server.from,
         to: email,
         subject: subject,
-        text: text
+        text: `THIS IS A SCHOOL PROJECT! THIS IS NOT REAL\n\n\n${text}\n\nThank you for using Hanz Car Rentals.\n\nPS: This is an automated message. & THIS IS A SCHOOL PROJECT! THIS IS NOT REAL`
     }).catch((err) => {
         if(err) {
             send_error(err, 'Send E-mail');
@@ -28,7 +28,7 @@ async function send_mail(email, text, subject){
     });
 };
 
-async function newUser(email, id, host){
+async function newUser(fname, email, id, host){
     var token = crypto.randomBytes(16).toString('hex');
     db.query('UPDATE users SET email_verify_token = ? WHERE id = ?', [token, id], function (err, rows) {
         if(err) {
@@ -37,7 +37,7 @@ async function newUser(email, id, host){
         };
 
         let subject = 'Account Verification';
-        let text = 'THIS DOES NOT WORK YET\n\n\nPlease click the following link to verify your account: https://' + host + '/api/v1/users/verify/' + token;
+        let text = 'Dear '+ fname +'\nYour e-mail has been used for an account at Hanz Car Rentals.\n\nPlease click the following link to verify your account: https://' + host + '/api/v1/users/verify/' + token +'\n\nIf you did not create an account, please send an email to hanz.car.rentals@wolfsoft.solutions so we can remove the account assosiated with this account.';
     
         send_mail(email, text, subject);
     });
