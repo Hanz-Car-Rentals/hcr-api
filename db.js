@@ -18,6 +18,7 @@ db.query('CREATE TABLE IF NOT EXISTS users ( \
     email TEXT UNIQUE NOT NULL, \
     email_verified BOOLEAN DEFAULT false, \
     email_verify_token TEXT, \
+    token TEXT UNIQUE, \
     first_name VARCHAR(255), \
     last_name VARCHAR(255), \
     password BLOB NOT NULL, \
@@ -87,6 +88,7 @@ db.query('CREATE TABLE IF NOT EXISTS reviews ( \
 // db.query('ALTER TABLE cars ADD COLUMN maximum_gross_weight INT');
 // db.query('ALTER TABLE cars ADD COLUMN location VARCHAR(255)');
 // db.query('ALTER TABLE cars ADD COLUMN picture_url TEXT');
+// db.query('ALTER TABLE users ADD COLUMN token TEXT UNIQUE');
 
 // makes the connection available for other files (e.g. routes)
 module.exports = db;

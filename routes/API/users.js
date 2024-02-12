@@ -14,7 +14,7 @@ router.get('/', check_token, function(req, res, next){
   db.query('SELECT id,email,email_verified,first_name,last_name,admin,times_rented,currently_renting FROM users', function (error, results, fields) {
       if (error) {
           send_error(error, "Error fetching users");
-          res.status(500).send({'message': 'Error fetching users'});
+          res.send({'status':500, 'message': 'Error fetching users'});
       } else {
           res.status(200).send(results);
       }
@@ -35,18 +35,56 @@ router.post('/add', check_token, function(req, res, next){
           db.query('INSERT INTO users (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)', [first_name, last_name, email, hashedPassword, salt], function (error, results, fields) {
           if (error) {
               send_error(error, "Error creating new user");
-              res.status(500).send({'message': 'Error creating user'});
+              res.send({'status':500, 'message': 'Error creating user'});
           } else {
               if (err) { return next(err); }
               newUser(email, results.insertId, req.headers.host);
-              res.status(200).send({'message': 'User created successfully'});
+              res.send({'status':200, 'message': 'User created successfully'});
           }
           });
       }
       else {
-          res.status(400).send({'message': 'Invalid request'});
+          res.send({'status':400, 'message': 'Invalid request'});
       }
   });
+});
+
+router.post('/login', function (req, res) {
+    let email = req.body.email;
+    let password = req.body.password;
+    
+    db.query('SELECT * FROM users WHERE email = ?', [email], function (error, results, fields) {
+        if (error) {
+            send_error(error, "Error logging in");
+            res.send({'status':500, 'message': 'Error logging in'});
+        } else {
+            if (results.length < 1) {
+                res.send({'status':401, 'message': 'Invalid email or password'});
+            } else {
+                let user = results[0];
+                crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
+                    if (err) { return next(err); }
+                    if (hashedPassword.equals(user.password)) {
+                        if (user.email_verified) {
+                            let token = crypto.randomBytes(16).toString('hex');
+                            db.query('UPDATE users SET token = ? WHERE id = ?', [token, user.id], function (error, results, fields) {
+                                if (error) {
+                                    send_error(error, "Error logging in");
+                                    res.send({'status':500, 'message': 'Error logging in'});
+                                } else {
+                                    res.send({'status':200,'message': 'Logged in successfully', 'token': token, 'admin': user.admin});
+                                }
+                            });
+                        } else {
+                            res.send({'status':401, 'message': 'Email not verified'});
+                        }
+                    } else {
+                        res.send({'status':401, 'message': 'Invalid email or password'});
+                    }
+                });
+            }
+        }
+    });
 });
 
 router.get('/verify/:token', function(req, res, next){
