@@ -92,8 +92,8 @@ process.stdin.on('data', function (text) {
     console.log('Exiting...');
     process.exit();
   } else if (text === 'help') {
-    console.log('Commands: \nexit - exit the application\nhelp - show this help\nopen - open the localhost/phpmyadmin and the current website\n');
-  } else if(text == 'o'|| text == 'open'){
+    console.log('Commands: \nexit - exit the application\nhelp - show this help\n');
+  } else if(text == 'o'){
     var opn = require('opn');
     opn('http://localhost:'+port);
     setTimeout(function(){

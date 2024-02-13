@@ -4,12 +4,10 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var crypto = require('crypto');
-var { send_error } = require('./functions/error');
 
 // require the routers
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
-var docsRouter = require('./routes/docs.js');
 
 
 // whipe deleted users daily
@@ -30,8 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // use the routers
 app.use('/', indexRouter);
-app.use('/api/v1', apiRouter);
-app.use('/docs/v1', docsRouter);
+app.use('/api', apiRouter);
 
 app.post('/test', function(req, res) {
     console.log(req.body);
@@ -39,23 +36,20 @@ app.post('/test', function(req, res) {
 });
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    next(createError(404));
-});
+// // catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
-// error handler
-app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
+// // error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
 
-    // render the error page
-    res.status(err.status || 500);
-    if(err.status == 404) {
-        return res.send("404 Not Found");
-    }  else {
-        send_error(err, "webpage/api request");
-    }
-});
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error', { error: err });
+//   console.log(err);
+// });
 
 module.exports = app;
