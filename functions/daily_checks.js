@@ -1,5 +1,5 @@
 let cron = require('cron');
-let db = require('../../db');
+let db = require('../db');
 
 
 async function start_daily_jobs(){
@@ -7,8 +7,8 @@ async function start_daily_jobs(){
     //     daily_check_01();
     // });
     // job.start();
-}
+};
 
 module.exports = {
     start_daily_jobs
-}
+};
