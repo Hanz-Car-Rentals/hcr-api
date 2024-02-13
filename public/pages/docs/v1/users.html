@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Users | API documentation</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+
+        <meta name="title" content='API documentation'>
+        <meta name="description" content='This is the API documentation for a school project. Users section'>
+    </head>
+    <body>
+        <a href="/docs/v1">Go back</a>
+        <h1>API documentation</h1>
+        <p>This is the API documentation for a school project.</p>
+
+        <!-- make a Table of contents -->
+        <h2>Table of contents</h2>
+        <ul>
+            <li><a href="#users">All users</a></li>
+            <li><a href="#add">Add user</a></li>
+            <li><a href="#login">Login</a></li>
+            <li><a href="#update">Update user information</a></li>
+            <li><a href="#user">Get a user by ID</a></li>
+        </ul>
+
+        <div id="users"><!-- USERS -->
+            <h2>All users</h2>
+            <p>Get all users from the database.</p>
+            <p>method: GET</p>
+            <p>endpoint: /api/v1/users</p>
+            <p>JSON body the API expects:</p>
+            <pre>
+                <code>
+                    {}
+                </code>
+            </pre>
+            <h3>Example response:</h3>
+            <pre id="response">
+                <code>
+                    [
+                        {
+                            "id": 1,
+                            "email": "test@example.com",
+                            "email_verified": 0,
+                            "first_name": "John",
+                            "last_name": "Doe",
+                            "admin": 0,
+                            "times_rented": 8,
+                            "currently_renting": 2
+                        },
+                        {
+                            "id": 2,
+                            "email": "test2@example.com",
+                            "email_verified": 1,
+                            "first_name": "Jane",
+                            "last_name": "Doe",
+                            "admin": 0,
+                            "times_rented": 2,
+                            "currently_renting": 5
+                        }
+                    ]
+                </code>
+            </pre>
+        </div>
+
+        <div id="add"><!-- ADD USER -->
+            <h2>Add user</h2>
+            <p>Add a user to the database.</p>
+            <p>method: POST</p>
+            <p>endpoint: /api/v1/users/add</p>
+            <p>fname = First name <br> lname = Last name <br> email = Email <br> password = Password</p>
+            <p>JSON body the API expects:</p>
+            <pre>
+                <code>
+                    {
+                        "fname": "John",
+                        "lname": "Doe",
+                        "email": "test@domain.com",
+                        "password": "passwordHere"
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    {
+                        "status":200, 
+                        "message":"User created successfully"
+                    }
+                </code>
+            </pre>
+        </div>
+
+        <div id="login"><!-- LOGIN -->
+            <h2>Login</h2>
+            <p>Login to the system.</p>
+            <p>method: POST</p>
+            <p>endpoint: /api/v1/users/login</p>
+            <p>email = Email <br> password = Password</p>
+            <p>JSON body the API expects:</p>
+            <pre>
+                <code>
+                    {
+                        "email": "test@domain.com",
+                        "password": "passwordHere"
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <p>If login is successful, it will return a JSON object with a token that you can use to authenticate your requests.</p>
+            <pre id="response">
+                <code>
+                    { 
+                        "status": 200, 
+                        "message": "Logged in successfully", 
+                        "token": "ACCESS_TOKEN", 
+                        "admin": 0 
+                    }
+                </code>
+            </pre>
+        </div>
+
+        <div id="update"><!-- UPDATE USER -->
+            <h2>Update user information</h2>
+            <p>Update user information.</p>
+            <p>method: PUT</p>
+            <p>endpoint: /api/v1/users/update</p>
+            <p>fname = First name <br> lname = Last name <br> email = Email <br> password = Password</p>
+            <p>JSON body the API expects:</p>
+            <pre>
+                <code>
+                    {
+                        "fname": "John",
+                        "lname": "Doe",
+                        "email": "john.doe@example.com",
+                        "admin": 1
+                    }
+                </code>
+            </pre>
+            <h3>Response:</h3>
+            <pre id="response">
+                <code>
+                    {
+                        "status":200, 
+                        "message":"User updated successfully"
+                    }
+                </code>
+            </pre>
+        </div>
+
+        <div id="user"><!-- GET USER BY ID -->
+            <h2>Get a user by ID</h2>
+            <p>Get a user by ID.</p>
+            <p>method: GET</p>
+            <p>endpoint: /api/v1/users/user/{id}</p>
+            <p>JSON body the API expects:</p>
+            <pre>
+                <code>
+                    {}
+                </code>
+            </pre>
+            <h3>Example response:</h3>
+            <pre id="response">
+                <code>
+                    {
+                        "id": 1,
+                        "email": "test@domain.com",
+                        "email_verified": 0,
+                        "first_name": "John",
+                        "last_name": "Doe",
+                        "admin": 0,
+                        "times_rented": 8,
+                        "currently_renting": 2
+                    }
+                </code>
+            </pre>
+        </div>
+    </body>
+</html>
