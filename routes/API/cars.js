@@ -10,7 +10,7 @@ var router = express.Router();
 
 // Car routes
 
-router.get('/', check_token, function(req, res, next){
+router.get('/', function(req, res, next){
   db.query('SELECT * FROM cars', function (error, results, fields) {
     if (error) {
       send_error(error, "Error fetching cars");
