@@ -90,7 +90,7 @@ router.put('/rent/:id', check_token, function(req, res, next){
   };
 });
 
-router.get('/car/:id', check_token, function(req, res, next){
+router.get('/car/:id', function(req, res, next){
   let id = req.params.id;
 
   if (id) {
