@@ -8,7 +8,8 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.9.9",
     "opn": "^6.0.0",
-    "pluralize": "^8.0.0"
+    "pluralize": "^8.0.0",
+    "swagger-ui-express": "^5.0.0"
   },
   "name": "api-school-project",
   "description": "This is the API repository. It contains the API for the project school. The API is built using nodejs and express.",

@@ -1,15 +1,14 @@
 // require the needed modules
 var express = require('express');
-var path = require('path');
-var db = require('../db');
 
 // create the router
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next){
-  res.status(200).sendFile(path.join(__dirname, '../public/pages/index.html'));
-});
+var apiRouter = require('./routes/api');
+var docsRouter = require('./routes/docs.js');
+
+app.use('/api/v1', apiRouter);
+app.use('/docs/v1', docsRouter);
 
 
 module.exports = router;

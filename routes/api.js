@@ -9,6 +9,10 @@ var carsRouter = require('./API/cars');
 var reviewsRouter = require('./API/reviews');
 var rentallogRouter = require('./API/rentallog');
 
+router.get('/', function (req, res) {
+    res.status(418).send({"status": "418", "message": "I'm a teapot"});
+});
+
 router.use('/users', usersRouter);
 router.use('/cars', carsRouter);
 router.use('/reviews', reviewsRouter);

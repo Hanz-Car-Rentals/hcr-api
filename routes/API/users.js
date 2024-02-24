@@ -46,7 +46,7 @@ router.post('/add', check_token, function(req, res, next){
           db.query('INSERT INTO users (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)', [first_name, last_name, email, hashedPassword, salt], function (error, results, fields) {
           if (error) {
             if(error.code === 'ER_DUP_ENTRY') {
-                res.send({'status':403, 'message': 'Email already in use'});
+                res.status(403).send({'status':403, 'message': 'Email already in use'});
                 return;
             } else {
                 send_error(error, "Error creating new user");
@@ -60,12 +60,12 @@ router.post('/add', check_token, function(req, res, next){
           });
       }
       else {
-          res.send({'status':400, 'message': 'Invalid request'});
+          res.status(400).send({'status':400, 'message': 'Bad Request'});
       }
   });
 });
 
-router.post('/update/:id', check_token, function(req, res, next){
+router.put('/update/:id', check_token, function(req, res, next){
     let id = req.params.id;
     let first_name = req.body.fname;
     let last_name = req.body.lname;
@@ -75,8 +75,13 @@ router.post('/update/:id', check_token, function(req, res, next){
     if (first_name && last_name && email && admin) {
         db.query('UPDATE users SET first_name = ?, last_name = ?, email = ?, admin = ? WHERE id = ?', [first_name, last_name, email, admin, id], function (error, results, fields) {
             if (error) {
-                send_error(error, "Error updating user");
-                res.send({'status':500, 'message': 'Error updating user'});
+                if(error.code === 'ER_DUP_ENTRY') {
+                    res.status(403).send({'status':403, 'message': 'Email already in use'});
+                    return;
+                } else {
+                    send_error(error, "Error creating new user");
+                    res.status(500).send({'status':500, 'message': 'Error creating user'});
+                }
             } else {
                 res.send({'status':200, 'message': 'User updated successfully'});
             }
@@ -106,19 +111,15 @@ router.post('/login', function (req, res) {
                         throw err;
                     }
                     if (hashedPassword.equals(user.password)) {
-                        if (user.email_verified) {
-                            let token = crypto.randomBytes(16).toString('hex');
-                            db.query('UPDATE users SET token = ? WHERE id = ?', [token, user.id], function (error, results, fields) {
-                                if (error) {
-                                    send_error(error, "Error logging in");
-                                    res.send({'status':500, 'message': 'Error logging in'});
-                                } else {
-                                    res.send({'status':200,'message': 'Logged in successfully', 'token': token, 'admin': user.admin});
-                                }
-                            });
-                        } else {
-                            res.send({'status':403, 'message': 'Email not verified'});
-                        }
+                        let token = crypto.randomBytes(16).toString('hex');
+                        db.query('UPDATE users SET token = ? WHERE id = ?', [token, user.id], function (error, results, fields) {
+                            if (error) {
+                                send_error(error, "Error logging in");
+                                res.send({'status':500, 'message': 'Error logging in'});
+                            } else {
+                                res.send({'status':200,'message': 'Logged in successfully', 'token': token, 'user': { "admin": user.admin, "id": user.id}});
+                            }
+                        });
                     } else {
                         res.send({'status':401, 'message': 'Invalid email or password'});
                     }
@@ -146,7 +147,7 @@ router.get('/verify/:token', function(req, res, next){
     });
 });
 
-router.post('/reset_password', check_token, async function(req, res, next) {
+router.post('/reset_password', async function(req, res, next) {
     const email = req.body.email;
     db.query('SELECT * FROM users WHERE email = ?', [email], function(err, rows) {
         if(err) {

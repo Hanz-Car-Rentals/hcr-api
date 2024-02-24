@@ -10,7 +10,7 @@ var router = express.Router();
 
 // Car routes
 
-router.get('/', check_token, function(req, res, next){
+router.get('/', function(req, res, next){
   db.query('SELECT * FROM cars', function (error, results, fields) {
     if (error) {
       send_error(error, "Error fetching cars");
@@ -27,9 +27,19 @@ router.post('/add', check_token, function(req, res, next){
   let year = req.body.year;
   let color = req.body.color;
   let price = req.body.price;
+  let licence_plate = req.body.licence_plate;
+  let seats = req.body.seats;
+  let space = req.body.space;
+  let transmission = req.body.transmission;
+  let fuel = req.body.fuel;
+  let doors = req.body.doors;
+  let towing_weight = req.body.towing_weight;
+  let maximum_gross_weight = req.body.maximum_gross_weight;
+  let location = req.body.location;
+  let picture_url = req.body.picture_url;
 
-  if (brand && model && year && color && price) {
-    db.query('INSERT INTO cars (brand, model, year, color, price) VALUES (?, ?, ?, ?, ?)', [brand, model, year, color, price], function (error, results, fields) {
+  if (brand && model && year && color && price && licence_plate && seats && space && transmission && fuel && doors && towing_weight && maximum_gross_weight && location && picture_url) {
+    db.query('INSERT INTO cars ( brand, model, year, color, price, licence_plate, seats, space, transmission, fuel, doors, towing_weight, maximum_gross_weight, location, picture_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [brand,model,year,color,price,licence_plate,seats,space,transmission,fuel,doors,towing_weight,maximum_gross_weight,location,picture_url], function (error, results, fields) {
       if (error) {
         send_error(error, "Error adding new car");
         res.status(500).send({'message': 'Error adding car'});
@@ -80,7 +90,7 @@ router.put('/rent/:id', check_token, function(req, res, next){
   };
 });
 
-router.get('/car/:id', check_token, function(req, res, next){
+router.get('/car/:id', function(req, res, next){
   let id = req.params.id;
 
   if (id) {
@@ -98,16 +108,18 @@ router.get('/car/:id', check_token, function(req, res, next){
   };
 });
 
-router.post('/update/:id', check_token, function(req, res, next){
+router.put('/update/:id', check_token, function(req, res, next){
   let id = req.params.id;
   let color = req.body.color;
   let price = req.body.price;
   let licence_plate = req.body.licence_plate;
   let location = req.body.location;
-  let pictrue_url = req.body.pictrue_url;
+  let picture_url = req.body.picture_url;
 
-  if (id && licence_plate && location && pictrue_url && color && price) {
-    db.query('UPDATE cars SET color = ?, price = ?, licence_plate = ?, location = ?, picture_url = ? WHERE id = ?', [color, price, licence_plate, location, pictrue_url, id], function (error, results, fields) {
+  console.log(id, licence_plate, location, picture_url, color, price);
+
+  if (id && licence_plate && location && picture_url && color && price) {
+    db.query('UPDATE cars SET color = ?, price = ?, licence_plate = ?, location = ?, picture_url = ? WHERE id = ?', [color, price, licence_plate, location, picture_url, id], function (error, results, fields) {
       if (error) {
         send_error(error, "Error updating car");
         res.send({"status":500, 'message': 'Error updating car'});
