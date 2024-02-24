@@ -27,9 +27,19 @@ router.post('/add', check_token, function(req, res, next){
   let year = req.body.year;
   let color = req.body.color;
   let price = req.body.price;
+  let licence_plate = req.body.licence_plate;
+  let seats = req.body.seats;
+  let space = req.body.space;
+  let transmission = req.body.transmission;
+  let fuel = req.body.fuel;
+  let doors = req.body.doors;
+  let towing_weight = req.body.towing_weight;
+  let maximum_gross_weight = req.body.maximum_gross_weight;
+  let location = req.body.location;
+  let picture_url = req.body.picture_url;
 
-  if (brand && model && year && color && price) {
-    db.query('INSERT INTO cars (brand, model, year, color, price) VALUES (?, ?, ?, ?, ?)', [brand, model, year, color, price], function (error, results, fields) {
+  if (brand && model && year && color && price && licence_plate && seats && space && transmission && fuel && doors && towing_weight && maximum_gross_weight && location && picture_url) {
+    db.query('INSERT INTO cars ( brand, model, year, color, price, licence_plate, seats, space, transmission, fuel, doors, towing_weight, maximum_gross_weight, location, picture_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [brand,model,year,color,price,licence_plate,seats,space,transmission,fuel,doors,towing_weight,maximum_gross_weight,location,picture_url], function (error, results, fields) {
       if (error) {
         send_error(error, "Error adding new car");
         res.status(500).send({'message': 'Error adding car'});
