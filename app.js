@@ -8,8 +8,7 @@ var { send_error } = require('./functions/error');
 
 // require the routers
 var indexRouter = require('./routes/index');
-var apiRouter = require('./routes/api');
-var docsRouter = require('./routes/docs.js');
+
 
 
 // whipe deleted users daily
@@ -30,8 +29,6 @@ app.use(express.urlencoded({ extended: false }));
 
 // use the routers
 app.use('/', indexRouter);
-app.use('/api/v1', apiRouter);
-app.use('/docs/v1', docsRouter);
 
 app.post('/test', function(req, res) {
     console.log(req.body);
