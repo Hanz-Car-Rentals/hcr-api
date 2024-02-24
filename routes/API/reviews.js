@@ -7,7 +7,7 @@ var { check_token } = require('../../functions/middleware');
 // create the router
 var router = express.Router();
 
-router.get('/', check_token, function(req, res, next){
+router.get('/', function(req, res, next){
   db.query('SELECT * FROM reviews', function (error, results, fields) {
     if (error) {
       send_error(error, "Error fetching reviews");

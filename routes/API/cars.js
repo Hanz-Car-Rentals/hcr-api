@@ -108,16 +108,18 @@ router.get('/car/:id', function(req, res, next){
   };
 });
 
-router.post('/update/:id', check_token, function(req, res, next){
+router.put('/update/:id', check_token, function(req, res, next){
   let id = req.params.id;
   let color = req.body.color;
   let price = req.body.price;
   let licence_plate = req.body.licence_plate;
   let location = req.body.location;
-  let pictrue_url = req.body.pictrue_url;
+  let picture_url = req.body.picture_url;
 
-  if (id && licence_plate && location && pictrue_url && color && price) {
-    db.query('UPDATE cars SET color = ?, price = ?, licence_plate = ?, location = ?, picture_url = ? WHERE id = ?', [color, price, licence_plate, location, pictrue_url, id], function (error, results, fields) {
+  console.log(id, licence_plate, location, picture_url, color, price);
+
+  if (id && licence_plate && location && picture_url && color && price) {
+    db.query('UPDATE cars SET color = ?, price = ?, licence_plate = ?, location = ?, picture_url = ? WHERE id = ?', [color, price, licence_plate, location, picture_url, id], function (error, results, fields) {
       if (error) {
         send_error(error, "Error updating car");
         res.send({"status":500, 'message': 'Error updating car'});
