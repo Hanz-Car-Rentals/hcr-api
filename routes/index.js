@@ -4,11 +4,11 @@ var express = require('express');
 // create the router
 var router = express.Router();
 
-var apiRouter = require('./routes/api');
-var docsRouter = require('./routes/docs.js');
+var apiRouter = require('./api');
+var docsRouter = require('./docs.js');
 
-app.use('/api/v1', apiRouter);
-app.use('/docs/v1', docsRouter);
+router.use('/api/v1', apiRouter);
+router.use('/docs/v1', docsRouter);
 
 
 module.exports = router;
