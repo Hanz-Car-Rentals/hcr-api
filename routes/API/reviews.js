@@ -2,7 +2,7 @@
 var express = require('express');
 var db = require('../../db');
 var { send_error } = require('../../functions/error');
-var { check_token } = require('../../functions/middleware');
+var { check_user_token, admin_check, } = require('../../functions/middleware');
 
 // create the router
 var router = express.Router();
@@ -18,7 +18,7 @@ router.get('/', function(req, res, next){
   });
 });
 
-router.post('/add', check_token, function(req,res,next){
+router.post('/add', check_user_token, function(req,res,next){
   let carId = req.body.car_id;
   let userId = req.body.user_id;
   let review = req.body.review;
@@ -39,7 +39,7 @@ router.post('/add', check_token, function(req,res,next){
   };
 });
 
-router.delete('/remove/:id', check_token, function(req, res, next){
+router.delete('/remove/:id', check_user_token, function(req, res, next){
   let id = req.params.id;
 
   if (id) {

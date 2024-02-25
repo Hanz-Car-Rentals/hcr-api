@@ -2,7 +2,7 @@
 var express = require('express');
 var db = require('../../db');
 var { send_error } = require('../../functions/error');
-var { check_token } = require('../../functions/middleware');
+var { check_user_token, admin_check } = require('../../functions/middleware');
 var { rentCar } = require('../../functions/cars');
 
 // create the router
@@ -21,7 +21,7 @@ router.get('/', function(req, res, next){
   });
 });
 
-router.post('/add', check_token, function(req, res, next){
+router.post('/add', check_user_token, admin_check, function(req, res, next){
   let brand = req.body.brand;
   let model = req.body.model;
   let year = req.body.year;
@@ -53,7 +53,7 @@ router.post('/add', check_token, function(req, res, next){
   };
 });
 
-router.delete('/remove', check_token, function(req, res, next){
+router.delete('/remove', check_user_token, admin_check, function(req, res, next){
   let id = req.body.id;
 
   if (id) {
@@ -71,7 +71,7 @@ router.delete('/remove', check_token, function(req, res, next){
   };
 });
 
-router.put('/rent/:id', check_token, function(req, res, next){
+router.put('/rent/:id', check_user_token, function(req, res, next){
   let carId = req.params.id;
   let userId = req.body.user_id;
   let fromDate = req.body.from_date;
@@ -108,7 +108,7 @@ router.get('/car/:id', function(req, res, next){
   };
 });
 
-router.put('/update/:id', check_token, function(req, res, next){
+router.put('/update/:id', check_user_token, admin_check, function(req, res, next){
   let id = req.params.id;
   let color = req.body.color;
   let price = req.body.price;

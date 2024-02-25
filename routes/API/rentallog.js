@@ -2,13 +2,13 @@
 var express = require('express');
 var db = require('../../db');
 var { send_error } = require('../../functions/error');
-var { check_token } = require('../../functions/middleware');
+var { check_user_token, admin_check, } = require('../../functions/middleware');
 
 // create the router
 var router = express.Router();
 
 // Rental log routes
-router.get('/', check_token, function(req, res, next){
+router.get('/', check_user_token, admin_check, function(req, res, next){
   db.query('SELECT * FROM rentallog', function (error, results, fields) {
     if (error) {
       send_error(error, "Error fetching rental log");
