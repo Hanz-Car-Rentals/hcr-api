@@ -52,7 +52,7 @@ async function forgot_password(email, id, host){
         };
 
         let subject = 'Reset Password';
-        let text = 'Please click the following link to reset your password: https://' + host + '/api/v1/users/reset_password/' + token;
+        let text = 'Please copy and paste the following token in the password reset form: ' +token;
      
         send_mail(email, text, subject);
     });

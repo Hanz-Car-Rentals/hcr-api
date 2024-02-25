@@ -147,7 +147,7 @@ router.get('/verify/:token', function(req, res, next){
     });
 });
 
-router.post('/reset_password', async function(req, res, next) {
+router.post('/reset_password_email', async function(req, res, next) {
     const email = req.body.email;
     db.query('SELECT * FROM users WHERE email = ?', [email], function(err, rows) {
         if(err) {
@@ -158,6 +158,39 @@ router.post('/reset_password', async function(req, res, next) {
         let dbuser = rows[0];
         forgot_password(email, dbuser.id, req.headers.host);
         return res.send({'status':200, "message":"Password reset e-mail sent"});
+    });
+});
+
+router.post('/reset_password', async function(req, res, next) {
+    const password1 = req.body.password1;
+    const password2 = req.body.password2;
+    const token = req.body.email_token;
+
+    if(password1 !== password2) {
+        return res.status(400).send({'status':400, "message":"Passwords do not match"});
+    };
+
+    db.query('SELECT * FROM users WHERE password_reset_token = ? AND reset_password_token_expires_at > NOW()', [token], function(err, rows) {
+        if(err) {
+            send_error(err, 'Password reset e-mail find');
+            throw err;
+        };
+        if(rows.length < 1) return res.send({'status':401, "message":"Invalid token"});
+        let dbuser = rows[0];
+        const salt = crypto.randomBytes(16);
+        crypto.pbkdf2(password1, salt, 310000, 32, 'sha256', function(err, hashedPassword) {
+            if (err) { 
+                send_error(err, 'Error login');
+                throw err;
+            }
+            db.query('UPDATE users SET password = ?, salt = ?, password_reset_token = NULL, reset_password_token_expires_at = NULL WHERE id = ?', [hashedPassword, salt, dbuser.id], function(err, rows) {
+                if(err) {
+                    send_error(err, 'password reset');
+                    throw err;
+                };
+                return res.send({'status':200, "message":"Password reset successfully"});
+            });
+        });
     });
 });
 
