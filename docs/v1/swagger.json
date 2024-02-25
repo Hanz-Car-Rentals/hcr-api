@@ -104,6 +104,7 @@
         "summary": "Root endpoint",
         "tags": ["Default"],
         "description": "This is the root endpoint for the API service",
+        "security": [],
         "responses": {
           "418": {
             "description": "I'm a teapot"
@@ -117,6 +118,7 @@
         "summary": "Get all cars",
         "tags": ["Cars"],
         "description": "This endpoint returns all cars",
+        "security": [],
         "responses": {
           "200": {
             "description": "A list of cars",
@@ -205,6 +207,7 @@
         "summary": "Get a car by ID",
         "tags": ["Cars"],
         "description": "This endpoint returns a car by its ID",
+        "security": [],
         "parameters": [
           {
             "name": "id",
@@ -660,6 +663,7 @@
         "summary": "Add a user",
         "tags": ["Users"],
         "description": "This endpoint adds a user",
+        "security": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -764,6 +768,7 @@
         "summary": "Login",
         "tags": ["Users"],
         "description": "This endpoint logs in a user",
+        "security": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -811,6 +816,7 @@
         "summary": "Reset password",
         "tags": ["Users"],
         "description": "This endpoint resets a user's password",
+        "security": [],
         "requestBody": {
           "content": {
             "application/json": {
@@ -902,6 +908,7 @@
         "summary": "Get all reviews",
         "tags": ["Reviews"],
         "description": "This endpoint returns all reviews",
+        "security": [],
         "responses": {
           "200": {
             "description": "A list of reviews",
