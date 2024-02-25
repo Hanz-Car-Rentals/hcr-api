@@ -2,7 +2,7 @@
 	"openapi": "3.0.0",
 	"info": {
 		"title": "Hanz Car Rentals API",
-		"description": "My API description",
+		"description": "This API is made for Hanz Car Rentals as a school project.",
 		"version": "1.0.0",
 		"contact": {
 			"name": "Hanz",
@@ -822,6 +822,47 @@
 				}
 			}
 		},
+		"/users/reset_password_email": {
+			"post": {
+				"summary": "Reset password",
+				"tags": [
+					"Users"
+				],
+				"description": "This endpoint sends an email with a token for the password reset function endpoint.",
+				"security": [],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Password reset"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/users/reset_password": {
 			"post": {
 				"summary": "Reset password",
@@ -836,7 +877,13 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"email": {
+									"password1": {
+										"type": "string"
+									},
+									"password2": {
+										"type": "string"
+									},
+									"email_token": {
 										"type": "string"
 									}
 								}
