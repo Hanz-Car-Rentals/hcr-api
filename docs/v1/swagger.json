@@ -327,7 +327,7 @@
 										"type": "integer"
 									},
 									"space": {
-										"type": "string"
+										"type": "integer"
 									},
 									"transmission": {
 										"type": "integer"
@@ -339,10 +339,10 @@
 										"type": "integer"
 									},
 									"towing_weight": {
-										"type": "string"
+										"type": "integer"
 									},
 									"maximum_gross_weight": {
-										"type": "string"
+										"type": "integer"
 									},
 									"location": {
 										"type": "string"
