@@ -39,7 +39,7 @@ db.query("CREATE TABLE IF NOT EXISTS cars ( \
     brand VARCHAR(255), \
     model VARCHAR(255), \
     seats INT, \
-    space VARCHAR(255), \
+    space INT, \
     transmission BOOLEAN, \
     fuel VARCHAR(255) NOT NULL, \
     doors INT NOT NULL, \
@@ -78,20 +78,5 @@ db.query('CREATE TABLE IF NOT EXISTS reviews ( \
     FOREIGN KEY (user_id) REFERENCES users(id) \
 )');
 
-// db changes
-// db.query('ALTER TABLE cars ADD COLUMN licence_plate VARCHAR(255)');
-// db.query('ALTER TABLE cars ADD COLUMN seats INT');
-// db.query('ALTER TABLE cars ADD COLUMN space VARCHAR(255)');
-// db.query('ALTER TABLE cars ADD COLUMN transmission BOOLEAN');
-// db.query('ALTER TABLE cars ADD COLUMN fuel VARCHAR(255)');
-// db.query('ALTER TABLE cars ADD COLUMN doors INT');
-// db.query('ALTER TABLE cars ADD COLUMN towing_weight INT');
-// db.query('ALTER TABLE cars ADD COLUMN maximum_gross_weight INT');
-// db.query('ALTER TABLE cars ADD COLUMN location VARCHAR(255)');
-// db.query('ALTER TABLE cars ADD COLUMN picture_url TEXT');
-// db.query('ALTER TABLE users ADD COLUMN token TEXT UNIQUE');
-// db.query('ALTER TABLE reviews ADD COLUMN created_at DATE DEFAULT NOW()');
-
-
-// makes the connection available for other files (e.g. routes)
+// export the db connection
 module.exports = db;
