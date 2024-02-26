@@ -4,7 +4,7 @@ var db = require('../../db');
 var crypto = require('crypto');
 var { newUser, forgot_password } = require('../../functions/email');
 var { send_error } = require('../../functions/error');
-var { check_user_token, admin_check, } = require('../../functions/middleware');
+var { check_user_token, admin_check, user_check } = require('../../functions/middleware');
 
 // create the router
 var router = express.Router();
@@ -21,7 +21,7 @@ router.get('/', check_user_token, admin_check, function(req, res, next){
   });
 });
 
-router.get('/user/:id', check_user_token, admin_check, function(req, res, next){
+router.get('/user/:id', check_user_token, user_check, function(req, res, next){
     db.query('SELECT id,email,email_verified,first_name,last_name,admin,times_rented,currently_renting FROM users WHERE id = ?', [req.params.id], function (error, results, fields) {
         if (error) {
             send_error(error, "Error fetching user");
@@ -65,7 +65,7 @@ router.post('/add', function(req, res, next){
   });
 });
 
-router.put('/update/:id', check_user_token, function(req, res, next){
+router.put('/update/:id', check_user_token, user_check, function(req, res, next){
     let id = req.params.id;
     let first_name = req.body.fname;
     let last_name = req.body.lname;
