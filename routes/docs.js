@@ -8,7 +8,9 @@ const theme = new SwaggerTheme();
 
 const options = {
   explorer: false,
-  customCss: theme.getBuffer('dark')
+  customSiteTitle: 'HCR API Documentation',
+  customCss: theme.getBuffer('dark-monokai'),
+  customfavIcon: "/favicon.ico",
 };
 
 // create the router
