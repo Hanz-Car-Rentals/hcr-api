@@ -4,18 +4,18 @@ var express = require('express');
 // create the router
 var router = express.Router();
 
-var usersRouter = require('./API/users');
-var carsRouter = require('./API/cars');
-var reviewsRouter = require('./API/reviews');
-var rentallogRouter = require('./API/rentallog');
+// var usersRouter = require('./API/users');
+// var carsRouter = require('./API/cars');
+// var reviewsRouter = require('./API/reviews');
+// var rentallogRouter = require('./API/rentallog');
 
 router.get('/', function (req, res) {
     res.status(418).send({"status": "418", "message": "I'm a teapot"});
 });
 
-router.use('/users', usersRouter);
-router.use('/cars', carsRouter);
-router.use('/reviews', reviewsRouter);
-router.use('/rentallog', rentallogRouter);
+// router.use('/users', usersRouter);
+// router.use('/cars', carsRouter);
+// router.use('/reviews', reviewsRouter);
+// router.use('/rentallog', rentallogRouter);
 
 module.exports = router;
