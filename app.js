@@ -5,10 +5,12 @@ var path = require('path');
 var logger = require('morgan');
 var crypto = require('crypto');
 var { send_error } = require('./functions/error');
+let db = require('./db.js');
 
 // require the routers
 var indexRouter = require('./routes/index');
 
+global.db = db;
 
 
 // whipe deleted users daily

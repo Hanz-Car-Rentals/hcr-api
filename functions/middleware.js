@@ -41,7 +41,7 @@ async function admin_check(req, res, next){
     db.query("SELECT * FROM users WHERE token = ?", [webToken], function(err, result){
       if (err) throw err;
       if (result.length > 0){
-        if (result[0].admin === 1){
+        if (result[0].role === 1){
           next();
         }
         else{
@@ -74,7 +74,7 @@ async function user_check(req, res, next) {
         userId = parseInt(userId);
         if (result[0].id === userId){
           next();
-        } else if(result[0].admin === 1){
+        } else if(result[0].role === 1){
           next();
         } else {
           res.status(401).send({"status": 401, "message": "Unauthorized access"});
