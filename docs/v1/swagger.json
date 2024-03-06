@@ -7,7 +7,7 @@
 		"contact": {
 			"name": "Hanz",
 			"email": "hanz.car.rentals@wolfsoft.solutions",
-			"url": "https://hcr.yoursister.zip/support"
+			"url": "https://hanzcar.rentals/support"
 		}
 	},
 	"components": {
@@ -81,7 +81,7 @@
 	],
 	"servers": [
 		{
-			"url": "https://api.hcr.yoursister.zip/api/v1/",
+			"url": "https://api.hanzcar.rentals/api/v1/",
 			"description": "Production server"
 		},
 		{
