@@ -245,7 +245,7 @@ router.post("/reset_password_email", function (req, res) {
                 if (results.length < 1) {
                     res.send({ status: 404, message: "Email not found" });
                 } else {
-                    forgot_password(results[0].first_name, email, results[0].id);
+                    forgot_password(email, results[0].id, req.headers.host);
                     res.send({
                         status: 200,
                         message: "Successfully sent reset password email",
@@ -271,30 +271,6 @@ router.post("/reset_password", function (req, res) {
         "sha256",
         function (err, hashedPassword) {
             if (err) throw err;
-            // Insert the salt into the salts table
-            db.query(
-                "INSERT INTO salts (salt) VALUES (?)",
-                [salt],
-                function (err, result) {
-                    if (err) throw err;
-
-                    // Get the ID of the inserted salt
-                    const saltId = result.insertId;
-
-                    // Update the user's password and salt
-                    db.query(
-                        "UPDATE users SET password =?, salt =? WHERE token =?",
-                        [hashedPassword, saltId, token],
-                        function (err, result) {
-                            if (err) throw err;
-                            res.send({
-                                status: 200,
-                                message: "Successfully reset password",
-                            });
-                        }
-                    );
-                }
-            );
         }
     );
 });

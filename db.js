@@ -14,8 +14,6 @@ var db = mysql.createConnection({
 });
 
 
-
-
 // create the salts table if it doesn't exist. The fields are: id INT AUTOINCREMENT PRIMARY KEY, salt INT NOT NULL
 db.query(`CREATE TABLE IF NOT EXISTS salts (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,14 +40,17 @@ db.query("SELECT * FROM roles", function (err, result) {
   // If the roles table is empty, create the default roles
   if (result.length === 0) {
     db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Beheerder', 'De eigenaar van de website. Zorgt ervoor dat alles goed werkt en grijpt in als er problemen zijn.', 1]);
-    db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Voertuigbeheerders', 'Ze beheren de auto\'s op de locaties en zorgen ook dat nieuwe auto\'s op de website komen', 2]);
+    db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['On-site Support', 'Ze beheren de auto\'s op de locaties en zorgen ook dat nieuwe auto\'s op de website komen', 2]);
     db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Verhuurder', 'Medewerkers die beslissen of mensen een auto mogen huren of niet.', 3]);
     db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Writer', 'Creëren boeiende blogposts en optimaliseren auto beschrijvingen.', 4]);
-    db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Gebruiker', 'Mensen die een auto willen huren. Ze zoeken naar een auto, boeken er een en betalen online.', 5]);
+    db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Gebruiker', 'Mensen die een auto willen huren. Ze zoeken naar een auto, boeken er een en betalen online.', 5], function (err, result) {
+      if (err) throw err;
+      console.log("Default roles created");
+    });
   }
 });
 
-// create the users table if it doesn't exist. The fiels are: id INT NOT NULL PRIMARY KEY AUTOINCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, email TEXT NOT NULL, email_verified BOOLEAN, email_verify_token TEXT, token TEXT, password BLOB NOT NULL, salt INT NOT NULL, password_reset_token TEXT, password_reset_token_expires_at TIMESTAMP, role INT NOT NULL, verified_drivers_licence BOOLEAN, times_rented INT, currently_renting INT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP. The salt is a foreign key to the salts table
+// create the users table if it doesn't exist. The fiels are: id INT NOT NULL PRIMARY KEY AUTOINCREMENT, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, email TEXT NOT NULL, email_verified BOOLEAN, email_verify_token TEXT, token TEXT, password BLOB NOT NULL, salt INT NOT NULL, password_reset_token TEXT, password_reset_token_expires_at TIMESTAMP, role INT NOT NULL, verified_drivers_licence BOOLEAN, times_rented INT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP. The salt is a foreign key to the salts table
 db.query("CREATE TABLE IF NOT EXISTS users ( \
   id INT AUTO_INCREMENT PRIMARY KEY, \
   first_name VARCHAR(255) NOT NULL, \
@@ -66,7 +67,6 @@ db.query("CREATE TABLE IF NOT EXISTS users ( \
   role INT NOT NULL, \
   verified_drivers_licence BOOLEAN, \
   times_rented INT, \
-  currently_renting INT, \
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, \
   FOREIGN KEY (salt) REFERENCES salts(id) \
@@ -111,19 +111,55 @@ db.query("SELECT * FROM users", function (err, result) {
 // Create a table called fuel_types where these are the fields: id INT, fuel_type TEXT NOT NULL
 db.query("CREATE TABLE IF NOT EXISTS fuel_types ( \
   id INT AUTO_INCREMENT PRIMARY KEY, \
-  fuel_type TEXT NOT NULL \
+  type TEXT NOT NULL \
 )", function (err, result) {
   if (err) throw err;
   console.log("Table fuel_types created");
 });
 
+// add some default fuel types to the table if the table is empty
+db.query("SELECT * FROM fuel_types", function (err, result) {
+  if (err) throw err;
+  // If the fuel_types table is empty, create the default fuel types
+  if (result.length === 0) {
+    db.query("INSERT INTO fuel_types (type) VALUES (?) ", ['Benzine']);
+    db.query("INSERT INTO fuel_types (type) VALUES (?) ", ['Diesel']);
+    db.query("INSERT INTO fuel_types (type) VALUES (?) ", ['LPG']);
+    db.query("INSERT INTO fuel_types (type) VALUES (?) ", ['Electric']);
+    db.query("INSERT INTO fuel_types (type) VALUES (?) ", ['Hybrid'], function (err, result) {
+      if (err) throw err;
+      console.log("Default fuel types created");
+    });
+  }
+});
+
 // Create a table called body_types where these are the fields: id INT, body_type TEXT NOT NULL
 db.query("CREATE TABLE IF NOT EXISTS body_types ( \
   id INT AUTO_INCREMENT PRIMARY KEY, \
-  body_type TEXT NOT NULL \
+  type TEXT NOT NULL \
 )", function (err, result) {
   if (err) throw err;
   console.log("Table body_types created");
+});
+
+// add some default body types to the table if the table is empty
+db.query("SELECT * FROM body_types", function (err, result) {
+  if (err) throw err;
+  // If the body_types table is empty, create the default body types
+  if (result.length === 0) {
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['Benzine']);
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['Station Wagon']);
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['Sedan']);
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['Convertible']);
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['SUV']);
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['Minivan']);
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['Pickup Truck']);
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['Van']);
+    db.query("INSERT INTO body_types (type) VALUES (?) ", ['Coupe'], function (err, result) {
+      if (err) throw err;
+      console.log("Default body types created");
+    });
+  }
 });
 
 // Create a table called car_types where these are the fields: id INT, brand TEXT NOT NULL, space INT NOT NULL, fuel INT NOT NULL, doors INT NOT NULL, towing_weight INT, maximum_gross_weight INT NOT NULL, build_year INT NOT NULL, body_type INT NOT NULL. Fuel is a foreign key to the fuel_types table, and body_type is a foreign key to the body_types table
@@ -153,6 +189,43 @@ if (err) throw err;
 console.log("Table locations created");
 });
 
+// add some default locations to the table if the table is empty
+db.query("SELECT * FROM locations", function (err, result) {
+  if (err) throw err;
+  // If the locations table is empty, create the default locations
+  if (result.length === 0) {
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Saint Petersburg']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Amsterdam']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Rotterdam']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Utrecht']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Eindhoven']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Tilburg']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Groningen']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Almere']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Breda']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Nijmegen']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Apeldoorn']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Haarlem']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Arnhem']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Zaanstad']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Amersfoort']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Haarlemmermeer']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['s-Hertogenbosch']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Zoetermeer']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Zwolle']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Leiden']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Leeuwarden']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Maastricht']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Dordrecht']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Ede']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Alphen aan den Rijn']);
+    db.query("INSERT INTO locations (location) VALUES (?) ", ['Den Haag'], function (err, result) {
+      if (err) throw err;
+      console.log("Default locations created");
+    });
+  }
+});
+
 // create the cars table if it doesn't exist the fields are: id INT, car_available BOOLEAN, picture_url TEXT, color VARCHAR, price_per_day DECIMAL, car_type INT, location INT, license_plate VARCHAR, created_at TIMESTAMP, updated_at TIMESTAMP. And the car_type is a foreign key to the car_types table and the location is a foreign key to the locations table
 db.query("CREATE TABLE IF NOT EXISTS cars ( \
   id INT AUTO_INCREMENT PRIMARY KEY, \
@@ -179,6 +252,21 @@ db.query("CREATE TABLE IF NOT EXISTS rental_status ( \
 )", function (err, result) {
   if (err) throw err;
   console.log("Table rental_status created");
+});
+
+// add some default rental statuses to the table if the table is empty
+db.query("SELECT * FROM rental_status", function (err, result) {
+  if (err) throw err;
+  // If the rental_status table is empty, create the default rental statuses
+  if (result.length === 0) {
+    db.query("INSERT INTO rental_status (status) VALUES (?) ", ['Pending']);
+    db.query("INSERT INTO rental_status (status) VALUES (?) ", ['Approved']);
+    db.query("INSERT INTO rental_status (status) VALUES (?) ", ['Declined']);
+    db.query("INSERT INTO rental_status (status) VALUES (?) ", ['Returned'], function (err, result) {
+      if (err) throw err;
+      console.log("Default rental statuses created");
+    });
+  }
 });
 
 // Create a table called reviews where these are the fields: id INT, user_id INT, car_id INT, review TEXT NOT NULL, rating INT NOT NULL, created_at TIMESTAMP, updated_at TIMESTAMP. The user_id is a foreign key to the users table and the car_id is a foreign key to the cars table
