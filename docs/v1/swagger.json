@@ -3,11 +3,11 @@
 	"info": {
 		"title": "Hanz Car Rentals API",
 		"description": "This API is made for Hanz Car Rentals as a school project.",
-		"version": "1.0.0",
+		"version": "2.0.0",
 		"contact": {
 			"name": "Hanz",
 			"email": "hanz.car.rentals@wolfsoft.solutions",
-			"url": "https://hcr.yoursister.zip/support"
+			"url": "https://www.hanzcar.rentals/support"
 		}
 	},
 	"components": {
@@ -81,11 +81,11 @@
 	],
 	"servers": [
 		{
-			"url": "https://api.hcr.yoursister.zip/api/v1/",
+			"url": "https://api.hanzcar.rentals/api/v1/",
 			"description": "Production server"
 		},
 		{
-			"url": "http://localhost:55559/api/v1/",
+			"url": "http://localhost:55600/api/v1/",
 			"description": "Development server"
 		}
 	],
@@ -1031,9 +1031,6 @@
 								"type": "object",
 								"properties": {
 									"car_id": {
-										"type": "integer"
-									},
-									"user_id": {
 										"type": "integer"
 									},
 									"review": {

@@ -1,5 +1,6 @@
 const config = require('../configs/config.json');
 let webhook_url = config.webhook_url;
+const fetch = require('node-fetch')
 
 async function send_error(error, errorAt){
     let text = '<@271285474516140033>\nAn error has occured: \n```\n' + error+'\n```';

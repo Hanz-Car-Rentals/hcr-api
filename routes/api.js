@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 
 var usersRouter = require('./API/users');
-// var carsRouter = require('./API/cars');
+var carsRouter = require('./API/cars');
 // var reviewsRouter = require('./API/reviews');
 // var rentallogRouter = require('./API/rentallog');
 
@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 });
 
 router.use('/users', usersRouter);
-// router.use('/cars', carsRouter);
+router.use('/cars', carsRouter);
 // router.use('/reviews', reviewsRouter);
 // router.use('/rentallog', rentallogRouter);
 
