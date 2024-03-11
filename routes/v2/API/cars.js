@@ -4,7 +4,6 @@ var db = require("../../../db");
 var { send_error } = require("../../../functions/v2/error");
 var {
 	check_user_token,
-	admin_check,
 	user_check,
 } = require("../../../functions/v2/middleware");
 
@@ -41,7 +40,7 @@ router.get("/:id", function (req, res) {
 });
 
 // post /cars/add/type (create a new type of car)
-router.post("/add/type", admin_check, function (req, res) {
+router.post("/add/type", function (req, res) {
 	let brand = req.body.brand;
 	let model = req.body.model; // add this field to the table
 	let trunk_space = req.body.trunk_space; // change this field to the corrent name

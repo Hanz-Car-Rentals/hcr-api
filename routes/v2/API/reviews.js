@@ -4,7 +4,6 @@ var db = require("../../../db");
 var { send_error } = require("../../../functions/v2/error");
 var {
   check_user_token,
-  admin_check,
   user_check,
 } = require("../../../functions/v2/middleware");
 
@@ -12,14 +11,8 @@ var {
 var router = express.Router();
 
 // the route for posting a review
-router.post("/add", function(req, res, next){
+router.post("/add", check_user_token, function(req, res, next){
     let token = req.headers['authorization'];
-    if(!token){
-        return res.status(400).json({
-            status: 400,
-            message: "No token provided"
-        });
-    };
     token = token.split(" ");
     db.query("SELECT * FROM users WHERE token = ?", [token[1]], function(err, results){
         let userId = results[0].id;
