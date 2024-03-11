@@ -59,26 +59,42 @@ async function getUserPermissionsFromDatabase(roleId) {
 }
 
 function hasPermission(permission, userPermissions) {
+    console.log('Permission:', permission);
+    console.log('User Permissions:', userPermissions);
+    console.log('Result:', (userPermissions & permission) === permission);
     return (userPermissions & permission) === permission;
 }
 
 function checkPermission(permission) {
+	console.log(permission);
     return async function(req, res, next) {
         try {
-            const authToken = req.headers["authorization"];
+            let authToken = req.headers["authorization"];
+			if(authToken && !authToken.startsWith("Bearer ")) {
+				return res.status(403).send({
+					"status": 403,
+					"message": "Invalid token"
+				});
+			}
             if (!authToken) {
                 return res.status(401).json({ error: 'Unauthorized: Missing authorization token' });
             }
+			authToken = authToken.split(" ")[1];
+			console.log(authToken);
 
             const userRole = await getUserRoleFromDatabase(authToken);
+			console.log(userRole);
             if (!userRole) {
                 return res.status(403).json({ error: 'Forbidden: Invalid authorization token' });
             }
 
             const userPermissions = await getUserPermissionsFromDatabase(userRole);
-            if (!hasPermission(permission, userPermissions)) {
+			console.log(userPermissions);
+            if (!hasPermission(permissions[permission], userPermissions)) {
                 return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
             }
+
+			console.log('User has permission:', permission)
 
             // If user has the required permission, proceed to the next middleware/route handler
             next();

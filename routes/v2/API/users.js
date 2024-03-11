@@ -7,11 +7,17 @@ var { send_error } = require("../../../functions/v2/error");
 var {
   check_user_token,
   user_check,
-  getUserPermissionsFromDatabase
+  checkPermission
 } = require("../../../functions/v2/middleware");
 
 // create the router
 var router = express.Router();
+
+router.get('/', checkPermission('ADMIN'), function (req, res) {
+  res.json({
+    message: 'You have the permission to access this route'
+  })
+})
 
 router.post("/login", function (req, res) {
   let email = req.body.email;
@@ -80,7 +86,6 @@ router.post("/login", function (req, res) {
                               return;
                             }
                             let role = results[0];
-                            console.log(await getUserPermissionsFromDatabase(1))
                             res.send({
                               status: 200,
                               message: "Successfully logged in",
