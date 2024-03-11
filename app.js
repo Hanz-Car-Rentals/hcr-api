@@ -4,7 +4,7 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var crypto = require('crypto');
-var { send_error } = require('./functions/error');
+var { send_error } = require('./functions/v2/error.js');
 let db = require('./db.js');
 
 // require the routers

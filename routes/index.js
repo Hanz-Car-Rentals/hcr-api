@@ -7,11 +7,11 @@ var router = express.Router();
 var apiRouter = require('./api');
 var docsRouter = require('./docs.js');
 
-router.use('/api/v1', apiRouter);
-router.use('/docs/v1', docsRouter);
+router.use('/api/', apiRouter);
+router.use('/docs/', docsRouter);
 
 router.get('/', function (req, res) {
-  res.redirect("/docs/v1");
+  res.redirect("/docs/v2");
 });
 
 
