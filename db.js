@@ -20,7 +20,9 @@ db.query(`CREATE TABLE IF NOT EXISTS salts (
 	salt BLOB NOT NULL
 )`, function (err, result) {
 	if (err) throw err;
-	console.log("Table salts created");
+	if(result.changedRows > 0){
+		console.log("Table salts created");
+	}
 });
 
 // create the roles table if not exists. the fields are: id INT AUTOINCREMENT PRIMARY KEY, role TEXT NOT NULL, role_desc NOT NULL, role_level INT NOT NULL. The role_level is used to determine the level of the role, the lower the number the higher the level
@@ -31,7 +33,9 @@ db.query("CREATE TABLE IF NOT EXISTS roles ( \
 	role_level INT NOT NULL \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table roles created");
+	if(result.changedRows > 0){
+		console.log("Table roles created");
+	}
 });
 
 // create the following roles in the roles table if the table is empty. These are the roles: Beheerder, Verhuurder, Gebruiker
@@ -72,7 +76,9 @@ db.query("CREATE TABLE IF NOT EXISTS users ( \
 	FOREIGN KEY (salt) REFERENCES salts(id) \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table users created");
+	if(result.changedRows > 0){
+		console.log("Table users created");
+	}
 });
 
 
@@ -114,7 +120,9 @@ db.query("CREATE TABLE IF NOT EXISTS fuel_types ( \
 	type TEXT NOT NULL \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table fuel_types created");
+	if(result.changedRows > 0){
+		console.log("Table fuel_types created");
+	}
 });
 
 // add some default fuel types to the table if the table is empty
@@ -127,8 +135,10 @@ db.query("SELECT * FROM fuel_types", function (err, result) {
 		db.query("INSERT INTO fuel_types (type) VALUES (?) ", ['LPG']);
 		db.query("INSERT INTO fuel_types (type) VALUES (?) ", ['Electric']);
 		db.query("INSERT INTO fuel_types (type) VALUES (?) ", ['Hybrid'], function (err, result) {
-		if (err) throw err;
-			console.log("Default fuel types created");
+			if (err) throw err;
+			if(result.changedRows > 0){
+				console.log("Default fuel types created");
+			}
 		});
 	}
 });
@@ -139,7 +149,9 @@ db.query("CREATE TABLE IF NOT EXISTS body_types ( \
 	type TEXT NOT NULL \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table body_types created");
+	if(result.changedRows > 0){
+		console.log("Table body_types created");
+	}
 });
 
 // add some default body types to the table if the table is empty
@@ -191,7 +203,9 @@ db.query("CREATE TABLE IF NOT EXISTS locations ( \
 	location TEXT NOT NULL \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table locations created");
+	if(result.changedRows > 0){
+		console.log("Table locations created");
+	}
 });
 
 // add some default locations to the table if the table is empty
@@ -247,7 +261,9 @@ db.query("CREATE TABLE IF NOT EXISTS cars ( \
 	FOREIGN KEY (location) REFERENCES locations(id) \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table cars created");
+	if(result.changedRows > 0){
+		console.log("Table cars created");
+	}
 });
 
 // Create a table called rental_status where these are the fields: id INT, status TEXT NOT NULL
@@ -256,7 +272,9 @@ db.query("CREATE TABLE IF NOT EXISTS rental_status ( \
 	status TEXT NOT NULL \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table rental_status created");
+	if(result.changedRows > 0){
+		console.log("Table rental_status created");
+	}
 });
 
 // add some default rental statuses to the table if the table is empty
@@ -287,7 +305,9 @@ db.query("CREATE TABLE IF NOT EXISTS reviews ( \
 	FOREIGN KEY (car_id) REFERENCES cars(id) \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table reviews created");
+	if(result.changedRows > 0){
+		console.log("Table reviews created");
+	}
 });
 
 
@@ -306,7 +326,9 @@ db.query("CREATE TABLE IF NOT EXISTS rentallog ( \
 	FOREIGN KEY (status) REFERENCES rental_status(id) \
 )", function (err, result) {
 	if (err) throw err;
-	console.log("Table rentallog created");
+	if(result.changedRows > 0){
+		console.log("Table rentallog created");
+	}
 });
 
 
