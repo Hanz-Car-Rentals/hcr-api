@@ -24,6 +24,6 @@ router.get('/', function (req, res) {
 });
 
 // user docs
-router.use('/v2', swaggerUi.serve, swaggerUi.setup(docs, options));
+router.use('/', swaggerUi.serve, swaggerUi.setup(docs, options));
 
 module.exports = router;

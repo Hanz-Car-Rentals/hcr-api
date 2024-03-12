@@ -292,6 +292,118 @@
 				}
 			}
 		},
+		"/cars/add/type": {
+			"post": {
+				"summary": "Add a car type",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint adds a new car type",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"brand": {
+										"type": "string"
+									},
+									"model": {
+										"type": "string"
+									},
+									"build_year": {
+										"type": "integer"
+									},
+									"doors": {
+										"type": "integer"
+									},
+									"seats": {
+										"type": "integer"
+									},
+									"trunk_space": {
+										"type": "integer"
+									},
+									"transmission": {
+										"type": "integer"
+									},
+									"fuel_type": {
+										"type": "string"
+									},
+									"towing_weight": {
+										"type": "integer"
+									},
+									"maximum_gross_weight": {
+										"type": "integer"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Car type added"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/cars/fuel": {
+			"get": {
+				"summary": "Get all fuel types",
+				"tags": [
+					"Cars"
+				],
+				"security": [],
+				"description": "This endpoint returns all fuel types",
+				"responses": {
+					"200": {
+						"description": "A list of fuel types",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"type": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/cars/add": {
 			"post": {
 				"summary": "Add a car",

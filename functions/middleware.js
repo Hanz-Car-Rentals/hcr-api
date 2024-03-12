@@ -63,15 +63,11 @@ function hasPermission(permission, userPermissions) {
     if (userPermissions & permissions['ADMIN']) {
         return true;
     } else {
-        console.log('Permission:', permission);
-        console.log('User Permissions:', userPermissions);
-        console.log('Result:', (userPermissions & permission) === permission);
         return (userPermissions & permission) === permission;
     }
 }
 
 function checkPermission(permission) {
-	console.log(permission);
     return async function(req, res, next) {
         try {
             let authToken = req.headers["authorization"];
@@ -85,22 +81,16 @@ function checkPermission(permission) {
                 return res.status(401).json({ error: 'Unauthorized: Missing authorization token' });
             }
 			authToken = authToken.split(" ")[1];
-			console.log(authToken);
 
             const userRole = await getUserRoleFromDatabase(authToken);
-			console.log(userRole);
             if (!userRole) {
                 return res.status(403).json({ error: 'Forbidden: Invalid authorization token' });
             }
 
             const userPermissions = await getUserPermissionsFromDatabase(userRole);
-			console.log(userPermissions);
             if (!hasPermission(permissions[permission], userPermissions)) {
                 return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
             }
-
-			console.log('User has permission:', permission)
-
             // If user has the required permission, proceed to the next middleware/route handler
             next();
         } catch (error) {
@@ -122,6 +112,5 @@ function user_check(req, res, next) {
 module.exports = {
 	check_user_token,
 	checkPermission,
-	user_check,
-	getUserPermissionsFromDatabase
+	user_check
 };

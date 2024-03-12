@@ -9,9 +9,16 @@ var carsRouter = require('./API/cars');
 // var reviewsRouter = require('./API/reviews');
 // var rentallogRouter = require('./API/rentallog');
 
-router.use('/v2/users', usersRouter);
-router.use('/v2/cars', carsRouter);
+router.use('/users', usersRouter);
+router.use('/cars', carsRouter);
 // router.use('/reviews', reviewsRouter);
 // router.use('/rentallog', rentallogRouter);
+
+router.get('/', function(req, res, next){
+    res.json({
+        status: 418,
+        message: "I'm a teapot"
+    })
+})
 
 module.exports = router;
