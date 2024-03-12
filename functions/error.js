@@ -1,4 +1,4 @@
-const config = require('../../configs/config.json');
+const config = require('../configs/config.json');
 let webhook_url = config.webhook_url;
 const fetch = require('node-fetch')
 

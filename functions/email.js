@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
-const config = require('../../configs/config.json');
+const config = require('../configs/config.json');
 const crypto = require('crypto');
-let db = require('../../db');
+let db = require('../db');
 let { send_error } = require('./error');
 
 const transporter = nodemailer.createTransport({
@@ -15,6 +15,7 @@ const transporter = nodemailer.createTransport({
 });
 
 async function send_mail(email, text, subject){
+    console.log("email: " + email + " text: " + text + " subject: " + subject);
     await transporter.sendMail({
         from: config.email_server.from,
         to: email,
@@ -45,7 +46,7 @@ async function newUser(fname, email, id, host){
 
 async function forgot_password(email, id, host){
     var token = crypto.randomBytes(16).toString('hex');
-    db.query('UPDATE users SET password_reset_token = ?, reset_password_token_expires_at = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE id = ?', [token, id], function (err, rows) {
+    db.query('UPDATE users SET password_reset_token = ?, password_reset_token_expires_at = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE id = ?', [token, id], function (err, rows) {
         if(err) {
             send_error(err, 'Updating password reset token');
             throw err;

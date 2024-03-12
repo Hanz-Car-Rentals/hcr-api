@@ -1,14 +1,14 @@
 // require the needed modules
 var express = require("express");
-var db = require("../../../db");
+var db = require("../../db");
 var crypto = require("crypto");
-var { newUser, forgot_password } = require("../../../functions/v2/email");
-var { send_error } = require("../../../functions/v2/error");
+var { newUser, forgot_password } = require("../../functions/email");
+var { send_error } = require("../../functions/error");
 var {
   check_user_token,
   user_check,
   checkPermission
-} = require("../../../functions/v2/middleware");
+} = require("../../functions/middleware");
 
 // create the router
 var router = express.Router();

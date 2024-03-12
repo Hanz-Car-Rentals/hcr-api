@@ -1,5 +1,5 @@
-let db = require("../../db");
-let permissions = require("../../configs/permissions.json");
+let db = require("../db");
+let permissions = require("../configs/permissions.json");
 
 async function check_user_token(req, res, next){
 	var webToken = req.headers['authorization'];
@@ -59,10 +59,15 @@ async function getUserPermissionsFromDatabase(roleId) {
 }
 
 function hasPermission(permission, userPermissions) {
-    console.log('Permission:', permission);
-    console.log('User Permissions:', userPermissions);
-    console.log('Result:', (userPermissions & permission) === permission);
-    return (userPermissions & permission) === permission;
+    // if the user has the ADMIN permission then they can access everything
+    if (userPermissions & permissions['ADMIN']) {
+        return true;
+    } else {
+        console.log('Permission:', permission);
+        console.log('User Permissions:', userPermissions);
+        console.log('Result:', (userPermissions & permission) === permission);
+        return (userPermissions & permission) === permission;
+    }
 }
 
 function checkPermission(permission) {

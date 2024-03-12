@@ -1,5 +1,5 @@
 let cron = require('cron');
-let db = require('../../db');
+let db = require('../db');
 
 
 async function start_daily_jobs(){

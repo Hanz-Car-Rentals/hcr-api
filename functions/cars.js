@@ -1,4 +1,4 @@
-var db = require('../../db');
+var db = require('../db');
 
 async function rentCar(userId, carId, fromDate, toDate) {
     try {

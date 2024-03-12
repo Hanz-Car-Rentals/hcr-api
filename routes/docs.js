@@ -1,29 +1,29 @@
 // require the needed modules
 var express = require('express');
 
+var swaggerUi = require('swagger-ui-express');
+var docs = require('../docs/swagger.json');
+const { SwaggerTheme } = require('swagger-themes');
+
+const theme = new SwaggerTheme();
+
 var router = express.Router();
 
-var v1Router = require('./v1/doc_router');
-router.use('/v1', v1Router);
 
-var v2Router = require('./v2/doc_router');
-router.use('/v2', v2Router);
+
+const options = {
+	explorer: false,
+	customSiteTitle: 'HCR API Documentation v2',
+	customCss: theme.getBuffer('dark-monokai'),
+	customfavIcon: "/favicon.ico",
+};
 
 // send html to the user to click either v1 or v2 on the page 
 router.get('/', function (req, res) {
-  res.send(`
-  <html>
-    <head>
-      <title>API Documentation</title>
-    </head>
-    <body>
-      <h1>API Documentation</h1>
-      <p>Click on the version you want to see the documentation for:</p>
-      <a href="/docs/v1">v1</a>
-      <a href="/docs/v2">v2</a>
-    </body>
-  </html>
-  `);
+	res.redirect('/docs/v2/');
 });
+
+// user docs
+router.use('/v2', swaggerUi.serve, swaggerUi.setup(docs, options));
 
 module.exports = router;
