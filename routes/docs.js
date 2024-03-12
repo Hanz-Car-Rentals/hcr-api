@@ -18,11 +18,6 @@ const options = {
 	customfavIcon: "/favicon.ico",
 };
 
-// send html to the user to click either v1 or v2 on the page 
-router.get('/', function (req, res) {
-	res.redirect('/docs/v2/');
-});
-
 // user docs
 router.use('/', swaggerUi.serve, swaggerUi.setup(docs, options));
 

@@ -292,6 +292,98 @@
 				}
 			}
 		},
+		"/cars/fuel": {
+			"get": {
+				"summary": "Get all fuel types",
+				"tags": [
+					"Cars"
+				],
+				"security": [],
+				"description": "This endpoint returns all fuel types",
+				"responses": {
+					"200": {
+						"description": "A list of fuel types",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"type": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/cars/types": {
+			"get": {
+				"summary": "Get all car types",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint returns all car types",
+				"responses": {
+					"200": {
+						"description": "A list of car types",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"brand": {
+												"type": "string"
+											},
+											"model": {
+												"type": "string"
+											},
+											"build_year": {
+												"type": "integer"
+											},
+											"doors": {
+												"type": "integer"
+											},
+											"seats": {
+												"type": "integer"
+											},
+											"trunk_space": {
+												"type": "integer"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/cars/add/type": {
 			"post": {
 				"summary": "Add a car type",
@@ -343,51 +435,6 @@
 				"responses": {
 					"200": {
 						"description": "Car type added"
-					},
-					"401": {
-						"$ref": "#/components/responses/UnauthorizedError"
-					},
-					"403": {
-						"$ref": "#/components/responses/BadRequestError"
-					},
-					"404": {
-						"$ref": "#/components/responses/NotFoundError"
-					},
-					"500": {
-						"$ref": "#/components/responses/ServerError"
-					}
-				}
-			}
-		},
-		"/cars/fuel": {
-			"get": {
-				"summary": "Get all fuel types",
-				"tags": [
-					"Cars"
-				],
-				"security": [],
-				"description": "This endpoint returns all fuel types",
-				"responses": {
-					"200": {
-						"description": "A list of fuel types",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"id": {
-												"type": "integer"
-											},
-											"type": {
-												"type": "string"
-											}
-										}
-									}
-								}
-							}
-						}
 					},
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"
@@ -470,46 +517,6 @@
 				"responses": {
 					"200": {
 						"description": "Car added"
-					},
-					"401": {
-						"$ref": "#/components/responses/UnauthorizedError"
-					},
-					"403": {
-						"$ref": "#/components/responses/BadRequestError"
-					},
-					"404": {
-						"$ref": "#/components/responses/NotFoundError"
-					},
-					"500": {
-						"$ref": "#/components/responses/ServerError"
-					}
-				}
-			}
-		},
-		"/cars/remove": {
-			"delete": {
-				"summary": "Remove a car",
-				"tags": [
-					"Cars"
-				],
-				"description": "This endpoint removes a car",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"id": {
-										"type": "integer"
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "Car removed"
 					},
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"
@@ -628,6 +635,46 @@
 				"responses": {
 					"200": {
 						"description": "Car rented"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/cars/remove": {
+			"delete": {
+				"summary": "Remove a car",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint removes a car",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"id": {
+										"type": "integer"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Car removed"
 					},
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"
@@ -825,65 +872,6 @@
 				}
 			}
 		},
-		"/users/update/{id}": {
-			"put": {
-				"summary": "Update a user",
-				"tags": [
-					"Users"
-				],
-				"description": "This endpoint updates a user",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"email": {
-										"type": "string"
-									},
-									"fname": {
-										"type": "string"
-									},
-									"lname": {
-										"type": "string"
-									},
-									"admin": {
-										"type": "integer"
-									}
-								}
-							}
-						}
-					},
-					"responses": {
-						"200": {
-							"description": "User updated"
-						},
-						"401": {
-							"$ref": "#/components/responses/UnauthorizedError"
-						},
-						"403": {
-							"$ref": "#/components/responses/BadRequestError"
-						},
-						"404": {
-							"$ref": "#/components/responses/NotFoundError"
-						},
-						"500": {
-							"$ref": "#/components/responses/ServerError"
-						}
-					}
-				}
-			}
-		},
 		"/users/login": {
 			"post": {
 				"summary": "Login",
@@ -1018,6 +1006,65 @@
 					},
 					"500": {
 						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/users/update/{id}": {
+			"put": {
+				"summary": "Update a user",
+				"tags": [
+					"Users"
+				],
+				"description": "This endpoint updates a user",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string"
+									},
+									"fname": {
+										"type": "string"
+									},
+									"lname": {
+										"type": "string"
+									},
+									"admin": {
+										"type": "integer"
+									}
+								}
+							}
+						}
+					},
+					"responses": {
+						"200": {
+							"description": "User updated"
+						},
+						"401": {
+							"$ref": "#/components/responses/UnauthorizedError"
+						},
+						"403": {
+							"$ref": "#/components/responses/BadRequestError"
+						},
+						"404": {
+							"$ref": "#/components/responses/NotFoundError"
+						},
+						"500": {
+							"$ref": "#/components/responses/ServerError"
+						}
 					}
 				}
 			}

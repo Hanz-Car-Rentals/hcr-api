@@ -51,7 +51,7 @@ router.get("/fuel", function (req, res) {
 });
 
 // post /cars/add/type (create a new type of car)
-router.post("/add/type", function (req, res) {
+router.post("/add/type", check_user_token, checkPermission("ADD_REMOVE_VEHICLES"), function (req, res) {
 	let brand = req.body.brand;
 	let model = req.body.model;
 	let trunk_space = req.body.trunk_space;
