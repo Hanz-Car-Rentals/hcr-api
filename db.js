@@ -43,12 +43,13 @@ db.query("SELECT * FROM roles", function (err, result) {
 	if (err) throw err;
 	// If the roles table is empty, create the default roles
 	if (result.length === 0) {
-		db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Beheerder',			'De eigenaar van de website. Zorgt ervoor dat alles goed werkt en grijpt in als er problemen zijn.', 	2048]);
+		db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Beheerder',			'De eigenaar van de website. Zorgt ervoor dat alles goed werkt en grijpt in als er problemen zijn.', 	4096]);
 		db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['On-site Support', 	'Ze beheren de auto\'s op de locaties en zorgen ook dat nieuwe auto\'s op de website komen', 			2019]);
 		db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Verhuurder', 		'Medewerkers die beslissen of mensen een auto mogen huren of niet.',									67]);
 		db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Writer', 			'Creëren boeiende blogposts en optimaliseren auto beschrijvingen.', 									19]);
-		db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Gebruiker', 		'Mensen die een auto willen huren. Ze zoeken naar een auto, boeken er een en betalen online.', 			15], function (err, result) {
-		if (err) throw err;
+		db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Gebruiker', 		'Mensen die een auto willen huren. Ze zoeken naar een auto, boeken er een en betalen online.', 			15]);
+		db.query("INSERT INTO roles (role_name, role_desc, role_level) VALUES (?, ?, ?)", ['Gast Gebruiker',	'Mensen die hun e-mail nog niet hebben geverifieerd.', 3], function (err, result) {
+			if (err) throw err;
 			console.log("Default roles created");
 		});
 	}
@@ -68,7 +69,7 @@ db.query("CREATE TABLE IF NOT EXISTS users ( \
 	salt INT NOT NULL, \
 	password_reset_token TEXT, \
 	password_reset_token_expires_at TIMESTAMP, \
-	role INT NOT NULL, \
+	role INT NOT NULL DEFAULT 6, \
 	verified_drivers_licence BOOLEAN, \
 	times_rented INT, \
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \

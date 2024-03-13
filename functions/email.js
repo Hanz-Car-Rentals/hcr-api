@@ -15,7 +15,6 @@ const transporter = nodemailer.createTransport({
 });
 
 async function send_mail(email, text, subject){
-    console.log("email: " + email + " text: " + text + " subject: " + subject);
     await transporter.sendMail({
         from: config.email_server.from,
         to: email,
@@ -38,7 +37,7 @@ async function newUser(fname, email, id, host){
         };
 
         let subject = 'Account Verification';
-        let text = 'Dear '+ fname +'\nYour e-mail has been used for an account at Hanz Car Rentals.\n\nPlease click the following link to verify your account: https://' + host + '/api/v1/users/verify/' + token +'\n\nIf you did not create an account, please send an email to hanz.car.rentals@wolfsoft.solutions so we can remove the account assosiated with this account.';
+        let text = 'Dear '+ fname +'\nYour e-mail has been used for an account at Hanz Car Rentals.\n\nPlease click the following link to verify your account: https://' + host + '/api/v2/users/verify/' + token +'\n\nIf you did not create an account, please send an email to hanz.car.rentals@wolfsoft.solutions so we can remove the account assosiated with this account.';
     
         send_mail(email, text, subject);
     });

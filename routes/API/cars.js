@@ -128,6 +128,14 @@ router.post("/add/cartype", check_user_token, checkPermission("ADD_REMOVE_VEHICL
 // post /cars/add/car (create a new car)
 
 
+// put /cars/update/car (update a car)
+
+// put /cars/update/type (update a car type)
+
+// delete /cars/delete/type (delete a car type)
+
+// delete /cars/delete/car (delete a car)
+
 
 
 module.exports = router;

@@ -31,4 +31,8 @@ router.post("/add", check_user_token, function(req, res, next){
     });
 });
 
+// the route for getting all reviews for a car
+
+// the route for getting all reviews that the users posted
+
 module.exports = router;

@@ -68,7 +68,6 @@ function hasPermission(permission, userPermissions) {
 }
 
 function checkPermission(permission) {
-    console.log('Checking permission: ', permission)
     return async function(req, res, next) {
         try {
             let authToken = req.headers["authorization"];

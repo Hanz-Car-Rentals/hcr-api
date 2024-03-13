@@ -839,10 +839,10 @@
 									"email": {
 										"type": "string"
 									},
-									"fname": {
+									"first_name": {
 										"type": "string"
 									},
-									"lname": {
+									"last_name": {
 										"type": "string"
 									},
 									"password": {
@@ -977,10 +977,7 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"password1": {
-										"type": "string"
-									},
-									"password2": {
+									"password": {
 										"type": "string"
 									},
 									"email_token": {
@@ -1041,9 +1038,6 @@
 									},
 									"lname": {
 										"type": "string"
-									},
-									"admin": {
-										"type": "integer"
 									}
 								}
 							}
@@ -1052,6 +1046,56 @@
 					"responses": {
 						"200": {
 							"description": "User updated"
+						},
+						"401": {
+							"$ref": "#/components/responses/UnauthorizedError"
+						},
+						"403": {
+							"$ref": "#/components/responses/BadRequestError"
+						},
+						"404": {
+							"$ref": "#/components/responses/NotFoundError"
+						},
+						"500": {
+							"$ref": "#/components/responses/ServerError"
+						}
+					}
+				}
+			}
+		},
+		"/users/update/role/{id}": {
+			"put": {
+				"summary": "Update a users role",
+				"tags": [
+					"Users"
+				],
+				"description": "This endpoint updates a users role",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"role": {
+										"type": "integer"
+									}
+								}
+							}
+						}
+					},
+					"responses": {
+						"200": {
+							"description": "Users role updated"
 						},
 						"401": {
 							"$ref": "#/components/responses/UnauthorizedError"
