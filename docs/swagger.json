@@ -384,7 +384,7 @@
 				}
 			}
 		},
-		"/cars/add/type": {
+		"/cars/add/cartype": {
 			"post": {
 				"summary": "Add a car type",
 				"tags": [
@@ -451,7 +451,7 @@
 				}
 			}
 		},
-		"/cars/add": {
+		"/cars/add/car": {
 			"post": {
 				"summary": "Add a car",
 				"tags": [

@@ -9,8 +9,6 @@ const theme = new SwaggerTheme();
 
 var router = express.Router();
 
-
-
 const options = {
 	explorer: false,
 	customSiteTitle: 'HCR API Documentation v2',
