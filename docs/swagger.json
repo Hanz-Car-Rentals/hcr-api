@@ -3,7 +3,7 @@
 	"info": {
 		"title": "Hanz Car Rentals API",
 		"description": "This API is made for Hanz Car Rentals as a school project.",
-		"version": "2.2.0",
+		"version": "2.1.6",
 		"contact": {
 			"name": "Hanz",
 			"email": "hanz.car.rentals@wolfsoft.solutions",
@@ -1007,6 +1007,49 @@
 				}
 			}
 		},
+		"/users/update_password": {
+			"put": {
+				"summary": "Update password",
+				"tags": [
+					"Users"
+				],
+				"description": "This endpoint updates a user's password",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"new_password": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Password updated"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/users/update/{id}": {
 			"put": {
 				"summary": "Update a user",
@@ -1042,23 +1085,23 @@
 								}
 							}
 						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "User updated"
 					},
-					"responses": {
-						"200": {
-							"description": "User updated"
-						},
-						"401": {
-							"$ref": "#/components/responses/UnauthorizedError"
-						},
-						"403": {
-							"$ref": "#/components/responses/BadRequestError"
-						},
-						"404": {
-							"$ref": "#/components/responses/NotFoundError"
-						},
-						"500": {
-							"$ref": "#/components/responses/ServerError"
-						}
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
 					}
 				}
 			}
@@ -1092,23 +1135,23 @@
 								}
 							}
 						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Users role updated"
 					},
-					"responses": {
-						"200": {
-							"description": "Users role updated"
-						},
-						"401": {
-							"$ref": "#/components/responses/UnauthorizedError"
-						},
-						"403": {
-							"$ref": "#/components/responses/BadRequestError"
-						},
-						"404": {
-							"$ref": "#/components/responses/NotFoundError"
-						},
-						"500": {
-							"$ref": "#/components/responses/ServerError"
-						}
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
 					}
 				}
 			}
