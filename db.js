@@ -13,7 +13,6 @@ var db = mysql.createConnection({
 	database: config.db.name
 });
 
-
 // create the salts table if it doesn't exist. The fields are: id INT AUTOINCREMENT PRIMARY KEY, salt INT NOT NULL
 db.query(`CREATE TABLE IF NOT EXISTS salts (
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,7 +29,9 @@ db.query("CREATE TABLE IF NOT EXISTS roles ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
 	role_name TEXT NOT NULL, \
 	role_desc TEXT NOT NULL, \
-	role_level INT NOT NULL \
+	role_level INT NOT NULL, \
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP \
 )", function (err, result) {
 	if (err) throw err;
 	if(result.changedRows > 0){
@@ -82,7 +83,6 @@ db.query("CREATE TABLE IF NOT EXISTS users ( \
 	}
 });
 
-
 // add a user to the table if the database is empty
 db.query("SELECT * FROM users", function (err, result) {
 	if (err) throw err;
@@ -118,7 +118,9 @@ db.query("SELECT * FROM users", function (err, result) {
 // Create a table called fuel_types where these are the fields: id INT, fuel_type TEXT NOT NULL
 db.query("CREATE TABLE IF NOT EXISTS fuel_types ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
-	type TEXT NOT NULL \
+	type TEXT NOT NULL, \
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP \
 )", function (err, result) {
 	if (err) throw err;
 	if(result.changedRows > 0){
@@ -147,7 +149,9 @@ db.query("SELECT * FROM fuel_types", function (err, result) {
 // Create a table called body_types where these are the fields: id INT, body_type TEXT NOT NULL
 db.query("CREATE TABLE IF NOT EXISTS body_types ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
-	type TEXT NOT NULL \
+	type TEXT NOT NULL, \
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP \
 )", function (err, result) {
 	if (err) throw err;
 	if(result.changedRows > 0){
@@ -188,6 +192,8 @@ db.query("CREATE TABLE IF NOT EXISTS car_types ( \
 	maximum_gross_weight INT NOT NULL, \
 	build_year INT NOT NULL, \
 	body_type INT NOT NULL, \
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, \
 	FOREIGN KEY (fuel) REFERENCES fuel_types(id), \
 	FOREIGN KEY (body_type) REFERENCES body_types(id) \
 )", function (err, result) {
@@ -311,7 +317,6 @@ db.query("CREATE TABLE IF NOT EXISTS reviews ( \
 	}
 });
 
-
 // Create a table called rentallog where these are the fields: id INT, user_id INT, car_id INT, start_date TIMESTAMP, end_date TIMESTAMP, status INT NOT NULL, created_at TIMESTAMP, updated_at TIMESTAMP. The user_id is a foreign key to the users table and the car_id is a foreign key to the cars table and the status is a foreign key to the rental_status table
 db.query("CREATE TABLE IF NOT EXISTS rentallog ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
@@ -331,8 +336,6 @@ db.query("CREATE TABLE IF NOT EXISTS rentallog ( \
 		console.log("Table rentallog created");
 	}
 });
-
-
 
 // export the db connection
 module.exports = db;
