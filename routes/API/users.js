@@ -20,168 +20,165 @@ router.get('/', checkPermission('ADMIN'), function (req, res) {
 })
 
 router.post("/login", function (req, res) {
-  let email = req.body.email;
-  let password = req.body.password;
+	let email = req.body.email;
+	let password = req.body.password;
 
-  db.query(
-	"SELECT * FROM users WHERE email = ?",
-	[email],
-	function (error, results, fields) {
-	  if (error) {
-		send_error(error, "Error logging in");
-		res.send({ status: 500, message: "Error logging in" });
-	  } else {
-		if (results.length < 1) {
-		  res.send({ status: 401, message: "Invalid email or password" });
-		} else {
-		  let user = results[0];
-		  db.query(
-			"SELECT * FROM salts WHERE id = ?",
-			[user.salt],
-			function (error, results, fields) {
-			  if (error) {
+	db.query(
+		"SELECT * FROM users WHERE email = ?",
+		[email],
+		function (error, results, fields) {
+			if (error) {
 				send_error(error, "Error logging in");
-				throw error;
-			  }
-			  if (results.length < 1) {
+				res.send({ status: 500, message: "Error logging in" });
+			} else {
+				if (results.length < 1) {
 				res.send({ status: 401, message: "Invalid email or password" });
-				return;
-			  }
-			  let salt = results[0].salt;
-			  crypto.pbkdf2(
-				password,
-				salt,
-				310000,
-				32,
-				"sha256",
-				function (err, hashedPassword) {
-				  if (
-					hashedPassword.toString("hex") ==
-					user.password.toString("hex")
-				  ) {
-					// Create a user token
-					let token = crypto.randomBytes(16).toString("hex");
+				} else {
+					let user = results[0];
 					db.query(
-					  "UPDATE users SET token =?, token_expires_at = DATE_ADD(NOW(), INTERVAL 3 HOUR) WHERE id =?",
-					  [token, user.id],
-					  function (err, rows) {
-						if (err) {
-						  send_error(err, "Updating token");
-						  throw err;
-						}
-						// get the role info
-						db.query(
-						  "SELECT * FROM roles WHERE id =?",
-						  [user.role],
-						  async function (error, results, fields) {
+						"SELECT * FROM salts WHERE id = ?",
+						[user.salt],
+						function (error, results, fields) {
 							if (error) {
-							  send_error(error, "Error logging in");
-							  throw error;
+								send_error(error, "Error logging in");
+								throw error;
 							}
 							if (results.length < 1) {
-							  res.send({
-								status: 401,
-								message: "Invalid email or password",
-							  });
-							  return;
+								res.send({ status: 401, message: "Invalid email or password" });
+								return;
 							}
-							let role = results[0];
-							res.send({
-							  status: 200,
-							  message: "Successfully logged in",
-							  user: {
-								first_name: user.first_name,
-								last_name: user.last_name,
-								token: token,
-								role: role.role_name,
-							  },
-							});
-						  }
-						);
-					  }
+							let salt = results[0].salt;
+							crypto.pbkdf2(
+								password,
+								salt,
+								310000,
+								32,
+								"sha256",
+								function (err, hashedPassword) {
+									if (hashedPassword.toString("hex") == user.password.toString("hex")) {
+										// Create a user token
+										let token = crypto.randomBytes(16).toString("hex");
+										db.query(
+										"UPDATE users SET token =?, token_expires_at = DATE_ADD(NOW(), INTERVAL 3 HOUR) WHERE id =?",
+										[token, user.id],
+										function (err, rows) {
+											if (err) {
+												send_error(err, "Updating token");
+												throw err;
+											}
+											// get the role info
+											db.query(
+												"SELECT * FROM roles WHERE id =?",
+												[user.role],
+												async function (error, results, fields) {
+													if (error) {
+														send_error(error, "Error logging in");
+														throw error;
+													}
+													if (results.length < 1) {
+														res.send({
+															status: 401,
+															message: "Invalid email or password",
+														});
+														return;
+													}
+													let role = results[0];
+													res.send({
+														status: 200,
+														message: "Successfully logged in",
+														user: {
+															first_name: user.first_name,
+															last_name: user.last_name,
+															token: token,
+															role: role.role_name,
+														},
+													});
+												}
+											);
+										}
+									);
+								} else {
+									res.send({
+										status: 401,
+										message: "Invalid email or password",
+									});
+								}
+								return;
+								}
+							);
+						}
 					);
-				  } else {
-					res.send({
-					  status: 401,
-					  message: "Invalid email or password",
-					});
-				  }
-				  return;
 				}
-			  );
 			}
-		  );
 		}
-	  }
-	}
-  );
+	);
 });
 
 router.post("/add", function (req, res) {
-  let first_name = req.body.first_name;
-  let last_name = req.body.last_name;
-  let email = req.body.email;
-  let password = req.body.password;
+	let first_name = req.body.first_name;
+	let last_name = req.body.last_name;
+	let email = req.body.email;
+	let password = req.body.password;
 
-  if(!first_name || !last_name || !email || !password) {
-	res.send({ status: 400, message: "Missing required fields" });
-	return;
-  }
-
-  const salt = crypto.randomBytes(16).toString("hex");
-  // Hash the password using the salt
-  crypto.pbkdf2(
-	password,
-	salt,
-	310000,
-	32,
-	"sha256",
-	function (err, hashedPassword) {
-	  if (err) throw err;
-	  // Insert the salt into the salts table
-	  db.query(
-		"INSERT INTO salts (salt) VALUES (?)",
-		[salt],
-		function (err, result) {
-		  if (err) throw err;
-
-		  // Get the ID of the inserted salt
-		  const saltId = result.insertId;
-
-		  // Insert the user into the users table with the salt ID
-		  db.query(
-			"INSERT INTO users (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)",
-			[first_name, last_name, email, hashedPassword, saltId],
-			function (err, result) {
-			  if (err) throw err;
-			  // Send the new user an email
-			  newUser(first_name, email, result.insertId, req.headers.host);
-			  res.send({ status: 200, message: "Successfully added user" });
-			}
-		  );
-		}
-	  );
+	if(!first_name || !last_name || !email || !password) {
+		res.send({ status: 400, message: "Missing required fields" });
+		return;
 	}
-  );
+
+	const salt = crypto.randomBytes(16).toString("hex");
+	// Hash the password using the salt
+	crypto.pbkdf2(
+		password,
+		salt,
+		310000,
+		32,
+		"sha256",
+		function (err, hashedPassword) {
+			if (err) throw err;
+			// Insert the salt into the salts table
+			db.query(
+				"INSERT INTO salts (salt) VALUES (?)",
+				[salt],
+				function (err, result) {
+					if (err) throw err;
+
+					// Get the ID of the inserted salt
+					const saltId = result.insertId;
+
+					// Insert the user into the users table with the salt ID
+					db.query(
+						"INSERT INTO users (first_name, last_name, email, password, salt) VALUES (?, ?, ?, ?, ?)",
+						[first_name, last_name, email, hashedPassword, saltId],
+						function (err, result) {
+							if (err) throw err;
+							// Send the new user an email
+							newUser(first_name, email, result.insertId, req.headers.host);
+							res.send({ status: 200, message: "Successfully added user" });
+						}
+					);
+				}
+			);
+		}
+	);
 });
 
 // users route to get all users as admin user
 router.get("/", check_user_token, checkPermission("ADMIN"), function (req, res) {
-  db.query(
-	"SELECT id,first_name,last_name,email,email_verified,role,verified_drivers_licence,times_rented,currently_renting,created_at,updated_at FROM users",
-	function (error, results, fields) {
-	  if (error) {
-		send_error(error, "Error getting users");
-		res.send({ status: 500, message: "Error getting users" });
-	  } else {
-		res.send({
-		  status: 200,
-		  message: "Successfully got users",
-		  users: results,
-		});
-	  }
-	}
-  );
+	db.query(
+		"SELECT id,first_name,last_name,email,email_verified,role,verified_drivers_licence,times_rented,currently_renting,created_at,updated_at FROM users",
+		function (error, results, fields) {
+			if (error) {
+				send_error(error, "Error getting users");
+				res.send({ status: 500, message: "Error getting users" });
+			} else {
+				res.send({
+					status: 200,
+					message: "Successfully got users",
+					users: results,
+				});
+			}
+		}
+	);
 });
 
 // users/user/{id} route to get a single user
@@ -229,9 +226,9 @@ router.get("/user/:id", check_user_token, user_check, function (req, res) {
 						);
 					}
 					res.send({
-					status: 200,
-					message: "Successfully got user",
-					user: results[0],
+						status: 200,
+						message: "Successfully got user",
+						user: results[0],
 					});
 				});
 			}
