@@ -7,19 +7,64 @@ var {
 	user_check,
 	checkPermission
 } = require("../../functions/middleware");
+var { query } = require("../../functions/database_queries");
 
 // create the router
 var router = express.Router();
 
 // get /cars (all cars)
-router.get("/", function (req, res) {
-	db.query("SELECT * FROM cars", function (err, result) {
-		if (err) {
-			send_error(res, err);
-		} else {
-			res.send(result);
-		}
-	});
+router.get("/", async function (req, res) {
+    try {
+        // Fetch all cars
+        let result = await query("SELECT * FROM cars");
+
+        // Process picture_url to an array
+        result.forEach((car) => {
+            car.picture_url = car.picture_url.split(",");
+        });
+
+        // Fetch all locations
+        let locations = await query("SELECT * FROM locations");
+
+        // Map location id to location name for each car
+        result.forEach((car) => {
+            let location = locations.find((loc) => loc.id === car.location);
+            if (location) {
+                car.location = location.location;
+            }
+        });
+
+        // Fetch all car types
+        let carTypes = await query("SELECT * FROM car_types");
+
+        // Fetch fuel type and body type for each car type
+        for (let car of result) {
+            let carType = carTypes.find((type) => type.id === car.car_type);
+            if (carType) {
+                // Fetch fuel type
+                let fuelType = await query("SELECT * FROM fuel_types WHERE id = ?", [carType.fuel]);
+                if (fuelType.length > 0) {
+                    carType.fuel = fuelType[0].type;
+                } else {
+					send_error("Fetch fuel type", "Fuel type not found for car type:", carType.id)
+                }
+
+                // Fetch body type
+                let bodyType = await query("SELECT * FROM body_types WHERE id = ?", [carType.body_type]);
+                if (bodyType.length > 0) {
+                    carType.body_type = bodyType[0].type;
+                } else {
+					send_error("Can't find body_type", "Body type not found for car type:", carType.id);
+                }
+
+                car.car_type = carType;
+            }
+        }
+
+        res.send(result);
+    } catch (err) {
+        send_error(res, err);
+    }
 });
 
 // get /cars/:id (car by id)
@@ -126,13 +171,54 @@ router.post("/add/cartype", check_user_token, checkPermission("ADD_REMOVE_VEHICL
 });
 
 // post /cars/add/car (create a new car)
+router.post("/add/car", check_user_token, checkPermission("ADD_REMOVE_VEHICLES"), function (req, res) {
+	let car_type = req.body.car_type;
+	let license_plate = req.body.license_plate;
+	let color = req.body.color;
+	let price_per_day = req.body.price_per_day;
+	let picture_url = req.body.picture_url;
+	let location = req.body.location;
+
+	if (car_type == undefined || license_plate == undefined || color == undefined || price_per_day == undefined || picture_url == undefined || location == undefined) {
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
+
+	// make the picture_url an array of urls split by ,
+	picture_url = picture_url.split(",");
+
+	db.query("INSERT INTO cars ( \
+		car_type, \
+		license_plate, \
+		color, \
+		price_per_day, \
+		picture_url, \
+		location \
+	) VALUES (?, ?, ?, ?, ?, ?)", [
+		car_type,
+		license_plate,
+		color,
+		price_per_day,
+		`${picture_url}`,
+		location
+	], function (err, result) {
+		if (err) {
+			send_error(err, "Trying to add car");
+		} else {
+			res.send({ status: 200, message: "Car added" });
+		}
+	});
+});
 
 
 // put /cars/update/car (update a car)
 
+
 // put /cars/update/type (update a car type)
 
+
 // delete /cars/delete/type (delete a car type)
+
 
 // delete /cars/delete/car (delete a car)
 

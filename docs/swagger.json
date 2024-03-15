@@ -464,49 +464,22 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"brand": {
-										"type": "string"
-									},
-									"model": {
-										"type": "string"
-									},
-									"year": {
+									"car_type": {
 										"type": "integer"
+									},
+									"license_plate": {
+										"type": "string"
 									},
 									"color": {
 										"type": "string"
 									},
-									"price": {
+									"price_per_day": {
 										"type": "integer"
-									},
-									"licence_plate": {
-										"type": "string"
-									},
-									"seats": {
-										"type": "integer"
-									},
-									"space": {
-										"type": "integer"
-									},
-									"transmission": {
-										"type": "integer"
-									},
-									"fuel": {
-										"type": "string"
-									},
-									"doors": {
-										"type": "integer"
-									},
-									"towing_weight": {
-										"type": "integer"
-									},
-									"maximum_gross_weight": {
-										"type": "integer"
-									},
-									"location": {
-										"type": "string"
 									},
 									"picture_url": {
+										"type": "string"
+									},
+									"location": {
 										"type": "string"
 									}
 								}
