@@ -1365,6 +1365,7 @@
 		"/reviews/car/{carId}": {
 			"get": {
 				"summary": "Get all reviews for a car",
+				"security": [],
 				"tags": [
 					"Reviews"
 				],
