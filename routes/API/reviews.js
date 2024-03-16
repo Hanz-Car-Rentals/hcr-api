@@ -77,7 +77,7 @@ router.post("/add", check_user_token, checkPermission("POST_REVIEW"), function(r
 });
 
 // Delete a review
-router.delete("/delete/:reviewId", check_user_token, user_check("REMOVE_REVIEWS"), function(req, res, next){
+router.delete("/remove/:reviewId", check_user_token, user_check, function(req, res, next){
     let token = req.headers['authorization'];
     if(!token) return res.status(401).send({
         status: 401,

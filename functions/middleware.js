@@ -1,6 +1,5 @@
 let db = require("../db");
 let permissions = require("../configs/permissions.json");
-let { query } = require("./database_queries");
 
 async function check_user_token(req, res, next){
 	var webToken = req.headers['authorization'];
@@ -19,9 +18,13 @@ async function check_user_token(req, res, next){
 		db.query("SELECT * FROM users WHERE token = ?", [webToken], function(err, result){
 			if (err) throw err;
 			if (result.length > 0){
-                if(result[0].token_expires_at > new Date()){
+                // get the token_expires_at from the database and see if it isn't expired yet:
+                let token_expires_at = result[0].token_expires_at;
+                let now = new Date();
+                if (token_expires_at < now) {
                     res.status(401).send({"status": 401, "message": "Token expired"});
                 } else {
+                    req.user = result[0];
                     next();
                 }
 			}
@@ -63,11 +66,9 @@ async function getUserPermissionsFromDatabase(roleId) {
     });
 }
 
-function hasPermission(permission, userPermissions, given_id, user_id) {
+function hasPermission(permission, userPermissions) {
     // if the user has the ADMIN permission then they can access everything
     if (userPermissions & permissions['ADMIN']) {
-        return true;
-    } else if(given_id && user_id && given_id == user_id) {
         return true;
     } else {
         return (userPermissions & permission) === permission;
@@ -108,16 +109,12 @@ function checkPermission(permission) {
 }
 
 // if the user has permission or if the user is viewing their own page
-function user_check(permission){
-    return async function(req, res, next){
-        let token = req.headers["Authorization"].split(" ")[1];
-        let user = await query("SELECT * FROM users WHERE token =?", [token])
-        if(hasPermission(permission, req.headers["authorization"], req.params.id, user[0].id)){
-            next();
-        } else {
-            res.status(403).json({error: 'Forbidden: Insufficient permissions'});
-        }
-    }
+function user_check(req, res, next) {
+	if (req.user.id === req.params.id || hasPermission('admin', req.headers["authorization"])) {
+		next();
+	} else {
+		res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+	}
 }
 
 module.exports = {
