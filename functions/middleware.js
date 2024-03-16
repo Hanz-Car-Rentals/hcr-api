@@ -8,13 +8,12 @@ async function check_user_token(req, res, next){
 			webToken = webToken.split(" ")[1];
 		} else {
 			webToken = undefined;
-		}
-	}
+		};
+	};
 
 	if (webToken === undefined){
 		res.status(401).send({"status": 401, "message": "Invalid token"});
-	}
-	else{
+	} else{
 		db.query("SELECT * FROM users WHERE token = ?", [webToken], function(err, result){
 			if (err) throw err;
 			if (result.length > 0){
@@ -26,13 +25,12 @@ async function check_user_token(req, res, next){
                 } else {
                     req.user = result[0];
                     next();
-                }
-			}
-			else{
+                };
+			} else{
 				res.status(401).send({"status": 401, "message": "Invalid token"});
-			}
+			};
 		});
-	}
+	};
 };
 
 async function getUserRoleFromDatabase(authToken) {
@@ -49,7 +47,7 @@ async function getUserRoleFromDatabase(authToken) {
 			resolve(results[0].role);
         });
     });
-}
+};
 
 async function getUserPermissionsFromDatabase(roleId) {
     return new Promise((resolve, reject) => {
@@ -64,7 +62,7 @@ async function getUserPermissionsFromDatabase(roleId) {
             resolve(results[0].role_level);
         });
     });
-}
+};
 
 function hasPermission(permission, userPermissions) {
     // if the user has the ADMIN permission then they can access everything
@@ -72,8 +70,8 @@ function hasPermission(permission, userPermissions) {
         return true;
     } else {
         return (userPermissions & permission) === permission;
-    }
-}
+    };
+};
 
 function checkPermission(permission) {
     return async function(req, res, next) {
@@ -104,9 +102,9 @@ function checkPermission(permission) {
         } catch (error) {
             console.error('Error checking user permission:', error);
             res.status(500).json({ error: 'Internal Server Error' });
-        }
+        };
     };
-}
+};
 
 // if the user has permission or if the user is viewing their own page
 function user_check(req, res, next) {
@@ -114,8 +112,8 @@ function user_check(req, res, next) {
 		next();
 	} else {
 		res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
-	}
-}
+	};
+};
 
 module.exports = {
 	check_user_token,
