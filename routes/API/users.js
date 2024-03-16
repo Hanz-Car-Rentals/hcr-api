@@ -445,12 +445,14 @@ router.put("/update/role/:id", check_user_token, checkPermission("UPDATE_PEOPLE_
 // users/verify/{email_verify_token}
 router.get("/verify/:email_verify_token", function (req, res) {
 	db.query(
-		"UPDATE users SET email_verified=1, email_verify_token=?, role=? WHERE email_verify_token =?",
-		[null, 5, req.params.email_verify_token],
+		"UPDATE users SET email_verified=?, email_verify_token=?, role=? WHERE email_verify_token =?",
+		[1, null, 5, req.params.email_verify_token],
 		function (error, results, fields) {
 			if (error) {
 				send_error(error, "Error verifying email");
 				res.send({ status: 500, message: "Error verifying email" });
+			} if(results.affectedRows === 0) {
+				res.redirect("/failed.html");
 			} else {
 				res.redirect("/success.html");
 			}

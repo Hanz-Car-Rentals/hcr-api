@@ -6,7 +6,7 @@
 		"version": "2.1.6",
 		"contact": {
 			"name": "Hanz",
-			"email": "hanz.car.rentals@wolfsoft.solutions",
+			"email": "hanzcar.rentals@wolfsoft.solutions",
 			"url": "https://www.hanzcar.rentals/support"
 		}
 	},
@@ -1362,7 +1362,7 @@
 				}
 			}
 		},
-		"/reviews/{carId}": {
+		"/reviews/car/{carId}": {
 			"get": {
 				"summary": "Get all reviews for a car",
 				"tags": [
@@ -1425,7 +1425,7 @@
 				}
 			}
 		},
-		"/reviews/{userId}": {
+		"/reviews/user/{userId}": {
 			"get": {
 				"summary": "Get all reviews by a user",
 				"tags": [

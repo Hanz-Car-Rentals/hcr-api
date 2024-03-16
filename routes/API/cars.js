@@ -45,16 +45,12 @@ router.get("/", async function (req, res) {
                 let fuelType = await query("SELECT * FROM fuel_types WHERE id = ?", [carType.fuel]);
                 if (fuelType.length > 0) {
                     carType.fuel = fuelType[0].type;
-                } else {
-					send_error("Fetch fuel type", "Fuel type not found for car type:", carType.id)
                 }
 
                 // Fetch body type
                 let bodyType = await query("SELECT * FROM body_types WHERE id = ?", [carType.body_type]);
                 if (bodyType.length > 0) {
                     carType.body_type = bodyType[0].type;
-                } else {
-					send_error("Can't find body_type", "Body type not found for car type:", carType.id);
                 }
 
                 car.car_type = carType;
@@ -68,21 +64,49 @@ router.get("/", async function (req, res) {
 });
 
 // get /cars/:id (car by id)
-router.get("/car/:id", function (req, res) {
-	db.query("SELECT * FROM cars WHERE id = ?", [req.params.id], function (
-		err,
-		result
-	) {
-		if (err) {
-			send_error(res, err);
-		} else {
-			if (result.length > 0) {
-				res.send(result);
-			} else {
-				res.status(404).send({ status: 404, message: "Car not found" });
-			}
+router.get("/car/:id", async function (req, res) {
+	try {
+		let id = req.params.id;
+
+		// Fetch car by id
+		let result = await query("SELECT * FROM cars WHERE id = ?", [id]);
+		if (result.length === 0) {
+			res.status(404).send({ status: 404, message: "Car not found" });
+			return;
 		}
-	});
+		result = result[0];
+
+		// Process picture_url to an array
+		result.picture_url = result.picture_url.split(",");
+
+		// Fetch location
+		let location = await query("SELECT * FROM locations WHERE id = ?", [result.location]);
+		if (location.length > 0) {
+			result.location = location[0].location;
+		}
+
+		// Fetch car type
+		let carType = await query("SELECT * FROM car_types WHERE id = ?", [result.car_type]);
+		if (carType.length > 0) {
+			// Fetch fuel type
+			let fuelType = await query("SELECT * FROM fuel_types WHERE id = ?", [carType[0].fuel]);
+			if (fuelType.length > 0) {
+				carType[0].fuel = fuelType[0].type;
+			}
+
+			// Fetch body type
+			let bodyType = await query("SELECT * FROM body_types WHERE id = ?", [carType[0].body_type]);
+			if (bodyType.length > 0) {
+				carType[0].body_type = bodyType[0].type;
+			}
+
+			result.car_type = carType[0];
+		}
+
+		res.send(result);
+	} catch (err) {
+		send_error(res, err);
+	}
 });
 
 // get /cars/fuel (all fuel types)

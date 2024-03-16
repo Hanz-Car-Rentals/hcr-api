@@ -6,13 +6,13 @@ var router = express.Router();
 
 var usersRouter = require('./API/users');
 var carsRouter = require('./API/cars');
-// var reviewsRouter = require('./API/reviews');
+var reviewsRouter = require('./API/reviews');
 // var logsRouter = require('./API/logs');
 // var rolesRouter = require('./API/roles');
 
 router.use('/users', usersRouter);
 router.use('/cars', carsRouter);
-// router.use('/reviews', reviewsRouter);
+router.use('/reviews', reviewsRouter);
 // router.use('/logs', logsRouter);
 // router.use('/roles', roleRouter);
 
