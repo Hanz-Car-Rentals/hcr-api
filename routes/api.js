@@ -7,12 +7,14 @@ var router = express.Router();
 var usersRouter = require('./API/users');
 var carsRouter = require('./API/cars');
 // var reviewsRouter = require('./API/reviews');
-// var rentallogRouter = require('./API/rentallog');
+// var logsRouter = require('./API/logs');
+// var rolesRouter = require('./API/roles');
 
 router.use('/users', usersRouter);
 router.use('/cars', carsRouter);
 // router.use('/reviews', reviewsRouter);
-// router.use('/rentallog', rentallogRouter);
+// router.use('/logs', logsRouter);
+// router.use('/roles', roleRouter);
 
 router.get('/', function(req, res, next){
     res.json({

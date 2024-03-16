@@ -1129,13 +1129,139 @@
 				}
 			}
 		},
-		"/rentallog": {
+		"/logs": {
 			"get": {
-				"summary": "Get all rental logs",
+				"summary": "Get all rental logs.",
 				"tags": [
 					"Rental Logs"
 				],
 				"description": "This endpoint returns all rental logs",
+				"responses": {
+					"200": {
+						"description": "A list of rental logs",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"car_id": {
+												"type": "integer"
+											},
+											"user_id": {
+												"type": "integer"
+											},
+											"from_date": {
+												"type": "string"
+											},
+											"to_date": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/logs/{carId}": {
+			"get": {
+				"summary": "Get all rental logs for a car",
+				"tags": [
+					"Rental Logs"
+				],
+				"description": "This endpoint returns all rental logs for a car",
+				"parameters": [
+					{
+						"name": "carId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of rental logs",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"car_id": {
+												"type": "integer"
+											},
+											"user_id": {
+												"type": "integer"
+											},
+											"from_date": {
+												"type": "string"
+											},
+											"to_date": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/logs/{userId}": {
+			"get": {
+				"summary": "Get all rental logs by a user",
+				"tags": [
+					"Rental Logs"
+				],
+				"description": "This endpoint returns all rental logs by a user",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "A list of rental logs",
@@ -1190,6 +1316,132 @@
 				],
 				"description": "This endpoint returns all reviews",
 				"security": [],
+				"responses": {
+					"200": {
+						"description": "A list of reviews",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"car_id": {
+												"type": "integer"
+											},
+											"user_id": {
+												"type": "integer"
+											},
+											"rating": {
+												"type": "integer"
+											},
+											"comment": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/reviews/{carId}": {
+			"get": {
+				"summary": "Get all reviews for a car",
+				"tags": [
+					"Reviews"
+				],
+				"description": "This endpoint returns all reviews for a car",
+				"parameters": [
+					{
+						"name": "carId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of reviews",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"car_id": {
+												"type": "integer"
+											},
+											"user_id": {
+												"type": "integer"
+											},
+											"rating": {
+												"type": "integer"
+											},
+											"comment": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/reviews/{userId}": {
+			"get": {
+				"summary": "Get all reviews by a user",
+				"tags": [
+					"Reviews"
+				],
+				"description": "This endpoint returns all reviews by a user",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
 				"responses": {
 					"200": {
 						"description": "A list of reviews",
@@ -1314,6 +1566,176 @@
 					},
 					"500": {
 						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/roles": {
+			"get": {
+				"summary": "Get all roles",
+				"tags": [
+					"Roles"
+				],
+				"description": "This endpoint returns all roles",
+				"responses": {
+					"200": {
+						"description": "A list of roles",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"role": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/roles/add": {
+			"post": {
+				"summary": "Add a role",
+				"tags": [
+					"Roles"
+				],
+				"description": "This endpoint adds a role",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"role": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Role added"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/roles/remove/{id}": {
+			"delete": {
+				"summary": "Remove a role",
+				"tags": [
+					"Roles"
+				],
+				"description": "This endpoint removes a role",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Role removed"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/roles/update/{id}": {
+			"put": {
+				"summary": "Update a role",
+				"tags": [
+					"Roles"
+				],
+				"description": "This endpoint updates a role",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"role": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Role updated"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/UnauthorizedError"
 					}
 				}
 			}
