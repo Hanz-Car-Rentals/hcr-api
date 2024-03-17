@@ -7,13 +7,13 @@ var { send_error } = require("../../functions/error");
 var {
   check_user_token,
   user_check,
-  checkPermission
+  check_permission
 } = require("../../functions/middleware");
 
 // create the router
 var router = express.Router();
 
-router.get('/', checkPermission('ADMIN'), function (req, res) {
+router.get('/', check_permission('ADMIN'), function (req, res) {
   res.json({
 	message: 'You have the permission to access this route'
   })
@@ -163,7 +163,7 @@ router.post("/add", function (req, res) {
 });
 
 // users route to get all users as admin user
-router.get("/", check_user_token, checkPermission("ADMIN"), function (req, res) {
+router.get("/", check_user_token, check_permission("ADMIN"), function (req, res) {
 	db.query(
 		"SELECT id,first_name,last_name,email,email_verified,role,verified_drivers_licence,times_rented,currently_renting,created_at,updated_at FROM users",
 		function (error, results, fields) {
@@ -412,7 +412,7 @@ router.put("/update/:id", check_user_token, user_check, function (req, res) {
 });
 
 // users/update/role/:id route to update a user's role
-router.put("/update/role/:id", check_user_token, checkPermission("UPDATE_PEOPLE_ROLES"), function (req, res) {
+router.put("/update/role/:id", check_user_token, check_permission("UPDATE_PEOPLE_ROLES"), function (req, res) {
 	let role = req.body.role;
 
 	// if the user doesn't have their email verified then return a 403 because the user isn't allowed a new role.

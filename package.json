@@ -22,7 +22,7 @@
     "api-school-project": "bin/www.js"
   },
   "scripts": {
-    "test": "nodemon ."
+    "start": "nodemon ."
   },
   "repository": {
     "type": "git",

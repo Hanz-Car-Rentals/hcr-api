@@ -5,13 +5,12 @@ var { send_error } = require("../../functions/error");
 var {
   check_user_token,
   user_check,
-  checkPermission,
+  check_permission,
+  check_user_permission,
 } = require("../../functions/middleware");
 
 // create the router
 var router = express.Router();
-
-
 
 // /reviews the route to view all the reviews
 router.get("/", function(req, res, next){
@@ -39,20 +38,23 @@ router.get("/car/:carId", function(req, res, next){
 });
 
 // /reviews/user/{userId} the route for getting all reviews that the users posted
-router.get("/user/:userId", check_user_token, user_check, function(req, res, next){
-    let userId = req.params.userId;
-    db.query("SELECT * FROM reviews WHERE user_id = ?", [userId], function(err, results){
+router.get("/user/:id", check_user_token, check_user_permission("user_reviews", "REMOVE_REVIEWS"), function(req, res, next){
+    let id = req.params.id;
+    db.query("SELECT * FROM reviews WHERE user_id = ?", [id], function(err, results){
         if (err){
             send_error(err, "Error getting reviews");
             res.status(500).send({status: 500, message: "Error getting reviews"});
         } else {
+            if(results.length === 0){
+                res.status(404).send({status: 404, message: "No reviews found"});
+            }
             res.send({status: 200, message: "Reviews", data: results});
         }
     });
 });
 
 // the route for posting a review
-router.post("/add", check_user_token, checkPermission("POST_REVIEW"), function(req, res, next){
+router.post("/add", check_user_token, check_permission("POST_REVIEW"), function(req, res, next){
     let token = req.headers['authorization'];
     if(!token) return res.status(401).send({
         status: 401,
@@ -77,7 +79,7 @@ router.post("/add", check_user_token, checkPermission("POST_REVIEW"), function(r
 });
 
 // Delete a review
-router.delete("/remove/:reviewId", check_user_token, user_check, function(req, res, next){
+router.delete("/remove/:id", check_user_token, check_user_permission("remove_review", "REMOVE_REVIEWS"), function(req, res, next){
     let token = req.headers['authorization'];
     if(!token) return res.status(401).send({
         status: 401,
@@ -86,16 +88,16 @@ router.delete("/remove/:reviewId", check_user_token, user_check, function(req, r
     token = token.split(" ");
     db.query("SELECT * FROM users WHERE token = ?", [token[1]], function(err, results){
         let userId = results[0].id;
-        let reviewId = req.params.reviewId;
+        let id = req.params.id;
 
-        db.query("SELECT * FROM reviews WHERE id = ?", [reviewId], function(err, results){
+        db.query("SELECT * FROM reviews WHERE id = ?", [id], function(err, results){
             if (err){
                 send_error(err, "Error deleting review");
                 res.status(500).send({status: 500, message: "Error deleting review"});
             } else {
                 if (results.length > 0){
                     if (results[0].user_id == userId){
-                        db.query("DELETE FROM reviews WHERE id = ?", [reviewId], function(err, results){
+                        db.query("DELETE FROM reviews WHERE id = ?", [id], function(err, results){
                             if (err){
                                 send_error(err, "Error deleting review");
                                 res.status(500).send({status: 500, message: "Error deleting review"});

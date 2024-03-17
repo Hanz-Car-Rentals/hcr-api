@@ -1,5 +1,6 @@
 let db = require("../db");
 let permissions = require("../configs/permissions.json");
+let { query } = require("./database_queries");
 
 async function check_user_token(req, res, next){
 	var webToken = req.headers['authorization'];
@@ -73,7 +74,7 @@ function hasPermission(permission, userPermissions) {
     };
 };
 
-function checkPermission(permission) {
+function check_permission(permission) {
     return async function(req, res, next) {
         try {
             let authToken = req.headers["authorization"];
@@ -115,8 +116,86 @@ function user_check(req, res, next) {
 	};
 };
 
+
+
+function check_user_permission(route, permission) {
+    return async function(req, res, next) {
+        try {
+            let authToken = req.headers["authorization"];
+            if(authToken && !authToken.startsWith("Bearer ")) {
+                return res.status(403).send({
+                    "status": 403,
+                    "message": "Invalid token"
+                });
+            }
+            if (!authToken) {
+                return res.status(401).json({ error: 'Unauthorized: Missing authorization token' });
+            }
+            authToken = authToken.split(" ")[1];
+            let user = await query("SELECT * FROM users WHERE token =? ", [authToken]);
+
+            if (user.length === 0) {
+                return res.status(403).json({ error: 'Forbidden: Invalid authorization token' });
+            }
+            
+            let userRole = await query("SELECT * FROM roles WHERE id = ?", [user[0].role]);
+            if (userRole.length === 0) {
+                return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+            }
+            switch (route) {
+                case "user_reviews":
+                    if(req.params.id != user[0].id) {
+                        return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+                    }
+
+                    let all_user_reviews = await query("SELECT * FROM reviews WHERE user_id = ?", [user[0].id]);
+                    if (all_user_reviews.length === 0) {
+                        return res.status(404).json({ error: 'review not found' });
+                    }
+                    if (all_user_reviews[0].user_id === user[0].id) {
+                        next();
+                    } else {
+                        // check the users role permission
+                        let userPermissions = await query("SELECT * FROM roles WHERE id = ?", [user[0].role]);
+                        if (userPermissions.length === 0) {
+                            return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+                        }
+                        if (!hasPermission(permissions[permission], userPermissions[0].role_level)) {
+                            return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+                        }
+                        next();
+                    }
+                    break;
+                case "remove_review":
+                    let review_by_id = await query("SELECT * FROM reviews WHERE id = ?", [req.params.id]);
+                    if (review_by_id.length === 0) {
+                        return res.status(404).json({ error: 'Review not found' });
+                    }
+                    if (review_by_id[0].user_id === user[0].id) {
+                        next();
+                    } else {
+                        // check the users role permission
+                        let userPermissions = await query("SELECT * FROM roles WHERE id = ?", [user[0].role]);
+                        if (userPermissions.length === 0) {
+                            return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+                        }
+                        if (!hasPermission(permissions[permission], userPermissions[0].role_level)) {
+                            return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+                        }
+                        next();
+                    }
+                    break;
+            }
+        } catch (error) {
+            console.error('Error checking user permission:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        };
+    };
+};
+
 module.exports = {
 	check_user_token,
-	checkPermission,
-	user_check
+	check_permission,
+	user_check,
+    check_user_permission
 };

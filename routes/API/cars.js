@@ -5,7 +5,7 @@ var { send_error } = require("../../functions/error");
 var {
 	check_user_token,
 	user_check,
-	checkPermission
+	check_permission
 } = require("../../functions/middleware");
 var { query } = require("../../functions/database_queries");
 
@@ -130,7 +130,7 @@ router.get("/types", function (req, res) {
 });
 
 // post /cars/add/type (create a new type of car)
-router.post("/add/cartype", check_user_token, checkPermission("ADD_REMOVE_VEHICLES"), async function (req, res) {
+router.post("/add/cartype", check_user_token, check_permission("ADD_REMOVE_VEHICLES"), async function (req, res) {
 	let brand = req.body.brand;
 	let model = req.body.model;
 	let trunk_space = req.body.trunk_space;
@@ -195,7 +195,7 @@ router.post("/add/cartype", check_user_token, checkPermission("ADD_REMOVE_VEHICL
 });
 
 // post /cars/add/car (create a new car)
-router.post("/add/car", check_user_token, checkPermission("ADD_REMOVE_VEHICLES"), function (req, res) {
+router.post("/add/car", check_user_token, check_permission("ADD_REMOVE_VEHICLES"), function (req, res) {
 	let car_type = req.body.car_type;
 	let license_plate = req.body.license_plate;
 	let color = req.body.color;
