@@ -22,16 +22,16 @@
     "api-school-project": "bin/www.js"
   },
   "scripts": {
-    "start": "nodemon ."
+    "start": "nodemon --no-warnings ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/howlingarcher/school-project.git#api"
+    "url": "git+https://github.com/Hanz-Car-Rentals/hcr-api.git"
   },
   "author": "HowlingArcher",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/howlingarcher/school-project/issues"
+    "url": "https://github.com/Hanz-Car-Rentals/hcr-api/issues"
   },
-  "homepage": "https://github.com/howlingarcher/school-project/tree/api#readme"
+  "homepage": "https://github.com/Hanz-Car-Rentals/hcr-api/#readme"
 }

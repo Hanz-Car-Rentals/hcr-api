@@ -187,7 +187,7 @@ db.query("CREATE TABLE IF NOT EXISTS car_types ( \
 	fuel INT NOT NULL, \
 	doors INT NOT NULL, \
 	seats INT NOT NULL, \
-	transmission TEXT NOT NULL, \
+	transmission BOOLEAN NOT NULL, \
 	towing_weight INT, \
 	maximum_gross_weight INT NOT NULL, \
 	build_year INT NOT NULL, \
