@@ -174,7 +174,7 @@ router.get("/", check_user_token, check_permission("ADMIN"), function (req, res)
 				res.send({
 					status: 200,
 					message: "Successfully got users",
-					users: results,
+					data: results,
 				});
 			}
 		}
@@ -228,7 +228,7 @@ router.get("/user/:id", check_user_token, user_check, function (req, res) {
 					res.send({
 						status: 200,
 						message: "Successfully got user",
-						user: results[0],
+						data: results[0],
 					});
 				});
 			}

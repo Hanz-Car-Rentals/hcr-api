@@ -57,7 +57,7 @@ router.get("/", async function (req, res) {
             }
         }
 
-        res.send(result);
+        res.json({status: 200, message: "Successfully fethed all cars", data: result});
     } catch (err) {
         send_error(res, err);
     }
@@ -103,7 +103,7 @@ router.get("/car/:id", async function (req, res) {
 			result.car_type = carType[0];
 		}
 
-		res.send(result);
+		res.json({status: 200, message: "Successfully fethed car", data: result});
 	} catch (err) {
 		send_error(res, err);
 	}
@@ -115,7 +115,7 @@ router.get("/fuel", function (req, res) {
 		if (err) {
 			send_error(res, err);
 		}
-		res.send(result);
+		res.send({status: 200, message: "Successfully fetched fuel types", data: result});
 	});
 });
 
@@ -125,7 +125,7 @@ router.get("/types", function (req, res) {
 		if (err) {
 			send_error(res, err);
 		}
-		res.send(result);
+		res.json({status: 200, message: "Successfully fetched car types", data: result});
 	});
 });
 
