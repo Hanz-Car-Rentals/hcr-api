@@ -451,6 +451,62 @@
 				}
 			}
 		},
+		"/cars/rent/{id}": {
+			"post": {
+				"summary": "Rent a car",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint rents a car",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"user_id": {
+										"type": "string"
+									},
+									"from_date": {
+										"type": "string"
+									},
+									"to_date": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Car rented"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/cars/add/car": {
 			"post": {
 				"summary": "Add a car",
@@ -506,7 +562,7 @@
 				}
 			}
 		},
-		"/cars/update/{id}": {
+		"/cars/update/car/{id}": {
 			"put": {
 				"summary": "Update a car",
 				"tags": [
@@ -529,52 +585,55 @@
 							"schema": {
 								"type": "object",
 								"properties": {
+									"car_type": {
+										"type": "integer"
+									},
+									"license_plate": {
+										"type": "string"
+									},
 									"color": {
 										"type": "string"
 									},
-									"price": {
-										"type": "integer"
-									},
-									"licence_plate": {
-										"type": "string"
-									},
-									"location": {
+									"price_per_day": {
 										"type": "string"
 									},
 									"picture_url": {
 										"type": "string"
+									},
+									"location": {
+										"type": "integer"
 									}
 								}
 							}
 						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Car updated"
 					},
-					"responses": {
-						"200": {
-							"description": "Car updated"
-						},
-						"401": {
-							"$ref": "#/components/responses/UnauthorizedError"
-						},
-						"403": {
-							"$ref": "#/components/responses/UnauthorizedError"
-						},
-						"404": {
-							"$ref": "#/components/responses/UnauthorizedError"
-						},
-						"500": {
-							"$ref": "#/components/responses/UnauthorizedError"
-						}
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/UnauthorizedError"
 					}
 				}
 			}
 		},
-		"/cars/rent/{id}": {
+		"/cars/update/type/{id}": {
 			"put": {
-				"summary": "Rent a car",
+				"summary": "Update a car type",
 				"tags": [
 					"Cars"
 				],
-				"description": "This endpoint rents a car",
+				"description": "This endpoint updates a car type",
 				"parameters": [
 					{
 						"name": "id",
@@ -591,14 +650,35 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"user_id": {
+									"brand": {
 										"type": "string"
 									},
-									"from_date": {
+									"model": {
 										"type": "string"
 									},
-									"to_date": {
-										"type": "string"
+									"build_year": {
+										"type": "integer"
+									},
+									"doors": {
+										"type": "integer"
+									},
+									"seats": {
+										"type": "integer"
+									},
+									"trunk_space": {
+										"type": "integer"
+									},
+									"transmission": {
+										"type": "integer"
+									},
+									"fuel_type": {
+										"type": "integer"
+									},
+									"towing_weight": {
+										"type": "integer"
+									},
+									"maximum_gross_weight": {
+										"type": "integer"
 									}
 								}
 							}
@@ -607,19 +687,19 @@
 				},
 				"responses": {
 					"200": {
-						"description": "Car rented"
+						"description": "Car type updated"
 					},
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"
 					},
 					"403": {
-						"$ref": "#/components/responses/BadRequestError"
+						"$ref": "#/components/responses/UnauthorizedError"
 					},
 					"404": {
-						"$ref": "#/components/responses/NotFoundError"
+						"$ref": "#/components/responses/UnauthorizedError"
 					},
 					"500": {
-						"$ref": "#/components/responses/ServerError"
+						"$ref": "#/components/responses/UnauthorizedError"
 					}
 				}
 			}

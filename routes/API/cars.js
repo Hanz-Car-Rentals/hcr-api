@@ -235,11 +235,116 @@ router.post("/add/car", check_user_token, check_permission("ADD_REMOVE_VEHICLES"
 });
 
 
-// put /cars/update/car (update a car)
+// put /cars/update/car/{carId} (update a car)
+router.put("/update/car/:id",check_user_token, check_permission("EDIT_VEHICLES"), function (req, res) {
+	let id = req.params.id;
+	let car_type = req.body.car_type;
+	let license_plate = req.body.license_plate;
+	let color = req.body.color;
+	let price_per_day = req.body.price_per_day;
+	let picture_url = req.body.picture_url;
+	let location = req.body.location;
 
+	if (car_type == undefined || license_plate == undefined || color == undefined || price_per_day == undefined || picture_url == undefined || location == undefined) {
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
 
-// put /cars/update/type (update a car type)
+	// make the picture_url an array of urls split by ,
+	picture_url = picture_url.split(",");
 
+	db.query("UPDATE cars SET \
+		car_type = ?, \
+		license_plate = ?, \
+		color = ?, \
+		price_per_day = ?, \
+		picture_url = ?, \
+		location = ? \
+		WHERE id = ?", 
+	[
+		car_type,
+		license_plate,
+		color,
+		price_per_day,
+		`${picture_url}`,
+		location,
+		id
+	], function (err, result) {
+		if (err) {
+			send_error(err, "Trying to update car");
+		} else {
+			res.send({ status: 200, message: "Car updated" });
+		};
+	});
+});
+
+// put /cars/update/type/{typeId} (update a car type)
+router.put("/update/type/:id", check_user_token, check_permission("EDIT_VEHICLES"), async function (req, res) {
+	let id = req.body.id;
+	let brand = req.body.brand;
+	let model = req.body.model;
+	let trunk_space = req.body.trunk_space;
+	let seats = req.body.seats;
+	let doors = req.body.doors;
+	let fuel_type = req.body.fuel_type;
+	let transmission = req.body.transmission;
+	let towing_weight = req.body.towing_weight;
+	let maximum_gross_weight = req.body.maximum_gross_weight;
+	let build_year = req.body.build_year;
+	let body_type = req.body.body_type;
+
+	// make a function that will check if the transmission is valid and if it is a correct boolean. Make it so that i can check if it is given in the underlying if statement
+	async function check_transmission(transmission) {
+		// if the transmission is not given, return false
+		if(transmission !== undefined || transmission !== null) {
+			// if the transmission is not a boolean, return false
+			if(transmission == 0 || transmission == 1){
+				return "is valid transmission";
+			} else {
+				return null;
+			}
+		}
+	}
+
+	if(!id || !build_year || !brand || !model || !trunk_space || !seats || !doors || !fuel_type || !await check_transmission(transmission) || !towing_weight || !maximum_gross_weight || !body_type) {
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
+
+	db.query("UPDATE car_types SET \
+		brand = ?, \
+		model = ?, \
+		trunk_space = ?, \
+		seats = ?, \
+		doors = ?, \
+		fuel = ?, \
+		transmission = ?, \
+		towing_weight = ?, \
+		maximum_gross_weight = ?, \
+		build_year = ?, \
+		body_type = ? \
+		WHERE id = ?",
+	[
+		brand,
+		model,
+		trunk_space,
+		seats,
+		doors,
+		fuel_type,
+		transmission,
+		towing_weight,
+		maximum_gross_weight,
+		build_year,
+		body_type,
+		id
+	], function (err, result) {
+		if (err) {
+			send_error(err, "Trying to update car type");
+		} else {
+			res.send({ status: 200, message: "Car type updated" });
+		}
+	});
+});
 
 // delete /cars/delete/type (delete a car type)
 
