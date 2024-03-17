@@ -23,4 +23,20 @@ router.get("/", check_user_token, check_permission("GET_ROLES"), function(req, r
 	});
 });
 
+// the route for getting a role by id
+router.get("/:id", check_user_token, check_permission("GET_ROLES"), function(req, res, next){
+	let id = req.params.id;
+	db.query("SELECT * FROM roles WHERE id = ?", [id], function(err, results){
+		if (err){
+			send_error(err, "Error getting role");
+			res.status(500).send({status: 500, message: "Error getting role"});
+		} else {
+			if(results.length === 0){
+				res.status(404).send({status: 404, message: "Role not found"});
+			}
+			res.send({status: 200, message: "Role", data: results});
+		}
+	});
+});
+
 module.exports = router;

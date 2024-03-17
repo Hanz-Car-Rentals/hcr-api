@@ -1615,6 +1615,107 @@
 				}
 			}
 		},
+		"/roles/{id}": {
+			"get": {
+				"summary": "Get a role by ID",
+				"tags": [
+					"Roles"
+				],
+				"description": "This endpoint returns a role by its ID",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A role object",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "integer"
+										},
+										"role": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/roles/update/{id}": {
+			"put": {
+				"summary": "Update a role",
+				"tags": [
+					"Roles"
+				],
+				"description": "This endpoint updates a role",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"role": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Role updated"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+		},
 		"/roles/add": {
 			"post": {
 				"summary": "Add a role",
@@ -1687,56 +1788,6 @@
 					},
 					"500": {
 						"$ref": "#/components/responses/ServerError"
-					}
-				}
-			}
-		},
-		"/roles/update/{id}": {
-			"put": {
-				"summary": "Update a role",
-				"tags": [
-					"Roles"
-				],
-				"description": "This endpoint updates a role",
-				"parameters": [
-					{
-						"name": "id",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"role": {
-										"type": "string"
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"description": "Role updated"
-					},
-					"401": {
-						"$ref": "#/components/responses/UnauthorizedError"
-					},
-					"403": {
-						"$ref": "#/components/responses/UnauthorizedError"
-					},
-					"404": {
-						"$ref": "#/components/responses/UnauthorizedError"
-					},
-					"500": {
-						"$ref": "#/components/responses/UnauthorizedError"
 					}
 				}
 			}
