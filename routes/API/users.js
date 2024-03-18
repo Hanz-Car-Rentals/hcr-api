@@ -13,11 +13,11 @@ var {
 // create the router
 var router = express.Router();
 
-router.get('/', check_permission('ADMIN'), function (req, res) {
-  res.json({
-	message: 'You have the permission to access this route'
-  })
-})
+// router.get('/', check_permission('ADMIN'), function (req, res) {
+//   res.json({
+// 	message: 'You have the permission to access this route'
+//   })
+// })
 
 router.post("/login", function (req, res) {
 	let email = req.body.email;
@@ -165,7 +165,7 @@ router.post("/add", function (req, res) {
 // users route to get all users as admin user
 router.get("/", check_user_token, check_permission("ADMIN"), function (req, res) {
 	db.query(
-		"SELECT id,first_name,last_name,email,email_verified,role,verified_drivers_licence,times_rented,currently_renting,created_at,updated_at FROM users",
+		"SELECT id,first_name,last_name,email,email_verified,role,verified_drivers_licence,times_rented,created_at,updated_at FROM users",
 		function (error, results, fields) {
 			if (error) {
 				send_error(error, "Error getting users");
@@ -184,7 +184,7 @@ router.get("/", check_user_token, check_permission("ADMIN"), function (req, res)
 // users/user/{id} route to get a single user
 router.get("/user/:id", check_user_token, user_check, function (req, res) {
 	db.query(
-		"SELECT id,first_name,last_name,email,email_verified,role,verified_drivers_licence,times_rented,currently_renting,created_at,updated_at FROM users WHERE id =?",
+		"SELECT id,first_name,last_name,email,email_verified,role,verified_drivers_licence,times_rented,created_at,updated_at FROM users WHERE id =?",
 		[req.params.id],
 		function (error, results, fields) {
 			if (error) {
@@ -205,26 +205,6 @@ router.get("/user/:id", check_user_token, user_check, function (req, res) {
 					return;
 					}
 					results[0].role = role_results[0];
-					// get the currently_renting info from the cars table:
-					if (results[0].currently_renting === null) {
-						results[0].currently_renting = null;
-					} else {
-						db.query(
-							"SELECT * FROM cars WHERE id =?",
-							[results[0].currently_renting],
-							function (error, car_results, fields) {
-							if (error) {
-								send_error(error, "Error getting user");
-								throw error;
-							}
-							if (car_results.length < 1) {
-								res.send({ status: 500, message: "Error getting user" });
-								return;
-							}
-							results[0].currently_renting = car_results[0];
-							}
-						);
-					}
 					res.send({
 						status: 200,
 						message: "Successfully got user",

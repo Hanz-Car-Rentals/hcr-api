@@ -108,8 +108,26 @@ function check_permission(permission) {
 };
 
 // if the user has permission or if the user is viewing their own page
-function user_check(req, res, next) {
-	if (req.user.id === req.params.id || hasPermission('admin', req.headers["authorization"])) {
+async function user_check(req, res, next) {
+    let authToken = req.headers["authorization"];
+	if(authToken && !authToken.startsWith("Bearer ")) {
+		return res.status(403).send({
+			"status": 403,
+			"message": "Invalid token"
+		});
+	}
+    if (!authToken) {
+        return res.status(401).json({ error: 'Unauthorized: Missing authorization token' });
+    }
+	authToken = authToken.split(" ")[1];
+
+    const userRole = await getUserRoleFromDatabase(authToken);
+    if (!userRole) {
+        return res.status(403).json({ error: 'Forbidden: Invalid authorization token' });
+    }
+
+    const userPermissions = await getUserPermissionsFromDatabase(userRole);
+	if (req.user.id === req.params.id || hasPermission(permissions["ADMIN"], userPermissions)) {
 		next();
 	} else {
 		res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
