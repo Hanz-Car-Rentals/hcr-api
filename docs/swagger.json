@@ -1809,7 +1809,13 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"role": {
+									"role_name": {
+										"type": "string"
+									},
+									"role_desc": {
+										"type": "string"
+									},
+									"permissions": {
 										"type": "string"
 									}
 								}
@@ -1819,8 +1825,9 @@
 				},
 				"responses": {
 					"200": {
-						"description": "Role added"
-					},
+						"status": 200,
+						"message": "Role created"
+					  },
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"
 					},

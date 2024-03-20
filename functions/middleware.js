@@ -215,5 +215,6 @@ module.exports = {
 	check_user_token,
 	check_permission,
 	user_check,
-    check_user_permission
+    check_user_permission,
+    hasPermission
 };
