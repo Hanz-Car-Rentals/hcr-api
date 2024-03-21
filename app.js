@@ -4,11 +4,13 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var crypto = require('crypto');
-var { send_error } = require('./functions/error');
+var { send_error } = require('./functions/error.js');
+let db = require('./db.js');
 
 // require the routers
 var indexRouter = require('./routes/index');
 
+global.db = db;
 
 
 // whipe deleted users daily
@@ -29,12 +31,6 @@ app.use(express.urlencoded({ extended: false }));
 
 // use the routers
 app.use('/', indexRouter);
-
-app.post('/test', function(req, res) {
-    console.log(req.body);
-    res.send('Test route');
-});
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

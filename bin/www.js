@@ -105,6 +105,8 @@ process.stdin.on('data', function (text) {
   }
 });
 
+console.clear();
+
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
