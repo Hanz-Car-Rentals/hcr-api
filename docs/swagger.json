@@ -337,7 +337,7 @@
 				}
 			}
 		},
-		"/cars/types": {
+		"/cars/cartypes": {
 			"get": {
 				"summary": "Get all car types",
 				"tags": [
@@ -384,6 +384,44 @@
 				}
 			}
 		},
+		"/cars/bodytypes": {
+			"get": {
+				"summary": "Get all body types",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint returns all body types",
+				"responses": {
+					"200": {
+						"description": "A list of body types",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"type": {
+												"type": "string"
+											},
+											"created_at": {
+												"type": "string"
+											},
+											"updated_at": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/cars/add/cartype": {
 			"post": {
 				"summary": "Add a car type",
@@ -418,8 +456,11 @@
 									"transmission": {
 										"type": "integer"
 									},
+									"body_type": {
+										"type": "integer"
+									},
 									"fuel_type": {
-										"type": "string"
+										"type": "integer"
 									},
 									"towing_weight": {
 										"type": "integer"
@@ -546,6 +587,46 @@
 				"responses": {
 					"200": {
 						"description": "Car added"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/cars/add/bodytype": {
+			"post": {
+				"summary": "Add a body type",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint adds a car",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"type": {
+										"body_type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "body type added"
 					},
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"
@@ -704,20 +785,30 @@
 				}
 			}
 		},
-		"/cars/remove": {
-			"delete": {
-				"summary": "Remove a car",
+		"/cars/update/car/{id}/status": {
+			"put": {
+				"summary": "Update a cars status",
 				"tags": [
 					"Cars"
 				],
-				"description": "This endpoint removes a car",
+				"description": "This endpoint updates a car",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
 				"requestBody": {
 					"content": {
 						"application/json": {
 							"schema": {
 								"type": "object",
 								"properties": {
-									"id": {
+									"status": {
 										"type": "integer"
 									}
 								}
@@ -727,7 +818,115 @@
 				},
 				"responses": {
 					"200": {
+						"description": "Car status updated"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+		},
+		"/cars/remove/car/{id}": {
+			"delete": {
+				"summary": "Remove a car",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint removes a car",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
 						"description": "Car removed"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/cars/remove/bodytype/{id}": {
+			"delete": {
+				"summary": "Remove a body type",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint removes a body tyoe",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Body type removed"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/cars/remove/cartype/{id}": {
+			"delete": {
+				"summary": "Remove a car",
+				"tags": [
+					"Cars"
+				],
+				"description": "This endpoint removes a car type",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Car type removed"
 					},
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"

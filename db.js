@@ -255,7 +255,7 @@ db.query("SELECT * FROM locations", function (err, result) {
 // create the cars table if it doesn't exist the fields are: id INT, car_available BOOLEAN, picture_url TEXT, color VARCHAR, price_per_day DECIMAL, car_type INT, location INT, license_plate VARCHAR, created_at TIMESTAMP, updated_at TIMESTAMP. And the car_type is a foreign key to the car_types table and the location is a foreign key to the locations table
 db.query("CREATE TABLE IF NOT EXISTS cars ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
-	car_available BOOLEAN, \
+	car_available BOOLEAN NOT NULL DEFAULT 1, \
 	picture_url TEXT NOT NULL, \
 	color VARCHAR(255) NOT NULL, \
 	price_per_day DECIMAL(10,2) NOT NULL, \

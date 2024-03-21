@@ -120,12 +120,22 @@ router.get("/fuel", function (req, res) {
 });
 
 // get /cars/types (all car types)
-router.get("/types", function (req, res) {
+router.get("/cartypes", function (req, res) {
 	db.query("SELECT * FROM car_types", function (err, result) {
 		if (err) {
 			send_error(res, err);
 		}
 		res.json({status: 200, message: "Successfully fetched car types", data: result});
+	});
+});
+
+// get /cars/bodytypes (all body types)
+router.get("/bodytypes", function (req, res) {
+	db.query("SELECT * FROM body_types", function (err, result) {
+		if (err) {
+			send_error(res, err);
+		}
+		res.json({status: 200, message: "Successfully fetched body types", data: result});
 	});
 });
 
@@ -156,8 +166,42 @@ router.post("/add/cartype", check_user_token, check_permission("ADD_REMOVE_VEHIC
 		}
 	}
 
-	if(!build_year || !brand || !model || !trunk_space || !seats || !doors || !fuel_type || !await check_transmission(transmission) || !towing_weight || !maximum_gross_weight || !body_type) {
-		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+	if(towing_weight === null || towing_weight === 0){
+		towing_weight = null;
+	}
+
+	if(!build_year){
+		res.status(400).send({ status: 400, message: "Missing build_year" });
+		return;
+	} else if(!brand) {
+		res.status(400).send({ status: 400, message: "Missing brand" });
+		return;
+	} else if (!model){
+		res.status(400).send({ status: 400, message: "Missing model" });
+		return;
+	} else if(!trunk_space){
+		res.status(400).send({ status: 400, message: "Missing trunk_space" });
+		return;
+	} else if(!seats){
+		res.status(400).send({ status: 400, message: "Missing seats" });
+		return;
+	} else if(!doors){
+		res.status(400).send({ status: 400, message: "Missing doors" });
+		return;
+	} else if(!fuel_type){
+		res.status(400).send({ status: 400, message: "Missing fuel_type" });
+		return;
+	} else if(!await check_transmission(transmission)){
+		res.status(400).send({ status: 400, message: "Missing transmission" });
+		return;
+	} else if(!towing_weight && towing_weight !== null){
+		res.status(400).send({ status: 400, message: "Missing towing_weight" });
+		return;
+	} else if(!maximum_gross_weight){
+		res.status(400).send({ status: 400, message: "Missing maximum_gross_weight" });
+		return;
+	} else if(!body_type){
+		res.status(400).send({ status: 400, message: "Missing body_type" });
 		return;
 	}
 
@@ -234,6 +278,23 @@ router.post("/add/car", check_user_token, check_permission("ADD_REMOVE_VEHICLES"
 	});
 });
 
+// post /cars/add/bodytype (create a new car)
+router.post("/add/bodytype", check_user_token, check_permission("ADD_REMOVE_VEHICLES"), function (req, res) {
+	let body_type = req.body.body_type;
+
+	if (!body_type) {
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
+
+	db.query("INSERT INTO body_types (type) VALUES (?)", [body_type], function (err, result) {
+		if (err) {
+			send_error(err, "Trying to add body type");
+		} else {
+			res.send({ status: 200, message: "Body type added" });
+		}
+	});
+});
 
 // put /cars/update/car/{carId} (update a car)
 router.put("/update/car/:id",check_user_token, check_permission("EDIT_VEHICLES"), function (req, res) {
@@ -346,10 +407,47 @@ router.put("/update/type/:id", check_user_token, check_permission("EDIT_VEHICLES
 	});
 });
 
-// delete /cars/delete/type (delete a car type)
+// put /cars/update/carstatus (Updates a cars status)
+router.put("/update/car/:id/status", check_user_token, check_permission("CHANGE_STATUS"), function (req, res) {
+	let id = req.params.id;
+	let status = req.body.status;
+
+	if (!id || status !== 0 && status !== 1) {
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
+
+	db.query("UPDATE cars SET car_available = ? WHERE id = ?", [status, id], function (err, result) {
+		if (err) {
+			send_error(err, "Trying to update car status");
+		} else {
+			res.send({ status: 200, message: "Car status updated" });
+		}
+	});
+});
+
+// delete /cars/remove/cartype/:id (remove a car type)
 
 
-// delete /cars/delete/car (delete a car)
+// delete /cars/remove/bodytype/:id (remove a body type
+router.delete("/remove/bodytype/:id", function (req, res, next) {
+	let id = req.params.id;
+	if(!id){
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
+
+	db.query("DELETE FROM body_types WHERE id = ?", [id], function (err, result) {
+		if (err) {
+			send_error(err, "Trying to remove body type");
+		} else {
+			res.send({ status: 200, message: "Body type removed" });
+		}
+	});
+});
+
+
+// delete /cars/remove/car/:id (remove a car)
 
 
 
