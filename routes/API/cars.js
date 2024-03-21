@@ -426,9 +426,6 @@ router.put("/update/car/:id/status", check_user_token, check_permission("CHANGE_
 	});
 });
 
-// delete /cars/remove/cartype/:id (remove a car type)
-
-
 // delete /cars/remove/bodytype/:id (remove a body type
 router.delete("/remove/bodytype/:id", function (req, res, next) {
 	let id = req.params.id;
@@ -446,9 +443,39 @@ router.delete("/remove/bodytype/:id", function (req, res, next) {
 	});
 });
 
+// delete /cars/remove/cartype/:id (remove a car type)
+router.delete("/remove/cartype/:id", function (req, res, next) {
+	let id = req.params.id;
+	if(!id){
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
+
+	db.query("DELETE FROM car_types WHERE id = ?", [id], function (err, result) {
+		if (err) {
+			send_error(err, "Trying to remove car type");
+		} else {
+			res.send({ status: 200, message: "Car type removed" });
+		}
+	});
+});
 
 // delete /cars/remove/car/:id (remove a car)
+router.delete("/remove/car/:id", function (req, res, next) {
+	let id = req.params.id;
+	if(!id){
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
 
+	db.query("DELETE FROM cars WHERE id = ?", [id], function (err, result) {
+		if (err) {
+			send_error(err, "Trying to remove car");
+		} else {
+			res.send({ status: 200, message: "Car removed" });
+		}
+	});
+});
 
 
 module.exports = router;

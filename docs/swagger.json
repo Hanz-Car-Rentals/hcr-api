@@ -577,7 +577,7 @@
 										"type": "string"
 									},
 									"location": {
-										"type": "string"
+										"type": "integer"
 									}
 								}
 							}
