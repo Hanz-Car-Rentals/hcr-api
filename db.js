@@ -30,12 +30,21 @@ db.query("CREATE TABLE IF NOT EXISTS roles ( \
 	role_name TEXT NOT NULL, \
 	role_desc TEXT NOT NULL, \
 	role_level INT NOT NULL, \
+	deletable BOOLEAN DEFAULT 1, \
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP \
 )", function (err, result) {
 	if (err) throw err;
 	if(result.changedRows > 0){
 		console.log("Table roles created");
+	}
+});
+
+// add the deletable field to the roles table 
+db.query("ALTER TABLE roles ADD COLUMN deletable BOOLEAN DEFAULT 1", function (err, result) {
+	if (err) throw err;
+	if(result.changedRows > 0){
+		console.log("Column deletable added to roles table");
 	}
 });
 
