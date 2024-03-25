@@ -8,6 +8,7 @@ var {
 	check_permission
 } = require("../../functions/middleware");
 var { query } = require("../../functions/database_queries");
+var { rentCar } = require("../../functions/cars.js");
 
 // create the router
 var router = express.Router();
@@ -171,6 +172,8 @@ router.post("/add/cartype", check_user_token, check_permission("ADD_REMOVE_VEHIC
 	}
 
 	if(!build_year){
+		console.log(req.body);
+		console.log(req.body.build_year);
 		res.status(400).send({ status: 400, message: "Missing build_year" });
 		return;
 	} else if(!brand) {
@@ -293,6 +296,58 @@ router.post("/add/bodytype", check_user_token, check_permission("ADD_REMOVE_VEHI
 		} else {
 			res.send({ status: 200, message: "Body type added" });
 		}
+	});
+});
+
+
+
+// post /cars/rent/{carId} (let the user rent a car)
+router.post("/rent/:carId", check_user_token, check_permission("REQUEST_RENTAL"), async function(req, res, next) {
+	let carId = req.params.carId;
+	let user_id;
+	console.log(carId)
+	
+	let from_date_month = req.body.from_date_month;
+	let from_date_year = req.body.from_date_year;
+	let from_date_day = req.body.from_date_day;
+
+	if(!from_date_day || !from_date_month || !from_date_year){
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+        return;
+    }
+	
+	let from_date = `${from_date_year}-${from_date_month}-${from_date_day}`;
+
+	console.log(from_date);
+
+	let to_date_month = req.body.to_date_month;
+	let to_date_year = req.body.to_date_year;
+	let to_date_day = req.body.to_date_day;
+
+	if(!to_date_day || !to_date_month || !to_date_year){
+		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+	}
+
+	let to_date = `${to_date_year}-${to_date_month}-${to_date_day}`;
+	console.log(to_date);
+
+    if (!carId || !from_date || !to_date) {
+        res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+        return;
+    }
+
+	let bearer_token = req.headers["authorization"]
+	let token = bearer_token.split(" ");
+	token = token[1];
+
+	// get user id:
+	let user = await query("SELECT * FROM users WHERE token = ?", [token]);
+	user = user[0];
+	user_id = user.id;
+	
+
+	await rentCar(user_id, carId, from_date, to_date, (message) => {
+		res.json({ status: 200, message: message });
 	});
 });
 

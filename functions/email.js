@@ -60,5 +60,6 @@ async function forgot_password(email, id, host){
 
 module.exports = {
     newUser,
-    forgot_password
+    forgot_password,
+    send_mail
 };

@@ -205,6 +205,18 @@ db.query("CREATE TABLE IF NOT EXISTS car_types ( \
 	}
 });
 
+// add default car types
+db.query("SELECT * FROM car_types", function (err, result) {
+	if (err) throw err;
+	// If the body_types table is empty, create the default body types
+	if (result.length === 0) {
+		db.query("INSERT INTO car_types (brand, model, build_year, doors, seats, trunk_space, transmission, body_type, fuel, towing_weight, maximum_gross_weight) VALUES (?,?,?,?,?,?,?,?,?,?,?) ", ['Lada', '1200', 1979, 5, 5, 300, 0, 2, 1, 1500, 3500], function (err, result) {
+		if (err) throw err;
+			console.log("Default car type created");
+		});
+	}
+});
+
 // Create a table called locations where these are the fields: id INT, location TEXT NOT NULL
 db.query("CREATE TABLE IF NOT EXISTS locations ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
@@ -274,6 +286,18 @@ db.query("CREATE TABLE IF NOT EXISTS cars ( \
 	}
 });
 
+// add the default car
+db.query("SELECT * FROM cars", function (err, result) {
+	if (err) throw err;
+	// If the cars table is empty, create the default body types
+	if (result.length === 0) {
+		db.query("INSERT INTO cars (picture_url,color,price_per_day,car_type,location,license_plate) VALUES (?,?,?,?,?,?) ", ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Lada_1200.jpg/1200px-Lada_1200.jpg,https://www.autovisie.nl/wp-content/uploads/2021/05/lada-1200-serie-1-2-26000km-1e-eigenaar-1978-nieuw.jpeg", "pussy-pink", 563.58, 1,1,"aids"], function (err, result) {
+		if (err) throw err;
+			console.log("Default car created");
+		});
+	}
+});
+
 // Create a table called rental_status where these are the fields: id INT, status TEXT NOT NULL
 db.query("CREATE TABLE IF NOT EXISTS rental_status ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
@@ -318,8 +342,8 @@ db.query("CREATE TABLE IF NOT EXISTS reviews ( \
 	}
 });
 
-// Create a table called rentallog where these are the fields: id INT, user_id INT, car_id INT, start_date TIMESTAMP, end_date TIMESTAMP, status INT NOT NULL, created_at TIMESTAMP, updated_at TIMESTAMP. The user_id is a foreign key to the users table and the car_id is a foreign key to the cars table and the status is a foreign key to the rental_status table
-db.query("CREATE TABLE IF NOT EXISTS rentallog ( \
+// Create a table called rental logs where these are the fields: id INT, user_id INT, car_id INT, start_date TIMESTAMP, end_date TIMESTAMP, status INT NOT NULL, created_at TIMESTAMP, updated_at TIMESTAMP. The user_id is a foreign key to the users table and the car_id is a foreign key to the cars table and the status is a foreign key to the rental_status table
+db.query("CREATE TABLE IF NOT EXISTS log ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
 	user_id INT NOT NULL, \
 	car_id INT NOT NULL, \
