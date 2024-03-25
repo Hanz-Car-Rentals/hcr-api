@@ -12,8 +12,6 @@ async function check_user_token(req, res, next){
 		};
 	};
 
-    console.log(webToken)
-
 	if (webToken === undefined){
 		res.status(401).send({"status": 401, "message": "Invalid token"});
 	} else{
@@ -24,7 +22,6 @@ async function check_user_token(req, res, next){
                 let token_expires_at = result[0].token_expires_at;
                 let now = new Date();
                 if (token_expires_at < now) {
-                    console.log("token expired")
                     res.status(401).json({"status": 401, "message": "Token expired"});
                 } else {
                     req.user = result[0];
@@ -82,7 +79,6 @@ function check_permission(permission) {
         try {
             let authToken = req.headers["authorization"];
 			if(authToken && !authToken.startsWith("Bearer ")) {
-                console.log("invalid token")
 				return res.status(403).send({
 					"status": 403,
 					"message": "Invalid token"
@@ -95,13 +91,11 @@ function check_permission(permission) {
 
             const userRole = await getUserRoleFromDatabase(authToken);
             if (!userRole) {
-                console.log("Not authorized")
                 return res.status(403).json({ error: 'Forbidden: Invalid authorization token' });
             }
 
             const userPermissions = await getUserPermissionsFromDatabase(userRole);
             if (!hasPermission(permissions[permission], userPermissions)) {
-                console.log("no perms")
                 return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
             }
             // If user has the required permission, proceed to the next middleware/route handler

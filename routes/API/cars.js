@@ -172,8 +172,6 @@ router.post("/add/cartype", check_user_token, check_permission("ADD_REMOVE_VEHIC
 	}
 
 	if(!build_year){
-		console.log(req.body);
-		console.log(req.body.build_year);
 		res.status(400).send({ status: 400, message: "Missing build_year" });
 		return;
 	} else if(!brand) {
@@ -305,7 +303,6 @@ router.post("/add/bodytype", check_user_token, check_permission("ADD_REMOVE_VEHI
 router.post("/rent/:carId", check_user_token, check_permission("REQUEST_RENTAL"), async function(req, res, next) {
 	let carId = req.params.carId;
 	let user_id;
-	console.log(carId)
 	
 	let from_date_month = req.body.from_date_month;
 	let from_date_year = req.body.from_date_year;
@@ -318,8 +315,6 @@ router.post("/rent/:carId", check_user_token, check_permission("REQUEST_RENTAL")
 	
 	let from_date = `${from_date_year}-${from_date_month}-${from_date_day}`;
 
-	console.log(from_date);
-
 	let to_date_month = req.body.to_date_month;
 	let to_date_year = req.body.to_date_year;
 	let to_date_day = req.body.to_date_day;
@@ -329,7 +324,6 @@ router.post("/rent/:carId", check_user_token, check_permission("REQUEST_RENTAL")
 	}
 
 	let to_date = `${to_date_year}-${to_date_month}-${to_date_day}`;
-	console.log(to_date);
 
     if (!carId || !from_date || !to_date) {
         res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });

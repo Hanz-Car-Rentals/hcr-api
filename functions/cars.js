@@ -23,7 +23,6 @@ async function rentCar(userId, carId, fromDate, toDate, cb) {
         let dbuser_verified_drivers_license = dbuser[0].verified_drivers_licence;
 
         if(!dbuser_verified_email || !dbuser_verified_drivers_license){
-            console.log("don't got verified email or drivers license");
             new Error("Email or Drivers License not verified");
             return cb("Email or Drivers License not verified");
         }
@@ -37,11 +36,7 @@ async function rentCar(userId, carId, fromDate, toDate, cb) {
         // send email to all users with the "ACCEPT_DENY_REQUEST" permission
         let users = await query("SELECT * FROM users")
         users.forEach(async user => {
-            console.log(user.first_name);
-            console.log(user.role);
             let role_permissions = await query("SELECT * FROM roles WHERE id =?", [user.role]);
-            console.log(role_permissions[0].role_level)
-            console.log(hasPermission(permissions["ACCEPT_DENY_REQUEST"], await role_permissions[0].role_level));
             if(hasPermission(permissions["ACCEPT_DENY_REQUEST"], await role_permissions[0].role_level)){
                 send_request(dbuser[0].first_name +" "+dbuser[0].last_name, `${dbuser[0].first_name} requested to rent: \n\nCarId: ${carId}\nFrom-to: ${fromDate.replace(/-/g, "/")} - ${toDate.replace(/-/g, "/")}`);
                 send_mail(user.email, `Dear ${user.first_name},\n${dbuser[0].first_name} requested to rent: \n\nCarId: ${carId}\nFrom-to: ${fromDate.replace(/-/g, "/")} - ${toDate.replace(/-/g, "/")}\n\n`, "Car Rental Request");
