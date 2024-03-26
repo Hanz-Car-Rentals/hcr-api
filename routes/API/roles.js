@@ -164,13 +164,22 @@ router.put("/update/:id", check_user_token, check_permission("EDIT_ROLES"), asyn
 router.delete("/remove/:id", check_user_token, check_permission("ADD_REMOVE_ROLES"), function(req, res, next){
 	let id = req.params.id;
 	console.log(id);
-	db.query("DELETE FROM roles WHERE id = ?", [id], function(err, results){
-		if (err){
-			send_error(err, "Error deleting role");
-			return res.status(500).send({status: 500, message: "Error deleting role"});
-		} else {
-			return res.send({status: 200, message: "Role deleted"});
+	db.query("SELECT * FROM roles WHERE id = ?", [id], function(err, results){
+		if(err) throw err;
+		if(results.length === 0){
+			return res.status(404).send({status: 404, message: "Role not found"});
+		} 
+		if(results[0].deletable == 0 || results[0].deletable == "0"){
+			return res.status(403).send({status: 403, message: "Forbidden: Role is not deletable"});
 		}
+		db.query("DELETE FROM roles WHERE id = ?", [id], function(err, results){
+			if (err){
+				send_error(err, "Error deleting role");
+				return res.status(500).send({status: 500, message: "Error deleting role"});
+			} else {
+				return res.send({status: 200, message: "Role deleted"});
+			}
+		});
 	});
 });
 
