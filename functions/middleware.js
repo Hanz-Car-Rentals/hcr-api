@@ -203,6 +203,26 @@ function check_user_permission(route, permission) {
                         next();
                     }
                     break;
+                case "view_logs":
+                    let userId = req.params.userId;
+                    let logs = await query("SELECT * FROM log WHERE user_id = ?", [userId]);
+                    if (logs.length === 0) {
+                        return res.status(404).json({ error: 'Log not found' });
+                    }
+                    if (logs[0].user_id === user[0].id) {
+                        next();
+                    } else {
+                        // check the users role permission
+                        let userPermissions = await query("SELECT * FROM roles WHERE id = ?", [user[0].role]);
+                        if (userPermissions.length === 0) {
+                            return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+                        }
+                        if (!hasPermission(permissions[permission], userPermissions[0].role_level)) {
+                            return res.status(403).json({ error: 'Forbidden: Insufficient permissions' });
+                        }
+                        next();
+                    }
+
             }
         } catch (error) {
             console.error('Error checking user permission:', error);
