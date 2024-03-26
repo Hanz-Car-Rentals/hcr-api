@@ -74,6 +74,9 @@ db.query("CREATE TABLE IF NOT EXISTS users ( \
 	role INT NOT NULL DEFAULT 6, \
 	verified_drivers_licence BOOLEAN, \
 	times_rented INT, \
+	scheduled_for_deletion BOOLEAN, \
+	scheduled_for_deletion_at DATE, \
+	account_disabled BOOLEAN, \
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, \
 	FOREIGN KEY (salt) REFERENCES salts(id) \
@@ -220,7 +223,11 @@ db.query("SELECT * FROM car_types", function (err, result) {
 // Create a table called locations where these are the fields: id INT, location TEXT NOT NULL
 db.query("CREATE TABLE IF NOT EXISTS locations ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
-	location TEXT NOT NULL \
+	location TEXT NOT NULL, \
+	picture_url TEXT NOT NULL, \
+	description TEXT NOT NULL, \
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP \
 )", function (err, result) {
 	if (err) throw err;
 	if(result.changedRows > 0){

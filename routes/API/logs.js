@@ -6,7 +6,6 @@ var { send_mail } = require("../../functions/email");
 var { query } = require("../../functions/database_queries");
 var {
   check_user_token,
-  user_check,
   check_permission,
   check_user_permission,
 } = require("../../functions/middleware");
@@ -41,7 +40,7 @@ router.get("/car/:carid", check_user_token, check_permission("VIEW_LOGS"), funct
 });
 
 // get log by userid
-router.get("/user/:userId", check_user_token, check_user_permission("view_logs", ), function(req, res, next){
+router.get("/user/:userId", check_user_token, check_user_permission("view_logs", "VIEW_LOGS"), function(req, res, next){
     let userid = req.params.userId;
     db.query("SELECT * FROM log WHERE user_id = ?", [userid], function(err, results){
         if (err){
