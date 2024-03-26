@@ -340,8 +340,9 @@ router.post("/rent/:carId", check_user_token, check_permission("REQUEST_RENTAL")
 	user_id = user.id;
 	
 
-	await rentCar(user_id, carId, from_date, to_date, (message) => {
-		res.json({ status: 200, message: message });
+	await rentCar(user_id, carId, from_date, to_date, (data) => {
+		console.log(data);
+		res.json(data);
 	});
 });
 

@@ -14,7 +14,7 @@ async function rentCar(userId, carId, fromDate, toDate, cb) {
         let cars = await query("SELECT * FROM cars WHERE id =?", [carId]);
         if (cars[0].car_available === 0) {
             new Error("Car is not available");
-            return cb("Car is not available.");
+            return cb({status: 22, message: "Car is not available."});
         }
 
         let dbuser = await query("SELECT * FROM users WHERE id =?", [userId]);
@@ -24,7 +24,7 @@ async function rentCar(userId, carId, fromDate, toDate, cb) {
 
         if(!dbuser_verified_email || !dbuser_verified_drivers_license){
             new Error("Email or Drivers License not verified");
-            return cb("Email or Drivers License not verified");
+            return cb({status:403, message:"Email or Drivers License not verified"});
         }
 
         // Insert into log table
@@ -53,9 +53,11 @@ async function rentCar(userId, carId, fromDate, toDate, cb) {
         // Commit transaction
         await db.commit();
 
+        cb({status: 200, message: "Request sent to staff for approval."});
+
     } catch (error) {
         // Rollback if any error occurs
-        cb("Something went wrong");
+        cb({status:500, message:"Something went wrong"});
         await db.rollback();
         throw error;
     }

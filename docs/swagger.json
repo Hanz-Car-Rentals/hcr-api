@@ -492,7 +492,7 @@
 				}
 			}
 		},
-		"/cars/rent/{id}": {
+		"/cars/rent/{carId}": {
 			"post": {
 				"summary": "Rent a car",
 				"tags": [
@@ -501,7 +501,7 @@
 				"description": "This endpoint rents a car",
 				"parameters": [
 					{
-						"name": "id",
+						"name": "carId",
 						"in": "path",
 						"required": true,
 						"schema": {
@@ -515,13 +515,22 @@
 							"schema": {
 								"type": "object",
 								"properties": {
-									"user_id": {
+									"from_date_year": {
 										"type": "string"
 									},
-									"from_date": {
+									"from_date_month": {
 										"type": "string"
 									},
-									"to_date": {
+									"from_date_day": {
+										"type": "string"
+									},
+									"to_date_year": {
+										"type": "string"
+									},
+									"to_date_month": {
+										"type": "string"
+									},
+									"to_date_day": {
 										"type": "string"
 									}
 								}
@@ -1487,7 +1496,7 @@
 				}
 			}
 		},
-		"/logs/{carId}": {
+		"/logs/car/{carId}": {
 			"get": {
 				"summary": "Get all rental logs for a car",
 				"tags": [
@@ -1550,7 +1559,7 @@
 				}
 			}
 		},
-		"/logs/{userId}": {
+		"/logs/user/{userId}": {
 			"get": {
 				"summary": "Get all rental logs by a user",
 				"tags": [
