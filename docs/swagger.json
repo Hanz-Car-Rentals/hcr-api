@@ -1408,6 +1408,32 @@
 				}
 			}
 		},
+		"/users/logout": {
+			"delete": {
+				"summary": "Logs a user out.",
+				"tags": [
+					"Users"
+				],
+				"description": "This endpoint Logs the user out.",
+				"responses": {
+					"200": {
+						"description": "Users role updated"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/logs": {
 			"get": {
 				"summary": "Get all rental logs.",

@@ -440,4 +440,20 @@ router.get("/verify/:email_verify_token", function (req, res) {
 	);
 });
 
+// users/logout (set the token to null in the database)
+router.delete("/logout", check_user_token, function (req, res) {
+	db.query(
+		"UPDATE users SET token =? WHERE token =?",
+		[null, req.headers["authorization"].split(" ")[1]],
+		function (error, results, fields) {
+			if (error) {
+				send_error(error, "Error logging out");
+				res.send({ status: 500, message: "Error logging out" });
+			} else {
+				res.send({ status: 200, message: "Successfully logged out" });
+			}
+		}
+	);
+});
+
 module.exports = router;
