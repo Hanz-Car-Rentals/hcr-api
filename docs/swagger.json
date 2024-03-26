@@ -1622,6 +1622,303 @@
 				}
 			}
 		},
+		"/logs/pending": {
+			"get": {
+				"summary": "Get all pending requests",
+				"tags": [
+					"Rental Logs"
+				],
+				"description": "This endpoint returns all pending requests",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of pending requests",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"car_id": {
+												"type": "integer"
+											},
+											"user_id": {
+												"type": "integer"
+											},
+											"from_date": {
+												"type": "string"
+											},
+											"to_date": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/logs/approved": {
+			"get": {
+				"summary": "Get all approved requests",
+				"tags": [
+					"Rental Logs"
+				],
+				"description": "This endpoint returns all approved requests",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of approved requests.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"car_id": {
+												"type": "integer"
+											},
+											"user_id": {
+												"type": "integer"
+											},
+											"from_date": {
+												"type": "string"
+											},
+											"to_date": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/logs/denied": {
+			"get": {
+				"summary": "Get all denied requests",
+				"tags": [
+					"Rental Logs"
+				],
+				"description": "This endpoint returns all denied requests",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "A list of denied requests.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"car_id": {
+												"type": "integer"
+											},
+											"user_id": {
+												"type": "integer"
+											},
+											"from_date": {
+												"type": "string"
+											},
+											"to_date": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/logs/accept/{logId}": {
+			"post": {
+				"summary": "Accept a rent request",
+				"tags": [
+					"Rental Logs"
+				],
+				"description": "Accept a rent request.",
+				"parameters": [
+					{
+						"name": "logId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Rent request accepted",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"status": {
+												"type": "integer"
+											},
+											"message": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/logs/deny/{logId}": {
+			"post": {
+				"summary": "Deny a rent request",
+				"tags": [
+					"Rental Logs"
+				],
+				"description": "Deny a rent request.",
+				"parameters": [
+					{
+						"name": "logId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Rent request denied",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"status": {
+												"type": "integer"
+											},
+											"message": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/reviews": {
 			"get": {
 				"summary": "Get all reviews",
