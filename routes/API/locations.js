@@ -51,5 +51,61 @@ router.get("/name/:name", function (req, res) {
     });
 });
 
+// add a location
+router.post("/add", function (req, res) {
+    let location = req.body.location;
+    let picture_url = req.body.picture_url;
+    let description = req.body.description;
+    let phone_number = req.body.phone_number;
+    let address = req.body.address;
+    db.query(
+        "INSERT INTO locations (location, picture_url, description, phone_number, address) VALUES (?, ?, ?, ?, ?)",
+        [location, picture_url, description, phone_number, address],
+        function (err, results) {
+            if (err) {
+                send_error(err, "Error adding location");
+                res.status(500).send({ status: 500, message: "Error adding location" });
+            } else {
+                res.send({ status: 200, message: "Location added", data: results });
+            }
+        }
+    );
+});
+
+// update a location
+router.put("/update/:id", function (req, res) {
+    let id = req.params.id;
+    let location = req.body.location;
+    let picture_url = req.body.picture_url;
+    let description = req.body.description;
+    let phone_number = req.body.phone_number;
+    let address = req.body.address;
+    db.query(
+        "UPDATE locations SET location = ?, picture_url = ?, description = ?, phone_number = ?, address = ? WHERE id = ?",
+        [location, picture_url, description, phone_number, address, id],
+        function (err, results) {
+            if (err) {
+                send_error(err, "Error updating location");
+                res.status(500).send({ status: 500, message: "Error updating location" });
+            } else {
+                res.send({ status: 200, message: "Location updated", data: results });
+            }
+        }
+    );
+});
+
+// delete a location
+router.delete("/delete/:id", function (req, res) {
+    let id = req.params.id;
+    db.query("DELETE FROM locations WHERE id = ?", [id], function (err, results) {
+        if (err) {
+            send_error(err, "Error deleting location");
+            res.status(500).send({ status: 500, message: "Error deleting location" });
+        } else {
+            res.send({ status: 200, message: "Location deleted", data: results });
+        }
+    });
+});
+
 // export the router
 module.exports = router;

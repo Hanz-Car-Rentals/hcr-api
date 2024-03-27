@@ -2277,6 +2277,53 @@
 				}
 			}
 		},
+		"/roles/add": {
+			"post": {
+				"summary": "Add a role",
+				"tags": [
+					"Roles"
+				],
+				"description": "This endpoint adds a role",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"role_name": {
+										"type": "string"
+									},
+									"role_desc": {
+										"type": "string"
+									},
+									"permissions": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"status": 200,
+						"message": "Role created"
+					  },
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/roles/update/{id}": {
 			"put": {
 				"summary": "Update a role",
@@ -2323,53 +2370,6 @@
 					},
 					"500": {
 						"$ref": "#/components/responses/UnauthorizedError"
-					}
-				}
-			}
-		},
-		"/roles/add": {
-			"post": {
-				"summary": "Add a role",
-				"tags": [
-					"Roles"
-				],
-				"description": "This endpoint adds a role",
-				"requestBody": {
-					"content": {
-						"application/json": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"role_name": {
-										"type": "string"
-									},
-									"role_desc": {
-										"type": "string"
-									},
-									"permissions": {
-										"type": "string"
-									}
-								}
-							}
-						}
-					}
-				},
-				"responses": {
-					"200": {
-						"status": 200,
-						"message": "Role created"
-					  },
-					"401": {
-						"$ref": "#/components/responses/UnauthorizedError"
-					},
-					"403": {
-						"$ref": "#/components/responses/BadRequestError"
-					},
-					"404": {
-						"$ref": "#/components/responses/NotFoundError"
-					},
-					"500": {
-						"$ref": "#/components/responses/ServerError"
 					}
 				}
 			}
@@ -2546,6 +2546,52 @@
 								}
 							}
 						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
+		"/locations/add": {
+			"post": {
+				"summary": "Add a location",
+				"tags": [
+					"Locations"
+				],
+				"description": "This endpoint adds a location",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"location": {
+										"type": "string"
+									},
+									"picture_url": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Location added"
 					},
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"
