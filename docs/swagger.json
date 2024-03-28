@@ -1268,6 +1268,32 @@
 				}
 			}
 		},
+		"/users/validate/drivers-license": {
+			"post": {
+				"summary": "Validate drivers license",
+				"tags": [
+					"Users"
+				],
+				"description": "This endpoint validated user's driver license",
+				"responses": {
+					"200": {
+						"description": "Drivers license validated"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/users/update_password": {
 			"put": {
 				"summary": "Update password",
