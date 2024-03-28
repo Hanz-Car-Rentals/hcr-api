@@ -372,6 +372,28 @@ router.put("/update_password", function (req, res) {
 	);
 });
 
+// users/validate/drivers-license
+router.post("/validate/drivers-license", check_user_token, function (req, res) {
+	let token = req.headers["authorization"].split(" ")[1];
+	let drivers_license = req.body.drivers_license;
+
+	db.query(
+		"UPDATE users SET verified_drivers_licence =? WHERE token =?",
+		[1, token],
+		function (error, results, fields) {
+			if (error) {
+				send_error(error, "Error validating drivers license");
+				res.send({ status: 500, message: "Error validating drivers license" });
+			} else {
+				res.send({
+					status: 200,
+					message: "Successfully validated drivers license",
+				});
+			}
+		}
+	);
+});
+
 // users/update/{id} route to update a user
 router.put("/update/:id", check_user_token, user_check, function (req, res) {
 	let first_name = req.body.first_name;
