@@ -94,6 +94,24 @@ router.put("/update/:id", check_user_token, check_permission("EDIT_LOCATIONS"), 
     );
 });
 
+// update a locations description
+router.put("/update/desc/:id", check_user_token, check_permission("EDIT_TEXT"), function (req, res) {
+    let id = req.params.id;
+    let description = req.body.description;
+    db.query(
+        "UPDATE locations SET description = ? WHERE id = ?",
+        [description, id],
+        function (err, results) {
+            if (err) {
+                send_error(err, "Error updating location description");
+                res.status(500).send({ status: 500, message: "Error updating location description" });
+            } else {
+                res.send({ status: 200, message: "Location description updated", data: results });
+            }
+        }
+    );
+});
+
 // delete a location
 router.delete("/remove/:id", check_user_token, check_permission("ADD_REMOVE_LOCATIONS"), function (req, res) {
     let id = req.params.id;
