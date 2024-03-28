@@ -2705,6 +2705,56 @@
 				}
 			}
 		},
+		"/locations/update/desc/{id}": {
+			"put": {
+				"summary": "Update a location's description",
+				"tags": [
+					"Locations"
+				],
+				"description": "This endpoint updates a location's description",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"description": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "This endpoint updates a location's description"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+		},
 		"/locations/remove/{id}": {
 			"delete": {
 				"summary": "Removes a location",
