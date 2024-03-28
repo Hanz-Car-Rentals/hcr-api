@@ -327,16 +327,18 @@ db.query("CREATE TABLE IF NOT EXISTS reviews ( \
 });
 
 // Create a table called rental logs where these are the fields: id INT, user_id INT, car_id INT, start_date TIMESTAMP, end_date TIMESTAMP, status INT NOT NULL, created_at TIMESTAMP, updated_at TIMESTAMP. The user_id is a foreign key to the users table and the car_id is a foreign key to the cars table and the status is a foreign key to the rental_status table
-db.query("CREATE TABLE IF NOT EXISTS log ( \
+db.query("CREATE TABLE IF NOT EXISTS logs ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
 	user_id INT NOT NULL, \
 	car_id INT NOT NULL, \
+	staff_id INT NOT NULL, \
 	start_date TIMESTAMP NOT NULL, \
 	end_date TIMESTAMP NULL DEFAULT NULL, \
 	status INT NOT NULL, \
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, \
 	FOREIGN KEY (user_id) REFERENCES users(id), \
+	FOREIGN KEY (staff_id) REFERENCES users(id), \
 	FOREIGN KEY (car_id) REFERENCES cars(id), \
 	FOREIGN KEY (status) REFERENCES rental_status(id) \
 )", function (err, result) {
