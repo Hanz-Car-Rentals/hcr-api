@@ -74,6 +74,9 @@ db.query("CREATE TABLE IF NOT EXISTS users ( \
 	role INT NOT NULL DEFAULT 6, \
 	verified_drivers_licence BOOLEAN, \
 	times_rented INT, \
+	scheduled_for_deletion BOOLEAN, \
+	scheduled_for_deletion_at DATE, \
+	account_disabled BOOLEAN, \
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
 	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, \
 	FOREIGN KEY (salt) REFERENCES salts(id) \
@@ -220,7 +223,13 @@ db.query("SELECT * FROM car_types", function (err, result) {
 // Create a table called locations where these are the fields: id INT, location TEXT NOT NULL
 db.query("CREATE TABLE IF NOT EXISTS locations ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
-	location TEXT NOT NULL \
+	location TEXT NOT NULL, \
+	picture_url TEXT NOT NULL, \
+	description TEXT NOT NULL, \
+	address TEXT NOT NULL, \
+	phone_number TEXT NOT NULL, \
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, \
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP \
 )", function (err, result) {
 	if (err) throw err;
 	if(result.changedRows > 0){
@@ -233,33 +242,8 @@ db.query("SELECT * FROM locations", function (err, result) {
 	if (err) throw err;
 	// If the locations table is empty, create the default locations
 	if (result.length === 0) {
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Saint Petersburg']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Amsterdam']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Rotterdam']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Utrecht']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Eindhoven']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Tilburg']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Groningen']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Almere']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Breda']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Nijmegen']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Apeldoorn']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Haarlem']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Arnhem']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Zaanstad']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Amersfoort']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Haarlemmermeer']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['s-Hertogenbosch']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Zoetermeer']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Zwolle']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Leiden']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Leeuwarden']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Maastricht']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Dordrecht']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Ede']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Alphen aan den Rijn']);
-		db.query("INSERT INTO locations (location) VALUES (?) ", ['Den Haag'], function (err, result) {
-		if (err) throw err;
+		db.query("INSERT INTO locations (location, picture_url, description, address, phone_number) VALUES (?,?,?,?,?) ", ['Saint Petersburg', "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Winter_Palace_Panorama_3.jpg/266px-Winter_Palace_Panorama_3.jpg", "Our Saint Petersburg location is located in the heart of the city. You can find us at the Winter Palace.","4th on Main street", "06-H4NZ-C4R"], function (err, result) {
+			if (err) throw err;
 			console.log("Default locations created");
 		});
 	}
