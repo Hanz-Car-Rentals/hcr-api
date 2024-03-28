@@ -2413,6 +2413,7 @@
 		"/locations": {
 			"get": {
 				"summary": "Get all locations",
+				"security": [],
 				"tags": [
 					"Locations"
 				],
@@ -2457,6 +2458,7 @@
 		"/locations/name/{name}": {
 			"get": {
 				"summary": "Get the location by name",
+				"security": [],
 				"tags": [
 					"Locations"
 				],
@@ -2511,6 +2513,7 @@
 		"/locations/location/{id}": {
 			"get": {
 				"summary": "Get location by ID",
+				"security": [],
 				"tags": [
 					"Locations"
 				],
@@ -2583,6 +2586,12 @@
 									},
 									"description": {
 										"type": "string"
+									},
+									"address": {
+										"type": "string"
+									},
+									"phone_number": {
+										"type": "string"
 									}
 								}
 							}
@@ -2614,7 +2623,7 @@
 				"tags": [
 					"Locations"
 				],
-				"description": "This endpoint lets someone update information from a location",
+				"description": "This endpoint updates a location",
 				"parameters": [
 					{
 						"name": "id",
@@ -2625,39 +2634,47 @@
 						}
 					}
 				],
-				"responses": {
-					"200": {
-						"description": "Update a location.",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "array",
-									"items": {
-										"type": "object",
-										"properties": {
-											"id": {
-												"type": "integer"
-											},
-											"location": {
-												"type": "string"
-											}
-										}
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"location": {
+										"type": "string"
+									},
+									"picture_url": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"address": {
+										"type": "string"
+									},
+									"phone_number": {
+										"type": "string"
 									}
 								}
 							}
 						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Location updated"
 					},
 					"401": {
 						"$ref": "#/components/responses/UnauthorizedError"
 					},
 					"403": {
-						"$ref": "#/components/responses/BadRequestError"
+						"$ref": "#/components/responses/UnauthorizedError"
 					},
 					"404": {
-						"$ref": "#/components/responses/NotFoundError"
+						"$ref": "#/components/responses/UnauthorizedError"
 					},
 					"500": {
-						"$ref": "#/components/responses/ServerError"
+						"$ref": "#/components/responses/UnauthorizedError"
 					}
 				}
 			}

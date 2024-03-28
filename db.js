@@ -242,7 +242,7 @@ db.query("SELECT * FROM locations", function (err, result) {
 	if (err) throw err;
 	// If the locations table is empty, create the default locations
 	if (result.length === 0) {
-		db.query("INSERT INTO locations (location, picture_url, description, address phone_number) VALUES (?,?,?,?,?) ", ['Saint Petersburg', "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Winter_Palace_Panorama_3.jpg/266px-Winter_Palace_Panorama_3.jpg", "Our Saint Petersburg location is located in the heart of the city. You can find us at the Winter Palace.","4th on Main street", "06-H4NZ-C4R"], function (err, result) {
+		db.query("INSERT INTO locations (location, picture_url, description, address, phone_number) VALUES (?,?,?,?,?) ", ['Saint Petersburg', "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Winter_Palace_Panorama_3.jpg/266px-Winter_Palace_Panorama_3.jpg", "Our Saint Petersburg location is located in the heart of the city. You can find us at the Winter Palace.","4th on Main street", "06-H4NZ-C4R"], function (err, result) {
 			if (err) throw err;
 			console.log("Default locations created");
 		});

@@ -52,7 +52,7 @@ router.get("/name/:name", function (req, res) {
 });
 
 // add a location
-router.post("/add", function (req, res) {
+router.post("/add", check_user_token, check_permission("ADD_REMOVE_LOCATIONS"), function (req, res) {
     let location = req.body.location;
     let picture_url = req.body.picture_url;
     let description = req.body.description;
@@ -73,7 +73,7 @@ router.post("/add", function (req, res) {
 });
 
 // update a location
-router.put("/update/:id", function (req, res) {
+router.put("/update/:id", check_user_token, check_permission("EDIT_LOCATIONS"), function (req, res) {
     let id = req.params.id;
     let location = req.body.location;
     let picture_url = req.body.picture_url;
@@ -95,7 +95,7 @@ router.put("/update/:id", function (req, res) {
 });
 
 // delete a location
-router.delete("/delete/:id", function (req, res) {
+router.delete("/remove/:id", check_user_token, check_permission("ADD_REMOVE_LOCATIONS"), function (req, res) {
     let id = req.params.id;
     db.query("DELETE FROM locations WHERE id = ?", [id], function (err, results) {
         if (err) {
