@@ -98,7 +98,6 @@ router.post("/accept/:logId", check_user_token, check_permission("ACCEPT_DENY_RE
         } else {
             let log_user = await query("SELECT * FROM log WHERE id = ?", [logId]);
             let user_data = await query("SELECT * FROM users WHERE id = ?", [log_user[0].user_id])
-            console.log(user_data[0].email);
             send_mail(user_data[0].email, `Dear, ${user_data[0].first_name},\n\nWe have some great news!\nYour request to rent a car has been accepted. You can now come to our office to pick up your car.\n\nBest regards,\nHanz Car Rentals`, "Request approved!")
 
             res.send({status: 200, message: "Log accepted"});
@@ -116,8 +115,7 @@ router.post("/deny/:logId", check_user_token, check_permission("ACCEPT_DENY_REQU
         } else {
             let log_user = await query("SELECT * FROM log WHERE id = ?", [logId]);
             let user_data = await query("SELECT * FROM users WHERE id = ?", [log_user[0].user_id])
-            console.log(user_data[0].email);
-            send_mail(user_data[0].email, `Dear, ${user_data[0].first_name},\n\nWe have some sad news.\nYour request to rent a car has been denied. If you are not happy with this please send us an email to: contact.hcr@wolfsoft.soltuions\n\nBest regards,\nHanz Car Rentals`, "Request denied")
+            send_mail(user_data[0].email, `Dear, ${user_data[0].first_name},\n\nWe have some sad news.\nYour request to rent a car has been denied. If you want to know why we denied it, you can ask here: contact.hcr@wolfsoft.soltuions\n\nBest regards,\nHanz Car Rentals`, "Request denied")
 
             res.send({status: 200, message: "Log denied"});
         }
