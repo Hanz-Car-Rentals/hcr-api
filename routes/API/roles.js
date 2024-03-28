@@ -160,6 +160,24 @@ router.put("/update/:id", check_user_token, check_permission("EDIT_ROLES"), asyn
 	});
 });
 
+router.put("/update/desc/:id", check_user_token, check_permission("EDIT_TEXT"), async function(req, res, next) {
+	let id = req.params.id;
+	let role_desc = req.body.role_desc;
+
+	if (!role_desc){
+		return res.status(400).send({status: 400, message: "Role description is required"});
+	}
+
+	db.query("UPDATE roles SET role_desc = ? WHERE id = ?", [role_desc, id], function(err, results){
+		if (err){
+			send_error(err, "Error updating role");
+			return res.status(500).send({status: 500, message: "Error updating role"});
+		} else {
+			return res.send({status: 200, message: "Role updated"});
+		}
+	});
+});
+
 // route to delete a role
 router.delete("/remove/:id", check_user_token, check_permission("ADD_REMOVE_ROLES"), function(req, res, next){
 	let id = req.params.id;

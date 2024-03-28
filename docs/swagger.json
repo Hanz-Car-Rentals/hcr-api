@@ -2400,6 +2400,56 @@
 				}
 			}
 		},
+		"/roles/update/desc/{id}": {
+			"put": {
+				"summary": "Update a role description",
+				"tags": [
+					"Roles"
+				],
+				"description": "This endpoint updates a role description",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"role": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Role description updated"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+		},
 		"/roles/remove/{id}": {
 			"delete": {
 				"summary": "Remove a role",
