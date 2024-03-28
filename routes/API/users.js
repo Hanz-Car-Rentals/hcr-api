@@ -375,8 +375,6 @@ router.put("/update_password", function (req, res) {
 // users/validate/drivers-license
 router.post("/validate/drivers-license", check_user_token, function (req, res) {
 	let token = req.headers["authorization"].split(" ")[1];
-	let drivers_license = req.body.drivers_license;
-
 	db.query(
 		"UPDATE users SET verified_drivers_licence =? WHERE token =?",
 		[1, token],
