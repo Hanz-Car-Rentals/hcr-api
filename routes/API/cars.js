@@ -64,6 +64,77 @@ router.get("/", async function (req, res) {
     }
 });
 
+// get /cars (all cars in type {type})
+router.get("/model/:name", async function (req, res) {
+    try {
+        // Fetch all car models
+		console.log("Fetching all car models with name: " + req.params.name)
+		let models = await query("SELECT * FROM body_types WHERE type = ?", [req.params.name]);
+
+		if (models.length === 0) {
+			res.status(404).send({ status: 404, message: "Model not found" });
+			return;
+		}
+
+		// fetch all car_types with the model id
+		let car_types = await query("SELECT * FROM car_types WHERE body_type = ?", [models[0].id]);
+
+		car_types.forEach(function (
+			car_type,
+			index,
+			array
+		) {
+			array[index] = car_type.id;
+		});
+
+		// get all cars with the car_type ids
+		let result = await query("SELECT * FROM cars WHERE car_type IN (?)", [car_types]);
+
+        // Process picture_url to an array
+        result.forEach((car) => {
+            car.picture_url = car.picture_url.split(",");
+        });
+
+        // Fetch all locations
+        let locations = await query("SELECT * FROM locations");
+
+        // Map location id to location name for each car
+        result.forEach((car) => {
+            let location = locations.find((loc) => loc.id === car.location);
+            if (location) {
+                car.location = location.location;
+            }
+        });
+
+        // Fetch all car types
+        let carTypes = await query("SELECT * FROM car_types");
+
+        // Fetch fuel type and body type for each car type
+        for (let car of result) {
+            let carType = carTypes.find((type) => type.id === car.car_type);
+            if (carType) {
+                // Fetch fuel type
+                let fuelType = await query("SELECT * FROM fuel_types WHERE id = ?", [carType.fuel]);
+                if (fuelType.length > 0) {
+                    carType.fuel = fuelType[0].type;
+                }
+
+                // Fetch body type
+                let bodyType = await query("SELECT * FROM body_types WHERE id = ?", [carType.body_type]);
+                if (bodyType.length > 0) {
+                    carType.body_type = bodyType[0].type;
+                }
+
+                car.car_type = carType;
+            }
+        }
+
+        res.json({status: 200, message: "Successfully fethed all cars", data: result});
+    } catch (err) {
+        send_error(res, err);
+    }
+});
+
 // get /cars/:id (car by id)
 router.get("/car/:id", async function (req, res) {
 	try {

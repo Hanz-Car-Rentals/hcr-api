@@ -195,6 +195,106 @@
 				}
 			}
 		},
+		"/cars/model/{name}": {
+			"get": {
+				"summary": "Get all cars that match the model.",
+				"tags": [
+					"Cars"
+				],
+				"parameters": [
+					{
+						"name": "name",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"description": "This endpoint returns all cars that matches the model name.",
+				"security": [],
+				"responses": {
+					"200": {
+						"description": "A list of cars matching the model name",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "integer"
+											},
+											"brand": {
+												"type": "string"
+											},
+											"model": {
+												"type": "string"
+											},
+											"year": {
+												"type": "integer"
+											},
+											"color": {
+												"type": "string"
+											},
+											"price": {
+												"type": "integer"
+											},
+											"rented_by": {
+												"type": "string"
+											},
+											"licence_plate": {
+												"type": "string"
+											},
+											"seats": {
+												"type": "integer"
+											},
+											"space": {
+												"type": "string"
+											},
+											"transmission": {
+												"type": "string"
+											},
+											"fuel": {
+												"type": "string"
+											},
+											"doors": {
+												"type": "integer"
+											},
+											"towing_weight": {
+												"type": "string"
+											},
+											"maximum_gross_weight": {
+												"type": "string"
+											},
+											"location": {
+												"type": "string"
+											},
+											"image": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"403": {
+						"$ref": "#/components/responses/BadRequestError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/ServerError"
+					}
+				}
+			}
+		},
 		"/cars/car/{id}": {
 			"get": {
 				"summary": "Get a car by ID",
