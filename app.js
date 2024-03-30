@@ -6,11 +6,13 @@ var logger = require('morgan');
 var crypto = require('crypto');
 var { send_error } = require('./functions/error.js');
 let db = require('./db.js');
+var { query } = require(`./functions/database_queries.js`);
 
 // require the routers
 var indexRouter = require('./routes/index');
 
 global.db = db;
+global.query = query;
 
 
 // whipe deleted users daily
