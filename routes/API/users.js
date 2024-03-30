@@ -114,7 +114,7 @@ router.post("/login", function (req, res) {
 	);
 });
 
-router.post("/add", function (req, res) {
+router.post("/add", async function (req, res) {
 	let first_name = req.body.first_name;
 	let last_name = req.body.last_name;
 	let email = req.body.email;
@@ -122,6 +122,12 @@ router.post("/add", function (req, res) {
 
 	if(!first_name || !last_name || !email || !password) {
 		res.send({ status: 400, message: "Missing required fields" });
+		return;
+	}
+
+	let email_check = await query("SELECT email FROM users WHERE email = ?", [email]);
+	if(email_check.length > 0) {
+		res.send({ status: 400, message: "Email already in use" });
 		return;
 	}
 
