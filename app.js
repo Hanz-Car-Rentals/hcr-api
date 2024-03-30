@@ -1,9 +1,7 @@
 // require the needed modules
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
 var logger = require('morgan');
-var crypto = require('crypto');
 var { send_error } = require('./functions/error.js');
 let db = require('./db.js');
 var { query } = require(`./functions/database_queries.js`);
@@ -13,7 +11,6 @@ var indexRouter = require('./routes/index');
 
 global.db = db;
 global.query = query;
-
 
 // whipe deleted users daily
 // var { start_daily_jobs } = require('./routes/functions/daily_checks');
