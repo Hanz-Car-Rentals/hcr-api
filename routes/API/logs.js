@@ -1,9 +1,7 @@
 // require the needed modules
 var express = require("express");
-var db = require("../../db");
 var { send_error } = require("../../functions/error");
 var { send_mail } = require("../../functions/email");
-var { query } = require("../../functions/database_queries");
 var {
   check_user_token,
   check_permission,

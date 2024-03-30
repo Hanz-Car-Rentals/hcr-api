@@ -1,13 +1,10 @@
 // require the needed modules
 var express = require("express");
-var db = require("../../db");
 var { send_error } = require("../../functions/error");
 var {
 	check_user_token,
-	user_check,
 	check_permission
 } = require("../../functions/middleware");
-var { query } = require("../../functions/database_queries");
 var { rentCar } = require("../../functions/cars.js");
 
 // create the router

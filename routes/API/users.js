@@ -1,6 +1,5 @@
 // require the needed modules
 var express = require("express");
-var db = require("../../db");
 var crypto = require("crypto");
 var { newUser, forgot_password } = require("../../functions/email");
 var { send_error } = require("../../functions/error");
@@ -12,12 +11,6 @@ var {
 
 // create the router
 var router = express.Router();
-
-// router.get('/', check_permission('ADMIN'), function (req, res) {
-//   res.json({
-// 	message: 'You have the permission to access this route'
-//   })
-// })
 
 router.post("/login", function (req, res) {
 	let email = req.body.email;

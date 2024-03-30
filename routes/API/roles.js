@@ -1,6 +1,5 @@
 // require the needed modules
 var express = require("express");
-var db = require("../../db");
 var { send_error } = require("../../functions/error");
 var {
   check_user_token,
@@ -9,7 +8,6 @@ var {
   hasPermission
 } = require("../../functions/middleware");
 var permissions_json = require("../../configs/permissions.json");
-var { query } = require("../../functions/database_queries");
 
 // create the router
 var router = express.Router();
