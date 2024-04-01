@@ -33,11 +33,11 @@ router.get("/", async function (req, res) {
         });
 
         // Fetch all car types
-        let carTypes = await query("SELECT * FROM car_types");
+        let models = await query("SELECT * FROM car_types");
 
         // Fetch fuel type and body type for each car type
         for (let car of result) {
-            let carType = carTypes.find((type) => type.id === car.car_type);
+            let carType = models.find((type) => type.id === car.car_type);
             if (carType) {
                 // Fetch fuel type
                 let fuelType = await query("SELECT * FROM fuel_types WHERE id = ?", [carType.fuel]);
@@ -61,22 +61,22 @@ router.get("/", async function (req, res) {
     }
 });
 
-// get /cars (all cars in type {type})
-router.get("/model/:name", async function (req, res) {
+// get /cars/bodytypes/{name} (all cars in type {type})
+router.get("/bodytypes/:name", async function (req, res) {
     try {
-        // Fetch all car models
-		console.log("Fetching all car models with name: " + req.params.name)
-		let models = await query("SELECT * FROM body_types WHERE type = ?", [req.params.name]);
+        // Fetch all car body types
+		console.log("Fetching all car body types with name: " + req.params.name)
+		let bodytypes = await query("SELECT * FROM body_types WHERE type = ?", [req.params.name]);
 
-		if (models.length === 0) {
+		if (bodytypes.length === 0) {
 			res.status(404).send({ status: 404, message: "Model not found" });
 			return;
 		}
 
-		// fetch all car_types with the model id
-		let car_types = await query("SELECT * FROM car_types WHERE body_type = ?", [models[0].id]);
+		// fetch all models with the body type id
+		let models = await query("SELECT * FROM car_types WHERE body_type = ?", [bodytypes[0].id]);
 
-		car_types.forEach(function (
+		models.forEach(function (
 			car_type,
 			index,
 			array
@@ -85,7 +85,7 @@ router.get("/model/:name", async function (req, res) {
 		});
 
 		// get all cars with the car_type ids
-		let result = await query("SELECT * FROM cars WHERE car_type IN (?)", [car_types]);
+		let result = await query("SELECT * FROM cars WHERE car_type IN (?)", [models]);
 
         // Process picture_url to an array
         result.forEach((car) => {
@@ -189,7 +189,7 @@ router.get("/fuel", function (req, res) {
 });
 
 // get /cars/types (all car types)
-router.get("/cartypes", function (req, res) {
+router.get("/models", function (req, res) {
 	db.query("SELECT * FROM car_types", function (err, result) {
 		if (err) {
 			send_error(res, err);

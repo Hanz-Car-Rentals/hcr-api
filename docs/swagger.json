@@ -195,7 +195,7 @@
 				}
 			}
 		},
-		"/cars/model/{name}": {
+		"/cars/bodytypes/{name}": {
 			"get": {
 				"summary": "Get all cars that match the model.",
 				"tags": [
@@ -437,7 +437,7 @@
 				}
 			}
 		},
-		"/cars/cartypes": {
+		"/cars/models": {
 			"get": {
 				"summary": "Get all car types",
 				"tags": [
