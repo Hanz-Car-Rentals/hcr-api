@@ -76,6 +76,11 @@ router.get("/bodytypes/:name", async function (req, res) {
 		// fetch all models with the body type id
 		let models = await query("SELECT * FROM car_types WHERE body_type = ?", [bodytypes[0].id]);
 
+		if(models.length === 0) {
+			res.status(404).send({ status: 404, message: "No cars found using this body type." });
+			return;
+		}
+
 		models.forEach(function (
 			car_type,
 			index,
@@ -86,6 +91,11 @@ router.get("/bodytypes/:name", async function (req, res) {
 
 		// get all cars with the car_type ids
 		let result = await query("SELECT * FROM cars WHERE car_type IN (?)", [models]);
+
+		if(result.length === 0) {
+			res.status(404).send({ status: 404, message: "No cars found using this body type." });
+			return;
+		}
 
         // Process picture_url to an array
         result.forEach((car) => {

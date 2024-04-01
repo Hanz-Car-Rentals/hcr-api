@@ -275,7 +275,7 @@ db.query("SELECT * FROM cars", function (err, result) {
 	if (err) throw err;
 	// If the cars table is empty, create the default body types
 	if (result.length === 0) {
-		db.query("INSERT INTO cars (picture_url,color,price_per_day,car_type,location,license_plate) VALUES (?,?,?,?,?,?) ", ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Lada_1200.jpg/1200px-Lada_1200.jpg,https://www.autovisie.nl/wp-content/uploads/2021/05/lada-1200-serie-1-2-26000km-1e-eigenaar-1978-nieuw.jpeg", "pussy-pink", 563.58, 1,1,"aids"], function (err, result) {
+		db.query("INSERT INTO cars (picture_url,color,price_per_day,car_type,location,license_plate) VALUES (?,?,?,?,?,?) ", ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Lada_1200.jpg/1200px-Lada_1200.jpg,https://www.autovisie.nl/wp-content/uploads/2021/05/lada-1200-serie-1-2-26000km-1e-eigenaar-1978-nieuw.jpeg", "Yellow", 563.58, 1,1,"H4NZ-C4R"], function (err, result) {
 		if (err) throw err;
 			console.log("Default car created");
 		});
