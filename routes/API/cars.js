@@ -320,13 +320,14 @@ router.post("/add/cartype", check_user_token, check_permission("ADD_REMOVE_VEHIC
 // post /cars/add/car (create a new car)
 router.post("/add/car", check_user_token, check_permission("ADD_REMOVE_VEHICLES"), function (req, res) {
 	let car_type = req.body.car_type;
+	let description = req.body.description;
 	let license_plate = req.body.license_plate;
 	let color = req.body.color;
 	let price_per_day = req.body.price_per_day;
 	let picture_url = req.body.picture_url;
 	let location = req.body.location;
 
-	if (car_type == undefined || license_plate == undefined || color == undefined || price_per_day == undefined || picture_url == undefined || location == undefined) {
+	if (car_type == undefined || license_plate == undefined || color == undefined || price_per_day == undefined || picture_url == undefined || location == undefined || description == undefined) {
 		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
 		return;
 	}
@@ -337,13 +338,15 @@ router.post("/add/car", check_user_token, check_permission("ADD_REMOVE_VEHICLES"
 	db.query("INSERT INTO cars ( \
 		car_type, \
 		license_plate, \
+		description, \
 		color, \
 		price_per_day, \
 		picture_url, \
 		location \
-	) VALUES (?, ?, ?, ?, ?, ?)", [
+	) VALUES (?, ?, ?, ?, ?, ?, ?)", [
 		car_type,
 		license_plate,
+		description,
 		color,
 		price_per_day,
 		`${picture_url}`,
@@ -428,12 +431,13 @@ router.put("/update/car/:id",check_user_token, check_permission("EDIT_VEHICLES")
 	let id = req.params.id;
 	let car_type = req.body.car_type;
 	let license_plate = req.body.license_plate;
+	let description = req.body.description;
 	let color = req.body.color;
 	let price_per_day = req.body.price_per_day;
 	let picture_url = req.body.picture_url;
 	let location = req.body.location;
 
-	if (car_type == undefined || license_plate == undefined || color == undefined || price_per_day == undefined || picture_url == undefined || location == undefined) {
+	if (car_type == undefined || license_plate == undefined || color == undefined || price_per_day == undefined || picture_url == undefined || location == undefined || description == undefined) {
 		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
 		return;
 	}
@@ -444,6 +448,7 @@ router.put("/update/car/:id",check_user_token, check_permission("EDIT_VEHICLES")
 	db.query("UPDATE cars SET \
 		car_type = ?, \
 		license_plate = ?, \
+		description = ?, \
 		color = ?, \
 		price_per_day = ?, \
 		picture_url = ?, \
@@ -452,6 +457,7 @@ router.put("/update/car/:id",check_user_token, check_permission("EDIT_VEHICLES")
 	[
 		car_type,
 		license_plate,
+		description,
 		color,
 		price_per_day,
 		`${picture_url}`,
