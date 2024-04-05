@@ -254,6 +254,7 @@ db.query("CREATE TABLE IF NOT EXISTS cars ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
 	car_available BOOLEAN NOT NULL DEFAULT 1, \
 	picture_url TEXT NOT NULL, \
+	description TEXT NOT NULL, \
 	color VARCHAR(255) NOT NULL, \
 	price_per_day DECIMAL(10,2) NOT NULL, \
 	car_type INT NOT NULL, \
@@ -275,7 +276,7 @@ db.query("SELECT * FROM cars", function (err, result) {
 	if (err) throw err;
 	// If the cars table is empty, create the default body types
 	if (result.length === 0) {
-		db.query("INSERT INTO cars (picture_url,color,price_per_day,car_type,location,license_plate) VALUES (?,?,?,?,?,?) ", ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Lada_1200.jpg/1200px-Lada_1200.jpg,https://www.autovisie.nl/wp-content/uploads/2021/05/lada-1200-serie-1-2-26000km-1e-eigenaar-1978-nieuw.jpeg", "Yellow", 563.58, 1,1,"H4NZ-C4R"], function (err, result) {
+		db.query("INSERT INTO cars (picture_url,description,color,price_per_day,car_type,location,license_plate) VALUES (?,?,?,?,?,?,?) ", ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Lada_1200.jpg/1200px-Lada_1200.jpg,https://www.autovisie.nl/wp-content/uploads/2021/05/lada-1200-serie-1-2-26000km-1e-eigenaar-1978-nieuw.jpeg", "Deze auto komt uit de sovjet tijden. Deze auto is gemaakt in Toljatti in oblast Samara de grootste VAZ autofabriek die er is. Deze auto is bij ons sins dat die uit de fabriek komt en is onze beste auto voor een leuk rond reisje door europa heen.", "Yellow", 563.58, 1,1,"H4NZ-C4R"], function (err, result) {
 		if (err) throw err;
 			console.log("Default car created");
 		});
