@@ -318,7 +318,7 @@ router.post("/add/cartype", check_user_token, check_permission("ADD_REMOVE_VEHIC
 });
 
 // post /cars/add/car (create a new car)
-router.post("/add/car", check_user_token, check_permission("ADD_REMOVE_VEHICLES"), function (req, res) {
+router.post("/add/car", check_user_token, check_permission("ADD_REMOVE_VEHICLES"), async function (req, res) {
 	let car_type = req.body.car_type;
 	let description = req.body.description;
 	let license_plate = req.body.license_plate;
@@ -329,6 +329,19 @@ router.post("/add/car", check_user_token, check_permission("ADD_REMOVE_VEHICLES"
 
 	if (car_type == undefined || license_plate == undefined || color == undefined || price_per_day == undefined || picture_url == undefined || location == undefined || description == undefined) {
 		res.status(400).send({ status: 400, message: "Missing or incorrect parameters" });
+		return;
+	}
+
+	let car_types = await query("SELECT * FROM car_types WHERE id = " + car_type);
+	let locations = await query("SELECT * FROM locations WHERE id = " + location);
+
+	if(locations.length === 0) {
+		res.status(400).send({ status: 400, message: "Location not found" });
+		return;
+	}
+
+	if(car_types.length === 0) {
+		res.status(400).send({ status: 400, message: "Car type not found" });
 		return;
 	}
 
