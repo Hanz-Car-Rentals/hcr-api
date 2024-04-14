@@ -58,8 +58,24 @@ async function forgot_password(email, id, host){
     });
 };
 
+async function contact_mail(email, subject, message) {
+    await transporter.sendMail({
+        from: config.email_server.from,
+        to: `hcr@wolfsoft.solutions`,
+        subject: subject,
+        text: `THIS IS A SCHOOL PROJECT! THIS IS NOT REAL\n\n\n${message}\n\nThank you for using Hanz Car Rentals.\n\nPS: This is an automated message. & THIS IS A SCHOOL PROJECT! THIS IS NOT REAL`,
+        replyTo: email
+    }).catch((err) => {
+        if(err) {
+            send_error(err, 'Send E-mail');
+            throw err;
+        };
+    });
+} 
+
 module.exports = {
     newUser,
     forgot_password,
-    send_mail
+    send_mail,
+    contact_mail
 };

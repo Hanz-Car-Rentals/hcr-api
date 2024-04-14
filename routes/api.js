@@ -10,6 +10,7 @@ var reviewsRouter = require('./API/reviews');
 var logsRouter = require('./API/logs');
 var rolesRouter = require('./API/roles');
 var locationsRouter = require('./API/locations');
+var contactRouter = require('./API/contact');
 
 router.use('/users', usersRouter);
 router.use('/cars', carsRouter);
@@ -17,6 +18,7 @@ router.use('/reviews', reviewsRouter);
 router.use('/logs', logsRouter);
 router.use('/roles', rolesRouter);
 router.use('/locations', locationsRouter);
+router.use('/contact', contactRouter);
 
 router.get('/', function(req, res, next){
     res.json({
