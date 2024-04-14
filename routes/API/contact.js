@@ -17,6 +17,11 @@ router.post("/send", function(req, res, next) {
         subject,
         `Name: ${name}\n\nMessage:\n${message}`
     );
+
+    res.json({
+        status: 200,
+        message: "Message sent"
+    })
 });
 
 // export the router
