@@ -64,7 +64,7 @@ router.get("/pending", check_user_token, check_permission("VIEW_LOGS"), function
 
 // get approved logs
 router.get("/approved", check_user_token, check_permission("VIEW_LOGS"), function(req, res, next){
-    db.query("SELECT * FROM log WHERE status = 2", function(err, results){
+    db.query("SELECT * FROM logs WHERE status = 2", function(err, results){
         if (err){
             send_error(err, "Error getting logs");
             res.status(500).send({status: 500, message: "Error getting logs"});
@@ -94,7 +94,7 @@ router.post("/accept/:logId", check_user_token, check_permission("ACCEPT_DENY_RE
             send_error(err, "Error accepting log");
             res.status(500).send({status: 500, message: "Error accepting log"});
         } else {
-            let log_user = await query("SELECT * FROM log WHERE id = ?", [logId]);
+            let log_user = await query("SELECT * FROM logs WHERE id = ?", [logId]);
             let user_data = await query("SELECT * FROM users WHERE id = ?", [log_user[0].user_id])
             send_mail(user_data[0].email, `Dear, ${user_data[0].first_name},\n\nWe have some great news!\nYour request to rent a car has been accepted. You can now come to our office to pick up your car.\n\nBest regards,\nHanz Car Rentals`, "Request approved!")
 
@@ -111,7 +111,7 @@ router.post("/deny/:logId", check_user_token, check_permission("ACCEPT_DENY_REQU
             send_error(err, "Error denying log");
             res.status(500).send({status: 500, message: "Error denying log"});
         } else {
-            let log_user = await query("SELECT * FROM log WHERE id = ?", [logId]);
+            let log_user = await query("SELECT * FROM logs WHERE id = ?", [logId]);
             let user_data = await query("SELECT * FROM users WHERE id = ?", [log_user[0].user_id])
             send_mail(user_data[0].email, `Dear, ${user_data[0].first_name},\n\nWe have some sad news.\nYour request to rent a car has been denied. If you want to know why we denied it, you can ask here: contact.hcr@wolfsoft.soltuions\n\nBest regards,\nHanz Car Rentals`, "Request denied")
 
