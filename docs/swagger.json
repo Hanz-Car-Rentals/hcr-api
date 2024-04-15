@@ -1811,16 +1811,6 @@
 					"Rental Logs"
 				],
 				"description": "This endpoint returns all approved requests",
-				"parameters": [
-					{
-						"name": "userId",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
 				"responses": {
 					"200": {
 						"description": "A list of approved requests.",
@@ -1874,16 +1864,6 @@
 					"Rental Logs"
 				],
 				"description": "This endpoint returns all denied requests",
-				"parameters": [
-					{
-						"name": "userId",
-						"in": "path",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				],
 				"responses": {
 					"200": {
 						"description": "A list of denied requests.",
