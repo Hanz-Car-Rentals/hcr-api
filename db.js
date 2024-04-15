@@ -332,7 +332,7 @@ db.query("CREATE TABLE IF NOT EXISTS logs ( \
 	id INT AUTO_INCREMENT PRIMARY KEY, \
 	user_id INT NOT NULL, \
 	car_id INT NOT NULL, \
-	staff_id INT NOT NULL, \
+	staff_id INT, \
 	start_date TIMESTAMP NOT NULL, \
 	end_date TIMESTAMP NULL DEFAULT NULL, \
 	status INT NOT NULL, \

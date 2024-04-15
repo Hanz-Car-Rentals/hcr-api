@@ -14,7 +14,7 @@ var router = express.Router();
 
 // get all logs
 router.get("/", check_user_token, check_permission("VIEW_LOGS"), function(req, res, next){
-    db.query("SELECT * FROM log", function(err, results){
+    db.query("SELECT * FROM logs", function(err, results){
         if (err){
             send_error(err, "Error getting logs");
             res.status(500).send({status: 500, message: "Error getting logs"});
@@ -27,7 +27,7 @@ router.get("/", check_user_token, check_permission("VIEW_LOGS"), function(req, r
 // get log by carid
 router.get("/car/:carid", check_user_token, check_permission("VIEW_LOGS"), function(req, res, next){
     let carid = req.params.carid;
-    db.query("SELECT * FROM log WHERE car_id = ?", [carid], function(err, results){
+    db.query("SELECT * FROM logs WHERE car_id = ?", [carid], function(err, results){
         if (err){
             send_error(err, "Error getting logs");
             res.status(500).send({status: 500, message: "Error getting logs"});
@@ -40,7 +40,7 @@ router.get("/car/:carid", check_user_token, check_permission("VIEW_LOGS"), funct
 // get log by userid
 router.get("/user/:userId", check_user_token, check_user_permission("view_logs", "VIEW_LOGS"), function(req, res, next){
     let userid = req.params.userId;
-    db.query("SELECT * FROM log WHERE user_id = ?", [userid], function(err, results){
+    db.query("SELECT * FROM logs WHERE user_id = ?", [userid], function(err, results){
         if (err){
             send_error(err, "Error getting logs");
             res.status(500).send({status: 500, message: "Error getting logs"});
@@ -52,7 +52,7 @@ router.get("/user/:userId", check_user_token, check_user_permission("view_logs",
 
 // get pending logs
 router.get("/pending", check_user_token, check_permission("VIEW_LOGS"), function(req, res, next){
-    db.query("SELECT * FROM log WHERE status = 1", function(err, results){
+    db.query("SELECT * FROM logs WHERE status = 1", function(err, results){
         if (err){
             send_error(err, "Error getting logs");
             res.status(500).send({status: 500, message: "Error getting logs"});
@@ -76,7 +76,7 @@ router.get("/approved", check_user_token, check_permission("VIEW_LOGS"), functio
 
 // get denied logs
 router.get("/denied", check_user_token, check_permission("VIEW_LOGS"), function(req, res, next){
-    db.query("SELECT * FROM log WHERE status = 3", function(err, results){
+    db.query("SELECT * FROM logs WHERE status = 3", function(err, results){
         if (err){
             send_error(err, "Error getting logs");
             res.status(500).send({status: 500, message: "Error getting logs"});
@@ -89,7 +89,7 @@ router.get("/denied", check_user_token, check_permission("VIEW_LOGS"), function(
 // accept a request
 router.post("/accept/:logId", check_user_token, check_permission("ACCEPT_DENY_REQUEST"), async function(req, res, next){
     let logId = req.params.logId;
-    db.query("UPDATE log SET status = 2 WHERE id = ?", [logId], async function(err, results){
+    db.query("UPDATE logs SET status = 2 WHERE id = ?", [logId], async function(err, results){
         if (err){
             send_error(err, "Error accepting log");
             res.status(500).send({status: 500, message: "Error accepting log"});
@@ -106,7 +106,7 @@ router.post("/accept/:logId", check_user_token, check_permission("ACCEPT_DENY_RE
 // deny a request
 router.post("/deny/:logId", check_user_token, check_permission("ACCEPT_DENY_REQUEST"), async function(req, res, next){
     let logId = req.params.logId;
-    db.query("UPDATE log SET status = 3 WHERE id = ?", [logId], async function(err, results){
+    db.query("UPDATE logs SET status = 3 WHERE id = ?", [logId], async function(err, results){
         if (err){
             send_error(err, "Error denying log");
             res.status(500).send({status: 500, message: "Error denying log"});
