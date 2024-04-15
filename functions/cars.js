@@ -12,7 +12,11 @@ async function rentCar(userId, carId, fromDate, toDate, cb) {
 
         // Check if car is available
         let cars = await query("SELECT * FROM cars WHERE id =?", [carId]);
-        if (cars[0].car_available === 0) {
+        if(cars.length == 0){
+            new Error("Car not found");
+            return cb({status: 404, message: "Car not found."});
+        }
+        if (cars[0].car_available == 0) {
             new Error("Car is not available");
             return cb({status: 22, message: "Car is not available."});
         }
@@ -28,7 +32,7 @@ async function rentCar(userId, carId, fromDate, toDate, cb) {
         }
 
         // Insert into log table
-        db.query("INSERT INTO log (user_id, car_id, start_date, end_date, status) VALUES (?,?,?,?,?)", [userId, carId, fromDate, toDate, 1], function (err, result) {
+        db.query("INSERT INTO logs (user_id, car_id, start_date, end_date, status) VALUES (?,?,?,?,?)", [userId, carId, fromDate, toDate, 1], function (err, result) {
             if(err) throw err;
         });
         
