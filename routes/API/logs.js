@@ -91,7 +91,7 @@ router.post("/accept/:logId", check_user_token, check_permission("ACCEPT_DENY_RE
     let logId = req.params.logId;
     let staffMember = await query("SELECT * FROM users WHERE token = ?", [req.headers["authorization"].split(" ")[1]]);
     let staffId = staffMember[0].id;
-    db.query("UPDATE logs SET status = 2, staff_id WHERE id = ?", [staffId,logId], async function(err, results){
+    db.query("UPDATE logs SET status = 2, staff_id=? WHERE id = ?", [staffId,logId], async function(err, results){
         if (err){
             send_error(err, "Error accepting log");
             res.status(500).send({status: 500, message: "Error accepting log"});
