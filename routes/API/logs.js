@@ -89,7 +89,9 @@ router.get("/denied", check_user_token, check_permission("VIEW_LOGS"), function(
 // accept a request
 router.post("/accept/:logId", check_user_token, check_permission("ACCEPT_DENY_REQUEST"), async function(req, res, next){
     let logId = req.params.logId;
-    db.query("UPDATE logs SET status = 2 WHERE id = ?", [logId], async function(err, results){
+    let staffMember = await query("SELECT * FROM users WHERE token = ?", [req.headers["authorization"].split(" ")[1]]);
+    let staffId = staffMember[0].id;
+    db.query("UPDATE logs SET status = 2, staff_id WHERE id = ?", [staffId,logId], async function(err, results){
         if (err){
             send_error(err, "Error accepting log");
             res.status(500).send({status: 500, message: "Error accepting log"});
@@ -106,7 +108,9 @@ router.post("/accept/:logId", check_user_token, check_permission("ACCEPT_DENY_RE
 // deny a request
 router.post("/deny/:logId", check_user_token, check_permission("ACCEPT_DENY_REQUEST"), async function(req, res, next){
     let logId = req.params.logId;
-    db.query("UPDATE logs SET status = 3 WHERE id = ?", [logId], async function(err, results){
+    let staffMember = await query("SELECT * FROM users WHERE token = ?", [req.headers["authorization"].split(" ")[1]]);
+    let staffId = staffMember[0].id;
+    db.query("UPDATE logs SET status = 3, staff_id = ? WHERE id = ?", [staffId,logId], async function(err, results){
         if (err){
             send_error(err, "Error denying log");
             res.status(500).send({status: 500, message: "Error denying log"});
