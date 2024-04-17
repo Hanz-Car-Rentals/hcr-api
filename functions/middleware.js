@@ -205,7 +205,7 @@ function check_user_permission(route, permission) {
                     break;
                 case "view_logs":
                     let userId = req.params.userId;
-                    let logs = await query("SELECT * FROM log WHERE user_id = ?", [userId]);
+                    let logs = await query("SELECT * FROM logs WHERE user_id = ?", [userId]);
                     if (logs.length === 0) {
                         return res.status(404).json({ error: 'Log not found' });
                     }
