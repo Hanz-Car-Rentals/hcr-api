@@ -80,6 +80,7 @@ router.post("/login", function (req, res) {
 														status: 200,
 														message: "Successfully logged in",
 														user: {
+															id: user.id,
 															first_name: user.first_name,
 															last_name: user.last_name,
 															token: token,
