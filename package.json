@@ -11,7 +11,7 @@
     "nodemon": "^3.1.0",
     "opn": "^6.0.0",
     "pluralize": "^8.0.0",
-    "swagger-themes": "^1.4.2",
+    "swagger-themes": "^1.4.3",
     "swagger-ui-express": "^5.0.0"
   },
   "name": "api-school-project",
