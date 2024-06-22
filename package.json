@@ -12,7 +12,7 @@
     "opn": "^6.0.0",
     "pluralize": "^8.0.0",
     "swagger-themes": "^1.4.2",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.1"
   },
   "name": "api-school-project",
   "description": "This is the API repository. It contains the API for the project school. The API is built using nodejs and express.",
